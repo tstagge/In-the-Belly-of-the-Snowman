@@ -20,6 +20,9 @@ void pointTurnIndef(int power);
 void pivotTurn(int power, int timeMS); //Positive is LEFT
 
 /*----------------------------FUNCTION DEFINITIONS----------------------------*/
+task main(){
+}
+
 void halt()
 {
 	motor[motorA] = 0;
