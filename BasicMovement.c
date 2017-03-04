@@ -68,9 +68,9 @@ void pointTurnIndef(int power)
 void pivotTurn(int power, int timeMS)
 {
 	if(power > 0)    //If left
-		motor[motorB]; //power right
+		motor[motorB] = power; //power right
 	else             //If right
-		motor[motorA]; //power left
+		motor[motorA] = power; //power left
 	sleep(timeMS)
 	halt();
 }
