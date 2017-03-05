@@ -18,6 +18,8 @@ void driveIndef(int power);
 void pointTurn(int power, int timeMS); //Positive is LEFT
 void pointTurnIndef(int power);
 void pivotTurn(int power, int timeMS); //Positive is LEFT
+void pointTurnAngle(int power, int angle, float radiusWheel, float radiusBot);
+void moveForward(int power, float distance, float radius);
 
 /*----------------------------FUNCTION DEFINITIONS----------------------------*/
 void halt()
@@ -73,14 +75,12 @@ void pivotTurn(int power, int timeMS)
 }
 
 //Positive and negitive values of power and angle vary direction
-void pointTurnAngle(int power, int angle, float radius) {
+void pointTurnAngle(int power, int angle, float radiusWheel, float radiusBot) {
 	nMotorEncoder[motorA] = 0;
 	nMotorEncoder[motorB] = 0;
 
-	float angleTargetRad = degreesToRadians(angle);
-
-	nMotorEncoderTarget[motorA] = angleTargetRad * radius;
-	nMotorEncoderTarget[motorB] = -angleTargetRad * radius;
+	nMotorEncoderTarget[motorA] = (angle * radiusBot) / (radiusWheel);
+	nMotorEncoderTarget[motorB] = (-angle * radiusBot) / (radiusWheel);
 
 	motor[motorA] = power;
 	motor[motorB] = -power;
@@ -89,6 +89,22 @@ void pointTurnAngle(int power, int angle, float radius) {
 		//Idle loop. Program waits until target value is reached.
   }
 
-  motor[motorA] = 0;
-  motor[motorB] = 0;
+  halt();
+}
+
+//Move forward a set Distance with inputted power and radius in centimeters
+void moveForward(int power, float distance, float radius) {
+	float angleRad = distance / radius;
+
+	nMotorEncoderTarget[motorA] = angleRad;
+	nMotorEncoderTarget[motorB] = angleRad;
+
+	motor[motorA] = power;
+	motor[motorB] = power;
+
+	while (nMotorRunState[motorA] != runStateIdle) {
+		//Idle loop. Program waits until target value is reached.
+  }
+
+  halt();
 }

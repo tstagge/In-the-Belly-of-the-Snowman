@@ -16,11 +16,13 @@
 
 /*----------------------------FUNCTION  PROTOTYPES----------------------------*/
 void runCOTTest(); //Code for a center-of-turning test
-
+void runPointTurnTest(int angle, float radiusW, float radiusT);
 /*-----------------------------------MAIN-------------------------------------*/
 task main()
 {
-	runCOTTest();
+	float radiusWheel = 4.1 //cm
+	float radiusBot = 7; //cm
+	runPointTurnTest(90, radiusWheel, radiusBot);
 }
 
 /*----------------------------FUNCTION DEFINITIONS----------------------------*/
@@ -39,9 +41,9 @@ void runCOTTest()
 	}
 }
 
-void runPointTurnTest(int angle, float radius) {
-	int power = 50;
+void runPointTurnTest(int angle, float radiusW, float radiusT) {
+	int power = 30;
 
-	pointTurnAngle(power, angle, radius);
+	pointTurnAngle(power, angle, radiusW, radiusT);
 
 }
