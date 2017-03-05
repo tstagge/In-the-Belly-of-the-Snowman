@@ -38,3 +38,10 @@ void runCOTTest()
 		sleep(300);
 	}
 }
+
+void runPointTurnTest(int angle, float radius) {
+	int power = 50;
+
+	pointTurnAngle(power, angle, radius);
+
+}

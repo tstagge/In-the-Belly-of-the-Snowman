@@ -20,9 +20,6 @@ void pointTurnIndef(int power);
 void pivotTurn(int power, int timeMS); //Positive is LEFT
 
 /*----------------------------FUNCTION DEFINITIONS----------------------------*/
-task main(){
-}
-
 void halt()
 {
 	motor[motorA] = 0;
@@ -73,4 +70,25 @@ void pivotTurn(int power, int timeMS)
 		motor[motorA] = power; //power left
 	sleep(timeMS)
 	halt();
+}
+
+//Positive and negitive values of power and angle vary direction
+void pointTurnAngle(int power, int angle, float radius) {
+	nMotorEncoder[motorA] = 0;
+	nMotorEncoder[motorB] = 0;
+
+	float angleTargetRad = degreesToRadians(angle);
+
+	nMotorEncoderTarget[motorA] = angleTargetRad * radius;
+	nMotorEncoderTarget[motorB] = -angleTargetRad * radius;
+
+	motor[motorA] = power;
+	motor[motorB] = -power;
+
+	while (nMotorRunState[motorA] != runStateIdle) {
+		//Idle loop. Program waits until target value is reached.
+  }
+
+  motor[motorA] = 0;
+  motor[motorB] = 0;
 }
