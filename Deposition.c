@@ -8,6 +8,8 @@
 //See Driver.c for pragmas and global variables
 
 
+#define DEP_MOTOR_POWER 50
+
 /*----------------------------FUNCTION  PROTOTYPES----------------------------*/
 void dropAC();
 void openGate(int power);
@@ -23,13 +25,20 @@ void dropAC()
 
 void openGate(int power)
 {
-	//Rotate x degrees at power
+	nMotorEncoder[motorC] = 0;
+	nMotorEncoderTarget[motorC] = (270);
+	motor[motorC] = -power;
+	while (nMotorRunState[motorC] != runStateIdle) {
+		//Idle loop. Program waits until target value is reached.
+  }
+  fullStop();
+
 }
 
 void closeGate(int power)
 {
-	while(SensorValue(touchSensor) == 0)  // while the Touch Sensor is inactive
-  {
-    //Rotate at power
+	motor[motorC] = power;
+	while(SensorValue(S2) == 0) { //(IDLE) while the Touch Sensor is inactive
   }
+  fullStop();
 }
