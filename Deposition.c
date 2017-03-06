@@ -8,8 +8,24 @@
 
 
 /*----------------------------FUNCTION  PROTOTYPES----------------------------*/
+void dropAC();
+void openGate(int power);
+void closeGate(int power);
 
 /*----------------------------FUNCTION DEFINITIONS----------------------------*/
-void dropOff() {
+void dropAC()
+{
+		int depPower = DEP_MOTOR_POWER; //global variable defined in Driver.c
+		openGate(depPower);
+		closeGate(depPower);
+}
 
+void openGate(int power)
+{
+	//Rotate x degrees at power
+}
+
+void closeGate(int power)
+{
+	//Rotate at power until touch sensor is pressed
 }

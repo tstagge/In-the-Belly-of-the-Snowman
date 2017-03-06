@@ -14,9 +14,20 @@
 
 #include "BasicMovement.c"
 
+#define WHEEL_RADIUS 4.1 //cm
+#define TURN_RADIUS 7.0 //cm
+#define DEP_MOTOR_POWER 50
+
 /*----------------------------FUNCTION  PROTOTYPES----------------------------*/
 void runCOTTest(); //Code for a center-of-turning test
 void runPointTurnTest(int angle, float radiusW, float radiusT);
+void pocTask1();
+void pocTask2();
+void pocTask3();
+void pocTask4();
+void pocTask5();
+void pocTAsk6();
+
 /*-----------------------------------MAIN-------------------------------------*/
 task main()
 {
@@ -41,9 +52,40 @@ void runCOTTest()
 	}
 }
 
-void runPointTurnTest(int angle, float radiusW, float radiusT) {
+void runPointTurnTest(int angle, float radiusW, float radiusT)
+{
 	int power = 30;
 
 	pointTurnAngle(power, angle, radiusW, radiusT);
+
+}
+
+void pocTask1()
+{
+
+}
+
+void pocTask2()
+{
+
+}
+
+void pocTask3()
+{
+
+}
+
+void pocTask4()
+{
+
+}
+
+void pocTask5()
+{
+
+}
+
+void pocTAsk6()
+{
 
 }
