@@ -5,19 +5,25 @@
 //BASIC MATHEMATICAL UTILITY FUNCTIONS [Utility.c]
 
 /*----------------------------FUNCTION  PROTOTYPES----------------------------*/
-//Conversions
+//CONVERSIONS
 float deg2Rad(float deg);
+float rad2Deg(float rad);
 
-//Basic Calculations
+//BASIC CALCULATIONS
 float getArcLength(float angleDeg, float wheelRadiusCM);
 
 /*----------------------------FUNCTION DEFINITIONS----------------------------*/
 float deg2Rad(float deg)
 {
-	return deg * ((2 * pi) / 180);
+	return deg * (pi / 180);
 }
 
-float getArcLength(float angleDeg, float wheelRadiusCM)
+float rad2Deg(float rad)
 {
-	return deg2rad(angleDeg) * wheelRadiusCM;
+	return rad * (180 / pi);
+}
+
+float getArcLength(int angleDeg, float radiusCM)
+{
+	return deg2rad(angleDeg) * radiusCM;
 }

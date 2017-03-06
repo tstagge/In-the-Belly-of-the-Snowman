@@ -7,15 +7,14 @@
 //This file contains all functions related to the bin drop off system.
 //See Driver.c for pragmas and global variables
 
-
-#define DEP_MOTOR_POWER 50
-
 /*----------------------------FUNCTION  PROTOTYPES----------------------------*/
 void dropAC();
 void openGate(int power);
 void closeGate(int power);
 
 /*----------------------------FUNCTION DEFINITIONS----------------------------*/
+
+//Drop Antennae Container -- function that will be called by Driver
 void dropAC()
 {
 		int depPower = DEP_MOTOR_POWER; //global variable defined in Driver.c
