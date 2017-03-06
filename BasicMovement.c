@@ -5,7 +5,7 @@
 //BASIC MOBILITY and OPERATION FUNCTIONS [BasicMovement.c]
 //
 // This file contains all the functions the robot will use to move or otherwise
-// actuate any of its components. See [Driver.c] for all pragmas.
+// operate its drive system. See [Driver.c] for all pragmas.
 
 //FIXME: Need to figure out how to properly refer to motors by their assigned
 // names as opposed to "motorA" and "motorB"
@@ -20,6 +20,7 @@ void pointTurnIndef(int power);
 void pivotTurn(int power, int timeMS); //Positive is LEFT
 void pointTurnAngle(int power, int angle, float radiusWheel, float radiusBot);
 void moveForward(int power, float distance, float radius);
+
 
 /*----------------------------FUNCTION DEFINITIONS----------------------------*/
 void halt()
