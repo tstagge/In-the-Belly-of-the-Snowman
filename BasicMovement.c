@@ -97,7 +97,9 @@ void pointTurnAngle(int power, int angle, float radiusWheel, float radiusBot) {
 void moveForward(int power, float distance, float radius) {
 	float angleRad = distance / radius;
 
-	float angleDegrees = radiansToDegrees(angleRad);
+	writeDebugStreamLine("%f", angleRad);
+
+	float angleDegrees = angleRad * (180.0/PI);
 
 	writeDebugStreamLine("%f", angleDegrees);
 

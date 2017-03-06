@@ -11,12 +11,14 @@
 #pragma config(Motor,  motorA,          motorLeft,     tmotorNXT, PIDControl, encoder)
 #pragma config(Motor,  motorB,          motorRight,    tmotorNXT, PIDControl, encoder)
 #pragma config(Motor,  motorC,          motorDep,      tmotorNXT, PIDControl, encoder)
+#pragma config(Sensor, S2,              touchSensor,   sensorTouch)
 
 #include "BasicMovement.c"
+//#include "Deposition.c"
 
 #define WHEEL_RADIUS 4.1 //cm
 #define TURN_RADIUS 7.0 //cm
-#define DEP_MOTOR_POWER 50
+#define PI (4 * atan(1))
 
 /*----------------------------FUNCTION  PROTOTYPES----------------------------*/
 void runCOTTest(); //Code for a center-of-turning test
@@ -36,7 +38,7 @@ task main()
 {
 	float radiusWheel = 4.1; //cm
 	float radiusBot = 7; //cm
-	float distance = 10; //cm
+	float distance = 90; //cm
 	clearDebugStream();
 
 	moveForwardTest(radiusWheel,distance);
@@ -60,7 +62,7 @@ void runCOTTest()
 
 void runPointTurnTest(int angle, float radiusW, float radiusT)
 {
-	int power = 30;
+	int power = 60;
 
 	pointTurnAngle(power, angle, radiusW, radiusT);
 
@@ -68,7 +70,7 @@ void runPointTurnTest(int angle, float radiusW, float radiusT)
 
 
 void moveForwardTest(float radius, float distance) {
-	int power = 30;
+	int power = 60;
 
 	moveForward(power, distance, radius);
 
