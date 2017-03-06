@@ -2,9 +2,10 @@
 //Team 57
 //  Jillian Hestle, Emily Schott, Nicholas Vilbrandt, Tyler Stagge
 
-//BIN DROP OFF FUNCTIONS [BinDropOff.c]
+//CARGO and DEPOSITION FUNCTIONS [Deposition.c]
 //
 //This file contains all functions related to the bin drop off system.
+//See Driver.c for pragmas and global variables
 
 
 /*----------------------------FUNCTION  PROTOTYPES----------------------------*/
@@ -27,5 +28,8 @@ void openGate(int power)
 
 void closeGate(int power)
 {
-	//Rotate at power until touch sensor is pressed
+	while(SensorValue(touchSensor) == 0)  // while the Touch Sensor is inactive
+  {
+    //Rotate at power
+  }
 }
