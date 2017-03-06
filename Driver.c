@@ -17,12 +17,15 @@
 /*----------------------------FUNCTION  PROTOTYPES----------------------------*/
 void runCOTTest(); //Code for a center-of-turning test
 void runPointTurnTest(int angle, float radiusW, float radiusT);
+void moveForwardTest(float radius, float distance);
 /*-----------------------------------MAIN-------------------------------------*/
 task main()
 {
 	float radiusWheel = 4.1 //cm
 	float radiusBot = 7; //cm
-	runPointTurnTest(90, radiusWheel, radiusBot);
+	float distance = 10; //cm
+
+	moveForwardTest(radiusWheel,distance);
 }
 
 /*----------------------------FUNCTION DEFINITIONS----------------------------*/
@@ -45,5 +48,12 @@ void runPointTurnTest(int angle, float radiusW, float radiusT) {
 	int power = 30;
 
 	pointTurnAngle(power, angle, radiusW, radiusT);
+
+}
+
+void moveForwardTest(float radius, float distance) {
+	int power = 50;
+
+	moveForward(power, distance, radius);
 
 }
