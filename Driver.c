@@ -21,9 +21,9 @@
 /*----------------------------FUNCTION  PROTOTYPES----------------------------*/
 void runCOTTest(); //Code for a center-of-turning test
 void runPointTurnTest(int angle, float radiusW, float radiusT);
-<<<<<<< HEAD
+
 void moveForwardTest(float radius, float distance);
-=======
+
 void pocTask1();
 void pocTask2();
 void pocTask3();
@@ -31,13 +31,13 @@ void pocTask4();
 void pocTask5();
 void pocTAsk6();
 
->>>>>>> origin/master
 /*-----------------------------------MAIN-------------------------------------*/
 task main()
 {
-	float radiusWheel = 4.1 //cm
+	float radiusWheel = 4.1; //cm
 	float radiusBot = 7; //cm
 	float distance = 10; //cm
+	clearDebugStream();
 
 	moveForwardTest(radiusWheel,distance);
 }
@@ -66,12 +66,14 @@ void runPointTurnTest(int angle, float radiusW, float radiusT)
 
 }
 
-<<<<<<< HEAD
+
 void moveForwardTest(float radius, float distance) {
-	int power = 50;
+	int power = 30;
 
 	moveForward(power, distance, radius);
-=======
+
+}
+
 void pocTask1()
 {
 
@@ -99,6 +101,5 @@ void pocTask5()
 
 void pocTAsk6()
 {
->>>>>>> origin/master
 
 }

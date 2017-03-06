@@ -97,14 +97,24 @@ void pointTurnAngle(int power, int angle, float radiusWheel, float radiusBot) {
 void moveForward(int power, float distance, float radius) {
 	float angleRad = distance / radius;
 
-	nMotorEncoderTarget[motorA] = angleRad;
-	nMotorEncoderTarget[motorB] = angleRad;
+	float angleDegrees = radiansToDegrees(angleRad);
 
-	motor[motorA] = power;
-	motor[motorB] = power;
+	writeDebugStreamLine("%f", angleDegrees);
+
+	nMotorEncoder[motorA] = 0;
+	nMotorEncoder[motorB] = 0;
+
+	nMotorEncoderTarget[motorA] = -angleDegrees;
+	nMotorEncoderTarget[motorB] = -angleDegrees;
+
+	motor[motorA] = -power;
+	motor[motorB] = -power;
+
+	writeDebugStreamLine("%f", nMotorEncoder[motorA]);
 
 	while (nMotorRunState[motorA] != runStateIdle) {
 		//Idle loop. Program waits until target value is reached.
+		writeDebugStreamLine("%f", nMotorEncoder[motorA]);
   }
 
   halt();
