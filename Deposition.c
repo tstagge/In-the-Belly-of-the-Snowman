@@ -19,13 +19,14 @@ void dropAC()
 {
 		int depPower = DEP_MOTOR_POWER; //global variable defined in Driver.c
 		openGate(depPower);
+		sleep(300);
 		closeGate(depPower);
 }
 
 void openGate(int power)
 {
 	nMotorEncoder[motorC] = 0;
-	nMotorEncoderTarget[motorC] = (270);
+	nMotorEncoderTarget[motorC] = (360);
 	motor[motorC] = -power;
 	while (nMotorRunState[motorC] != runStateIdle) {
 		//Idle loop. Program waits until target value is reached.

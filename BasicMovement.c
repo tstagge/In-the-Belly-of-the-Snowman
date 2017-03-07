@@ -52,7 +52,7 @@ void drive(int power, int timeMS)
 	halt();
 }
 
-//Positive and negitive values of power and angle vary direction
+//IN: Power (abs taken); angle [deg], Postive ==> Left
 void pointTurn(int power, int angle)
 {
 	float radiusWheel = WHEEL_RADIUS;
@@ -64,8 +64,8 @@ void pointTurn(int power, int angle)
 	nMotorEncoderTarget[motorA] = (angle * radiusBot) / (radiusWheel);
 	nMotorEncoderTarget[motorB] = (-angle * radiusBot) / (radiusWheel);
 
-	motor[motorA] = power;
-	motor[motorB] = -power;
+	motor[motorA] = -abs(power);
+	motor[motorB] = abs(power);
 
 	while (nMotorRunState[motorA] != runStateIdle) {
 		//Idle loop. Program waits until target value is reached.
@@ -148,6 +148,7 @@ void arcTurn(int power, float turnRadius, int turnAngle)
 
 
 //Move forward a set Distance with inputted power
+//CM??
 void moveForward(int power, float distance)
 {
 	float radiusWheel = WHEEL_RADIUS;

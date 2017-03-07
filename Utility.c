@@ -15,12 +15,12 @@ float getArcLength(float angleDeg, float wheelRadiusCM);
 /*----------------------------FUNCTION DEFINITIONS----------------------------*/
 float deg2Rad(float deg)
 {
-	return deg * (pi / 180);
+	return deg * (PI / 180);
 }
 
 float rad2Deg(float rad)
 {
-	return rad * (180 / pi);
+	return rad * (180 / PI);
 }
 
 float getArcLength(int angleDeg, float radiusCM)
