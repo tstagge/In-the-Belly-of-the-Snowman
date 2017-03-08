@@ -24,12 +24,14 @@ bool beaconSweep(int power, int hallBase, int angle)
 	nMotorEncoderTarget[motorB] = (abs(angle) * radiusBot) / (radiusWheel);
 	motor[motorA] = -power;
 	motor[motorB] = power;
-	while ((nMotorRunState[motorA] != runStateIdle)) {// || !nearBeacon(hallBase)) {
+	while ((nMotorRunState[motorA] != runStateIdle)) {
 		//Idle loop. Program waits until target value is reached.
 		writeDebugStream("Waiting\n");
+		if(nearBeacon(hallBase) == true)
+			break;
   }
   halt();
-  writeDebugStream("Done, you fucking cunt\n");
+  writeDebugStream("Done, you fucking ****\n");
   if(nearBeacon(hallBase))
   {
   	nearB = true;

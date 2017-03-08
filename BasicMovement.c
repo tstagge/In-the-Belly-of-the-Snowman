@@ -13,14 +13,14 @@
 /*----------------------------FUNCTION  PROTOTYPES----------------------------*/
 void halt(); //Stops drive motors only
 void fullStop(); //Stops all motors
-void drive(int power, int timeMS);
-void driveIndef(int power);
-void pointTurn(int power, int angle);
-void pointTurnTime(int power, int timeMS); //Positive is LEFT
-void pointTurnIndef(int power);
-void pivotTurn(int power, int timeMS); //Positive is LEFT
-void arcTurn(int power, float turnRadius, int turnAngle);
-void moveForward(int power, float distance);
+void drive(short power, int timeMS);
+void driveIndef(short power);
+void pointTurn(short power, int angle);
+void pointTurnTime(short power, int timeMS); //Positive is LEFT
+void pointTurnIndef(short power);
+void pivotTurn(short power, int timeMS); //Positive is LEFT
+void arcTurn(short power, float turnRadius, int turnAngle);
+void moveForward(short power, float distance);
 
 
 /*----------------------------FUNCTION DEFINITIONS----------------------------*/
@@ -38,13 +38,13 @@ void fullStop()
 	motor[motorC] = 0;
 }
 
-void driveIndef(int power)
+void driveIndef(short power)
 {
 	motor[motorA] = power;
 	motor[motorB] = power;
 }
 
-void drive(int power, int timeMS)
+void drive(short power, int timeMS)
 {
 	motor[motorA] = power;
 	motor[motorB] = power;
@@ -54,7 +54,7 @@ void drive(int power, int timeMS)
 
 //FOLLOWING COMMENT IS WRONG!!!!!!!!!
 //IN: Power (abs taken); angle [deg], Postive ==> Left
-void pointTurn(int power, int angle)
+void pointTurn(short power, int angle)
 {
 	float radiusWheel = WHEEL_RADIUS;
 	float radiusBot = TURN_RADIUS;
@@ -65,8 +65,8 @@ void pointTurn(int power, int angle)
 	nMotorEncoderTarget[motorA] = (-abs(angle) * radiusBot) / (radiusWheel);
 	nMotorEncoderTarget[motorB] = (abs(angle) * radiusBot) / (radiusWheel);
 
-	motor[motorA] = -power;
-	motor[motorB] = power;
+	motor[motorA] = power;
+	motor[motorB] = -power;
 
 	while (nMotorRunState[motorA] != runStateIdle) {
 		//Idle loop. Program waits until target value is reached.
@@ -74,7 +74,7 @@ void pointTurn(int power, int angle)
   halt();
 }
 
-void pointTurnTime(int power, int timeMS)
+void pointTurnTime(short power, int timeMS)
 {
 	motor[motorA] = -power;
 	motor[motorB] = power;
@@ -82,13 +82,13 @@ void pointTurnTime(int power, int timeMS)
 	halt();
 }
 
-void pointTurnIndef(int power)
+void pointTurnIndef(short power)
 {
 	motor[motorA] = power;
 	motor[motorB] = -power;
 }
 
-void pivotTurn(int power, int timeMS)
+void pivotTurn(short power, int timeMS)
 {
 	if(power > 0)    //If left
 		motor[motorB] = -power; //power right
@@ -99,7 +99,7 @@ void pivotTurn(int power, int timeMS)
 }
 
 //IN: Average Power, radius of desired arc, angle of turn (int)
-void arcTurn(int power, float turnRadius, int turnAngle)
+void arcTurn(short power, float turnRadius, int turnAngle)
 {
 	float pointTurnRadius = TURN_RADIUS;
 	float wheelRadius = WHEEL_RADIUS;
@@ -150,7 +150,7 @@ void arcTurn(int power, float turnRadius, int turnAngle)
 
 //Move forward a set Distance with inputted power
 //CM??
-void moveForward(int power, float distance)
+void moveForward(short power, float distance)
 {
 	float radiusWheel = WHEEL_RADIUS;
 	float angleRad = distance / radiusWheel;

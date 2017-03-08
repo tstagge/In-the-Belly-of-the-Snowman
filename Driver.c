@@ -46,15 +46,16 @@ void runPointTurnTest(int angle); //, float radiusW, float radiusT);
 void moveForwardTest(float distance);
 void hallEffectTest(int base);
 //PROOF-OF-COMPETENCY TASKS
-void pocTask1();
+void pocTask1(short power);
 void pocTask2();
-void pocTask3();
-void pocTask4(int power, int hallBase);
-void pocTask5(int power);
+void pocTask3(short power);
+void pocTask4(short power, int hallBase);
+void pocTask5(short power);
+void pocTask45Combo(short power, int hallBase);
 void pocTask6();
-void pocTask4Search(int power, int hallBase);
-void pocTask4Search2(int power, int hallBase);
-void pocTask5Path(int power);
+//PROOF-OF-COMPETENCY SUB-ROUTINES
+void pocTask4Search2(short power, int hallBase); //Searches the 10cm x 30cm region
+void pocTask5Path(short power); //Runs that weird path with the two turns
 
 /*-----------------------------------MAIN-------------------------------------*/
 task main()
@@ -63,7 +64,7 @@ task main()
 
 	//-----CALIBRATIONS-----/
 	int HALL_BASE = calibrateHallEffect();
-	int BASE_POW = BASE_MOTOR_POWER;
+	short BASE_POW = BASE_MOTOR_POWER;
 
 	//------TEST  CODE------/
 
@@ -74,8 +75,14 @@ task main()
 	//bool fuckThis = beaconSweep(-BASE_POW, HALL_BASE, 90);
 	//writeDebugStream("%d", fuckThis);
 	//hallEffectTest(HALL_BASE);
-	pocTask4Search2(BASE_POW, HALL_BASE);
-	pocTask4(BASE_POW, HALL_BASE);
+	//pocTask4Search2(BASE_POW, HALL_BASE);
+
+
+	pocTask1(BASE_POW);
+	//pocTask3(BASE_POW);
+	//pocTask4(BASE_POW, HALL_BASE);
+	//pocTask5(BASE_POW);
+	//pocTask45Combo(BASE_POW, HALL_BASE);
 }
 
 /*----------------------------FUNCTION DEFINITIONS----------------------------*/
@@ -96,13 +103,13 @@ void runCOTTest()
 
 void runPointTurnTest(int angle)
 {
-	int power = 60;
+	short power = 60;
 	pointTurn(power, angle);
 }
 
 void moveForwardTest(float distance)
 {
-	int power = 60;
+	short power = 60;
 	moveForward(power, distance);
 }
 
@@ -116,9 +123,11 @@ void hallEffectTest(int base)
 	}
 }
 
-void pocTask1()
+void pocTask1(short power)
 {
-
+	pointTurn(power, 30); //Left
+	sleep(0.25);
+	moveForward(power, 30.0); //NICK!: I don't know the actual distance here
 }
 
 void pocTask2()
@@ -126,46 +135,40 @@ void pocTask2()
 
 }
 
-void pocTask3()
+void pocTask3(short power)
 {
-
+	moveForward(power, 30.0); //NICK!: I don't know the actual distance here
 }
 
-void pocTask4(int power, int hallBase)
+void pocTask4(short power, int hallBase)
 {
+	pocTask4Search2(power, hallBase);
+	//moveForward(power, 35);
+	sleep(0.25);
+	//dropAC();
+}
+
+void pocTask5(short power)
+{
+	pocTask5Path(power);
+	moveForward(power, (30.0 + BOT_LENGTH));
+	//moveForward(power, BOT_LENGTH);
+	sleep(0.25);
+	dropAC();
+}
+
+void pocTask45Combo(short power, int hallBase)
+{
+	pocTask5Path(power);
+	moveForward(power, 12.0);
+	sleep(0.25);
 	pocTask4Search2(power, hallBase);
 	moveForward(power, 35);
 	sleep(0.25);
 	dropAC();
 }
 
-void pocTask5(int power)
-{
-	pocTask5Path(power);
-	dropAC();
-}
-
-/*void pocTask4Search(int power, int hallBase)
-{
-	//Search region is 10cm wide and 30cm long
-	bool near = false;
-	int distTraveled = 0;
-	//short at = 0;
-
-	while((!near) && (distTraveled < 31))
-	{
-		if(beaconSweep(power, hallBase, -10)) {
-			near = true; break;
-		}
-		if(beaconSweep(power, hallBase, 20)) {
-			near = true; break;
-		}
-		moveForward(power, 6);
-		distTraveled += 6;
-	}
-}*/
-
-void pocTask4Search2(int power, int hallBase)
+void pocTask4Search2(short power, int hallBase)
 {
 	int distTraveled = 0;
 	bool n = false;
@@ -183,7 +186,7 @@ void pocTask4Search2(int power, int hallBase)
 			break;
 		}
 		sleep(250);
-		pointTurn(-power, 18);
+		pointTurn(power, 18);
 		sleep(250);
 		moveForward(power,6);
 		sleep(250);
@@ -196,7 +199,7 @@ void pocTask4Search2(int power, int hallBase)
 	}
 }
 
-void pocTask5Path(int power)
+void pocTask5Path(short power)
 {
 	moveForward(power, 45.0);
 	sleep(250);
@@ -206,8 +209,9 @@ void pocTask5Path(int power)
 	sleep(250);
 	arcTurn(power, 15.0, 90);
 	sleep(250);
-	moveForward(power, (30.0 + BOT_LENGTH));
-	sleep(250);
+	//moveForward(power, (30.0 + BOT_LENGTH));
+	//moveForward(power, 30.0);
+	//sleep(250);
 	//dropAC();
 }
 
