@@ -33,11 +33,11 @@
 #define BOT_LENGTH 22    //cm; distance from center of turning to AC deposition
 
 
-
 #include "Utility.c"
-#include "BasicMovement.c"
-#include "Deposition.c"
 #include "Sensors.c"
+#include "BasicMovement.c"
+#include "IntegratedMovement.c"
+#include "Deposition.c"
 
 /*----------------------------FUNCTION  PROTOTYPES----------------------------*/
 //TESTS
@@ -49,9 +49,12 @@ void hallEffectTest(int base);
 void pocTask1();
 void pocTask2();
 void pocTask3();
-void pocTask4();
-void pocTask5Path(int power);
+void pocTask4(int power, int hallBase);
+void pocTask5(int power);
 void pocTask6();
+void pocTask4Search(int power, int hallBase);
+void pocTask4Search2(int power, int hallBase);
+void pocTask5Path(int power);
 
 /*-----------------------------------MAIN-------------------------------------*/
 task main()
@@ -67,7 +70,12 @@ task main()
 	//float distance = 90; //cm
 	//moveForwardTest(distance);
 
-	pocTask5Path(BASE_POW);
+	//pocTask5Path(BASE_POW);
+	//bool fuckThis = beaconSweep(-BASE_POW, HALL_BASE, 90);
+	//writeDebugStream("%d", fuckThis);
+	//hallEffectTest(HALL_BASE);
+	pocTask4Search2(BASE_POW, HALL_BASE);
+	pocTask4(BASE_POW, HALL_BASE);
 }
 
 /*----------------------------FUNCTION DEFINITIONS----------------------------*/
@@ -123,16 +131,76 @@ void pocTask3()
 
 }
 
-void pocTask4()
+void pocTask4(int power, int hallBase)
 {
+	pocTask4Search2(power, hallBase);
+	moveForward(power, 35);
+	sleep(0.25);
+	dropAC();
+}
 
+void pocTask5(int power)
+{
+	pocTask5Path(power);
+	dropAC();
+}
+
+/*void pocTask4Search(int power, int hallBase)
+{
+	//Search region is 10cm wide and 30cm long
+	bool near = false;
+	int distTraveled = 0;
+	//short at = 0;
+
+	while((!near) && (distTraveled < 31))
+	{
+		if(beaconSweep(power, hallBase, -10)) {
+			near = true; break;
+		}
+		if(beaconSweep(power, hallBase, 20)) {
+			near = true; break;
+		}
+		moveForward(power, 6);
+		distTraveled += 6;
+	}
+}*/
+
+void pocTask4Search2(int power, int hallBase)
+{
+	int distTraveled = 0;
+	bool n = false;
+	//bool at = false;
+
+	while( (!n) && (distTraveled < 31))
+	{
+		if(beaconSweep(-power, hallBase, 20)) {
+			n = true;
+			break;
+		}
+		sleep(250);
+		if(beaconSweep(power, hallBase, 40)) {
+			n = true;
+			break;
+		}
+		sleep(250);
+		pointTurn(-power, 18);
+		sleep(250);
+		moveForward(power,6);
+		sleep(250);
+		if(nearBeacon(hallBase))
+		{
+			n = true;
+			break;
+		}
+		distTraveled += 6;
+	}
 }
 
 void pocTask5Path(int power)
 {
 	moveForward(power, 45.0);
 	sleep(250);
-	pointTurn(power, -90);
+	pointTurn(-power, 90);
 	sleep(250);
 	moveForward(power, 15.0); //Changed from 20 to 15
 	sleep(250);
@@ -140,7 +208,7 @@ void pocTask5Path(int power)
 	sleep(250);
 	moveForward(power, (30.0 + BOT_LENGTH));
 	sleep(250);
-	dropAC();
+	//dropAC();
 }
 
 void pocTask6()

@@ -52,6 +52,7 @@ void drive(int power, int timeMS)
 	halt();
 }
 
+//FOLLOWING COMMENT IS WRONG!!!!!!!!!
 //IN: Power (abs taken); angle [deg], Postive ==> Left
 void pointTurn(int power, int angle)
 {
@@ -61,11 +62,11 @@ void pointTurn(int power, int angle)
 	nMotorEncoder[motorA] = 0;
 	nMotorEncoder[motorB] = 0;
 
-	nMotorEncoderTarget[motorA] = (angle * radiusBot) / (radiusWheel);
-	nMotorEncoderTarget[motorB] = (-angle * radiusBot) / (radiusWheel);
+	nMotorEncoderTarget[motorA] = (-abs(angle) * radiusBot) / (radiusWheel);
+	nMotorEncoderTarget[motorB] = (abs(angle) * radiusBot) / (radiusWheel);
 
-	motor[motorA] = -abs(power);
-	motor[motorB] = abs(power);
+	motor[motorA] = -power;
+	motor[motorB] = power;
 
 	while (nMotorRunState[motorA] != runStateIdle) {
 		//Idle loop. Program waits until target value is reached.

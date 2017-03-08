@@ -5,8 +5,7 @@
 //GENERAL SENSOR INTERPRETATION MODULE [Sensors.c]
 //
 //This file contains the functions required to operate and interpret most
-//sensors utilized by the ALV, with the notable exception of the gyroscope
-//(see Gyro.c); see Driver.c for pragmas and global variables
+//sensors utilized by the ALV; see Driver.c for pragmas and global variables
 
 /*----------------------------FUNCTION  PROTOTYPES----------------------------*/
 int calibrateHallEffect();
