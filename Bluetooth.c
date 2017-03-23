@@ -8,5 +8,14 @@
 //via bluetooth to the NXT Brick.
 
 /*----------------------------FUNCTION  PROTOTYPES----------------------------*/
+void testMessage();
 
 /*----------------------------FUNCTION DEFINITIONS----------------------------*/
+void testMessage() {
+	sendMessage(900);
+}
+
+void sendMessage(int height) {
+	sendMessage(height);
+	writeDebugStreamLine("Message Sent");
+}

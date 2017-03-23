@@ -31,6 +31,7 @@
 #define WHEEL_RADIUS 4.1   //cm
 #define TURN_RADIUS 7.0    //cm; distance between wheels' contact points
 #define BOT_LENGTH 22    //cm; distance from center of turning to AC deposition
+#define HEIGHT_OF_MARKER 10 //cm; height of the LSTS marker, FIXME
 
 
 #include "Utility.c"
@@ -38,6 +39,7 @@
 #include "BasicMovement.c"
 #include "IntegratedMovement.c"
 #include "Deposition.c"
+#include "Bluetooth.c"
 
 /*----------------------------FUNCTION  PROTOTYPES----------------------------*/
 //TESTS
@@ -45,6 +47,7 @@ void runCOTTest(); //Code for a center-of-turning test
 void runPointTurnTest(int angle); //, float radiusW, float radiusT);
 void moveForwardTest(float distance);
 void hallEffectTest(int base);
+void bluetoothTest(int height);
 //PROOF-OF-COMPETENCY TASKS
 void pocTask1(short power);
 void pocTask2();
@@ -63,13 +66,15 @@ task main()
 	clearDebugStream();
 
 	//-----CALIBRATIONS-----/
-	int HALL_BASE = calibrateHallEffect();
-	short BASE_POW = BASE_MOTOR_POWER;
+	//int HALL_BASE = calibrateHallEffect();
+	//short BASE_POW = BASE_MOTOR_POWER;
 
 	//------TEST  CODE------/
 
 	//float distance = 90; //cm
 	//moveForwardTest(distance);
+
+	bluetoothTest(HEIGHT_OF_MARKER);
 
 	//pocTask5Path(BASE_POW);
 	//bool fuckThis = beaconSweep(-BASE_POW, HALL_BASE, 90);
@@ -78,7 +83,7 @@ task main()
 	//pocTask4Search2(BASE_POW, HALL_BASE);
 
 
-	pocTask1(BASE_POW);
+	//pocTask1(BASE_POW);
 	//pocTask3(BASE_POW);
 	//pocTask4(BASE_POW, HALL_BASE);
 	//pocTask5(BASE_POW);
@@ -123,11 +128,15 @@ void hallEffectTest(int base)
 	}
 }
 
+void bluetoothTest(int height) {
+	testMessage();
+}
+
 void pocTask1(short power)
 {
 	pointTurn(power, 30); //Left
-	sleep(0.25);
-	moveForward(power, 30.0); //NICK!: I don't know the actual distance here
+	sleep(0.5);
+	moveForward(power, 1000); //NICK!: I don't know the actual distance here
 }
 
 void pocTask2()
@@ -137,15 +146,24 @@ void pocTask2()
 
 void pocTask3(short power)
 {
-	moveForward(power, 30.0); //NICK!: I don't know the actual distance here
+	moveForward(power, 1000.0); //NICK!: I don't know the actual distance here
 }
 
 void pocTask4(short power, int hallBase)
 {
+	moveForward(power, 40.0);
 	pocTask4Search2(power, hallBase);
 	//moveForward(power, 35);
 	sleep(0.25);
 	//dropAC();
+	sleep(300);
+	playTone(800, 15);
+	sleep(500);
+	playTone(800, 15);
+	sleep(500);
+	playTone(800, 15);
+	sleep(800);
+	playTone(800, 15); //Sound does not play, brick only plays three sounds with 4 calls
 }
 
 void pocTask5(short power)
@@ -166,6 +184,14 @@ void pocTask45Combo(short power, int hallBase)
 	moveForward(power, 35);
 	sleep(0.25);
 	dropAC();
+	sleep(300);
+	playTone(800, 15);
+	sleep(500);
+	playTone(800, 15);
+	sleep(500);
+	playTone(800, 15);
+	sleep(800);
+	playTone(800, 15); //Sound does not play, brick only plays three sounds with 4 calls
 }
 
 void pocTask4Search2(short power, int hallBase)
