@@ -149,7 +149,7 @@ void hallEffectTest(int base)
 }
 
 void bluetoothTest(int height) {
-	testMessage();
+	sendAMessage(height);
 }
 
 void pocTask1(short power)

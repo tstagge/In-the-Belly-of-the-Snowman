@@ -15,7 +15,15 @@ void testMessage() {
 	sendMessage(900);
 }
 
-void sendMessage(int height) {
+void sendAMessage(int height) {
 	sendMessage(height);
 	writeDebugStreamLine("Message Sent");
+
+	sleep(1000);
+
+	while (bQueuedMsgAvailable()==FALSE) {
+		sleep(250);
+	}
+
+	messageParm[0];
 }
