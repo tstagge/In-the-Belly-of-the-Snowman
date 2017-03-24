@@ -33,6 +33,16 @@
 #define BOT_LENGTH 22    //cm; distance from center of turning to AC deposition
 #define HEIGHT_OF_MARKER 10 //cm; height of the LSTS marker, FIXME
 
+//Struct Definitions
+typedef struct satelliteMap_struct{
+	short satMap[275][365];
+}satelliteMap;
+
+typedef struct mapVector_struct{
+	short startLoc[2];
+	short endLoc[2];
+	float magnitude;
+}mapVector;
 
 #include "Utility.c"
 #include "Sensors.c"
