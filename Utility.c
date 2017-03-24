@@ -25,5 +25,5 @@ float rad2Deg(float rad)
 
 float getArcLength(int angleDeg, float radiusCM)
 {
-	return deg2rad(angleDeg) * radiusCM;
+	return deg2Rad(angleDeg) * radiusCM;
 }

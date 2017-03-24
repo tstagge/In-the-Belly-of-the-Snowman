@@ -33,16 +33,19 @@
 #define BOT_LENGTH 22    //cm; distance from center of turning to AC deposition
 #define HEIGHT_OF_MARKER 10 //cm; height of the LSTS marker, FIXME
 
-//Struct Definitions
-typedef struct satelliteMap_struct{
-	short satMap[275][365];
-}satelliteMap;
+//Filenames
+#define SAT_MAP_FILENAME "satmap1.txt" //FIXME once we know how they are giving us the file!
 
-typedef struct mapVector_struct{
+//Struct Definitions
+typedef struct SatelliteMap_struct{
+	short map[275][365];
+}SatelliteMap;
+
+typedef struct MapVector_struct{
 	short startLoc[2];
 	short endLoc[2];
 	float magnitude;
-}mapVector;
+}MapVector;
 
 #include "Utility.c"
 #include "Sensors.c"
@@ -50,6 +53,7 @@ typedef struct mapVector_struct{
 #include "IntegratedMovement.c"
 #include "Deposition.c"
 #include "Bluetooth.c"
+#include "SatelliteNavigation.c"
 
 /*----------------------------FUNCTION  PROTOTYPES----------------------------*/
 //TESTS
@@ -71,20 +75,26 @@ void pocTask4Search2(short power, int hallBase); //Searches the 10cm x 30cm regi
 void pocTask5Path(short power); //Runs that weird path with the two turns
 
 /*-----------------------------------MAIN-------------------------------------*/
+
+int fuckYou = 69;
+SatelliteMap satmap;
+
 task main()
 {
 	clearDebugStream();
 
-	//-----CALIBRATIONS-----/
-	//int HALL_BASE = calibrateHallEffect();
-	//short BASE_POW = BASE_MOTOR_POWER;
+	//-----CALIBRATIONS/CONSTANTS-----/
+	int HALL_BASE = calibrateHallEffect();
+	short BASE_POW = BASE_MOTOR_POWER;
+	//SatelliteMap satmap;
+	processMap(&satmap, SAT_MAP_FILENAME); //Initializes w/ fileIO
 
 	//------TEST  CODE------/
 
 	//float distance = 90; //cm
 	//moveForwardTest(distance);
 
-	bluetoothTest(HEIGHT_OF_MARKER);
+	//bluetoothTest(HEIGHT_OF_MARKER);
 
 	//pocTask5Path(BASE_POW);
 	//bool fuckThis = beaconSweep(-BASE_POW, HALL_BASE, 90);
