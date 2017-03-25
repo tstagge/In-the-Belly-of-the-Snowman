@@ -77,7 +77,7 @@ void pocTask5Path(short power); //Runs that weird path with the two turns
 /*-----------------------------------MAIN-------------------------------------*/
 
 int fuckYou = 69;
-SatelliteMap satmap;
+//SatelliteMap satmap;
 
 task main()
 {
@@ -87,14 +87,14 @@ task main()
 	int HALL_BASE = calibrateHallEffect();
 	short BASE_POW = BASE_MOTOR_POWER;
 	//SatelliteMap satmap;
-	processMap(&satmap, SAT_MAP_FILENAME); //Initializes w/ fileIO
+	//processMap(&satmap, SAT_MAP_FILENAME); //Initializes w/ fileIO
 
 	//------TEST  CODE------/
 
 	//float distance = 90; //cm
 	//moveForwardTest(distance);
 
-	//bluetoothTest(HEIGHT_OF_MARKER);
+	bluetoothTest(HEIGHT_OF_MARKER);
 
 	//pocTask5Path(BASE_POW);
 	//bool fuckThis = beaconSweep(-BASE_POW, HALL_BASE, 90);

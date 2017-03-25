@@ -17,6 +17,9 @@ void testMessage() {
 
 void sendAMessage(int height) {
 	sendMessage(height);
+
+	ClearMessage();
+
 	writeDebugStreamLine("Message Sent");
 
 	sleep(1000);
@@ -25,5 +28,23 @@ void sendAMessage(int height) {
 		sleep(250);
 	}
 
-	messageParm[0];
+	int error = messageParm[0];
+	int x = messageParm[1];
+	int y = messageParm[2];
+
+	if (error == 1) {
+		writeDebugStreamLine("Error %d: No Error", error);
+	} else if (error == 2) {
+		writeDebugStreamLine("Error %d: Manual Override Engaged", error);
+	} else if (error == 4) {
+		writeDebugStreamLine("Error %d: Out of Bounds Detected", error);
+	} else if (error == 8) {
+		writeDebugStreamLine("Error %d: No ALV Marker Seen", error);
+	} else if (error == 16) {
+		writeDebugStreamLine("Error %d: LSTS System Error", error);
+	} else if (error == 32) {
+		writeDebugStreamLine("Error %d: Busy - Request Again Later", error);
+	}
+
+	writeDebugStreamLine("Coordinates: %d, %d", x, y);
 }
