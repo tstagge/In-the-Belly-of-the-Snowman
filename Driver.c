@@ -76,7 +76,7 @@ void pocTask5Path(short power); //Runs that weird path with the two turns
 
 /*-----------------------------------MAIN-------------------------------------*/
 
-int fuckYou = 69;
+//int fuckYou = 69;
 //SatelliteMap satmap;
 
 task main()
@@ -91,10 +91,12 @@ task main()
 
 	//------TEST  CODE------/
 
-	//float distance = 90; //cm
-	//moveForwardTest(distance);
+	float distance = 243.84; //cm
+	moveForwardTest(distance);
 
-	bluetoothTest(HEIGHT_OF_MARKER);
+	//bluetoothTest(HEIGHT_OF_MARKER);
+
+
 
 	//pocTask5Path(BASE_POW);
 	//bool fuckThis = beaconSweep(-BASE_POW, HALL_BASE, 90);
@@ -134,7 +136,7 @@ void runPointTurnTest(int angle)
 
 void moveForwardTest(float distance)
 {
-	short power = 60;
+	short power = 100;
 	moveForward(power, distance);
 }
 
@@ -255,13 +257,16 @@ void pocTask5Path(short power)
 	sleep(250);
 	arcTurn(power, 15.0, 90);
 	sleep(250);
-	//moveForward(power, (30.0 + BOT_LENGTH));
+	//moveForward(power, (30.0 + ));
 	//moveForward(power, 30.0);
-	//sleep(250);
+	//sleep(250);BOT_LENGTH
 	//dropAC();
 }
 
-void pocTask6()
+void pocTask6(int height)
 {
-
+	int i = 0;
+	while( i == 0 ) {
+		sendAMessage(height);
+	}
 }
