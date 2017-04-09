@@ -155,11 +155,9 @@ void moveForward(short power, float distance)
 	float radiusWheel = WHEEL_RADIUS;
 	float angleRad = distance / radiusWheel;
 
-	writeDebugStreamLine("%f", angleRad);
-
 	float angleDegrees = angleRad * (180.0/PI);
 
-	writeDebugStreamLine("%f", angleDegrees);
+	writeDebugStreamLine("%f", -angleDegrees);
 
 	nMotorEncoder[motorA] = 0;
 	nMotorEncoder[motorB] = 0;
@@ -167,12 +165,13 @@ void moveForward(short power, float distance)
 	nMotorEncoderTarget[motorA] = -angleDegrees;
 	nMotorEncoderTarget[motorB] = -angleDegrees;
 
-	motor[motorA] = -power;
-	motor[motorB] = -power;
+	motorRampUp(power);
+
+	displayCenteredTextLine(3, "Searching for end angle");
 
 	writeDebugStreamLine("%f", nMotorEncoder[motorA]);
 
-	while (nMotorRunState[motorA] != runStateIdle) {
+	while (nMotorEncoder[motorB] > -angleDegrees ) {
 		//Idle loop. Program waits until target value is reached.
 		writeDebugStreamLine("%f", nMotorEncoder[motorA]);
   }

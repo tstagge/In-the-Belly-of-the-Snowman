@@ -17,28 +17,53 @@ void closeGate(int power);
 //Drop Antennae Container -- function that will be called by Driver
 void dropAC()
 {
-		int depPower = DEP_MOTOR_POWER; //global variable defined in Driver.c
-		openGate(depPower);
+		int depPowerOpen = DEP_MOTOR_POWER_OPEN; //global variable defined in Driver.c
+		int depPowerClose = DEP_MOTOR_POWER_CLOSE;
+		openGate(depPowerOpen);
 		sleep(300);
-		closeGate(depPower);
+		//moveForward(5, 50);
+		closeGate(depPowerClose);
 }
 
-void openGate(int power)
-{
+//Linear Gate methods
+void openGate(int power) {
 	nMotorEncoder[motorC] = 0;
-	nMotorEncoderTarget[motorC] = (360);
+	nMotorEncoderTarget[motorC] = 320; //Needs testing
+	motor[motorC] = power;
+	while (nMotorRunState[motorC] != runStateIdle) {
+		//Idle loop. Program waits until target value is reached.
+  }
+  fullStop();
+}
+
+void closeGate(int power) {
+	nMotorEncoder[motorC] = 0;
+	nMotorEncoderTarget[motorC] = -280; //Needs testing
 	motor[motorC] = -power;
 	while (nMotorRunState[motorC] != runStateIdle) {
 		//Idle loop. Program waits until target value is reached.
   }
   fullStop();
-
 }
 
-void closeGate(int power)
-{
-	motor[motorC] = power;
-	while(SensorValue(S2) == 0) { //(IDLE) while the Touch Sensor is inactive
-  }
-  fullStop();
-}
+//Rotational Gate Methods
+
+//void openGate(int power)
+//{
+//	nMotorEncoder[motorC] = 0;
+//	nMotorEncoderTarget[motorC] = (360);
+//	motor[motorC] = -power;
+//	while (nMotorRunState[motorC] != runStateIdle) {
+//		//Idle loop. Program waits until target value is reached.
+//  }
+//  fullStop();
+
+//}
+
+//void closeGate(int power)
+//{
+//	motor[motorC] = power;
+//	while(SensorValue(S2) == 0) { //(IDLE) while the Touch Sensor is inactive
+//  }
+//  fullStop();
+//}

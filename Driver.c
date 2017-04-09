@@ -22,7 +22,8 @@
 
 //Defined powers and threshholds
 #define BASE_MOTOR_POWER 40
-#define DEP_MOTOR_POWER 50 //Power used for deposition system
+#define DEP_MOTOR_POWER_OPEN 50 //Power used to open deposition system
+#define DEP_MOTOR_POWER_CLOSE 60 //Power used to close the deposition system
 #define HALL_EFFECT_THRESH_1 3 //We're going to need to compare to the actual beacon magnets
 #define HALL_EFFECT_THRESH_2 15
 #define HALL_EFFECT_THRESH_3 40
@@ -91,12 +92,13 @@ task main()
 
 	//------TEST  CODE------/
 
-	float distance = 243.84; //cm
-	moveForwardTest(distance);
+	//float distance = 50; //cm
+	//moveForwardTest(distance);
 
 	//bluetoothTest(HEIGHT_OF_MARKER);
 
-
+	//closeGate(60);
+	dropAC();
 
 	//pocTask5Path(BASE_POW);
 	//bool fuckThis = beaconSweep(-BASE_POW, HALL_BASE, 90);
