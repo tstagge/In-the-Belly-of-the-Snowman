@@ -11,6 +11,11 @@ float rad2Deg(float rad);
 
 //BASIC CALCULATIONS
 float getArcLength(float angleDeg, float wheelRadiusCM);
+float calcTrap(float b,float h);
+
+//OTHER
+void motorRampUp(short powerTarget); //Wasn't quite the intent of this file, but alright with me
+void motorTurnRampUp(short powerTarget);
 
 /*----------------------------FUNCTION DEFINITIONS----------------------------*/
 float deg2Rad(float deg)
@@ -26,6 +31,11 @@ float rad2Deg(float rad)
 float getArcLength(int angleDeg, float radiusCM)
 {
 	return deg2Rad(angleDeg) * radiusCM;
+}
+
+float calcTrap(float b,float h)
+{
+	return ( 0.5 * b * h);
 }
 
 void motorRampUp(short powerTarget) {

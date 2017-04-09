@@ -16,6 +16,7 @@ void fullStop(); //Stops all motors
 void drive(short power, int timeMS);
 void driveIndef(short power);
 void pointTurn(short power, int angle);
+void gyroTurn(short power, int angle);
 void pointTurnTime(short power, int timeMS); //Positive is LEFT
 void pointTurnIndef(short power);
 void pivotTurn(short power, int timeMS); //Positive is LEFT
@@ -74,6 +75,7 @@ void pointTurn(short power, int angle)
   halt();
 }
 
+//IN: Positive power ==> Left
 void pointTurnTime(short power, int timeMS)
 {
 	motor[motorA] = -power;
@@ -99,6 +101,7 @@ void pivotTurn(short power, int timeMS)
 }
 
 //IN: Average Power, radius of desired arc, angle of turn (int)
+// Sign of power indicates forward/backward; sign of angle indicates direction of turn (Positive ==> Left)
 void arcTurn(short power, float turnRadius, int turnAngle)
 {
 	float pointTurnRadius = TURN_RADIUS;

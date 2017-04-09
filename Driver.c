@@ -14,8 +14,10 @@
 #pragma config(Motor,  motorA,          motorLeft,     tmotorNXT, PIDControl, encoder)
 #pragma config(Motor,  motorB,          motorRight,    tmotorNXT, PIDControl, encoder)
 #pragma config(Motor,  motorC,          motorDep,      tmotorNXT, PIDControl, encoder)
+#pragma config(Sensor, S1,     gyroSensor,           sensorI2CHiTechnicGyro)
 #pragma config(Sensor, S2,              touchSensor,   sensorTouch)
 #pragma config(Sensor, S3,     hallEffect,     sensorAnalog)
+//#pragma config(Sensor, S1,     gyroSensor,           sensorDigitalIn)
 
 //Mathematical Constants
 #define PI (4 * atan(1))
@@ -48,6 +50,7 @@ typedef struct MapVector_struct{
 	float magnitude;
 }MapVector;
 
+//File Imports
 #include "Utility.c"
 #include "Sensors.c"
 #include "BasicMovement.c"
@@ -63,6 +66,7 @@ void runPointTurnTest(int angle); //, float radiusW, float radiusT);
 void moveForwardTest(float distance);
 void hallEffectTest(int base);
 void bluetoothTest(int height);
+void readGyro(int base);
 //PROOF-OF-COMPETENCY TASKS
 void pocTask1(short power);
 void pocTask2();
@@ -85,8 +89,14 @@ task main()
 	clearDebugStream();
 
 	//-----CALIBRATIONS/CONSTANTS-----/
+	//halt();
+	sleep(50);
 	int HALL_BASE = calibrateHallEffect();
+	int GYRO_BASE = calibrateGyro()
+	sleep(50);
+	//GYRO g;
 	short BASE_POW = BASE_MOTOR_POWER;
+
 	//SatelliteMap satmap;
 	//processMap(&satmap, SAT_MAP_FILENAME); //Initializes w/ fileIO
 
@@ -98,7 +108,16 @@ task main()
 	//bluetoothTest(HEIGHT_OF_MARKER);
 
 	//closeGate(60);
-	dropAC();
+	//dropAC();
+	readGyro(GYRO_BASE);
+	//gyroTurn(BASE_POW, GYRO_BASE, 90);
+	//clearTimer(T1);
+	//int i = 0;
+	//for(i = 0; i<200; i++)
+	//{
+	//	writeDebugStream("%f\n", time1[T1]);
+	//	sleep(5);
+	//}
 
 	//pocTask5Path(BASE_POW);
 	//bool fuckThis = beaconSweep(-BASE_POW, HALL_BASE, 90);
@@ -154,6 +173,16 @@ void hallEffectTest(int base)
 
 void bluetoothTest(int height) {
 	sendAMessage(height);
+}
+
+void readGyro(int base)
+{
+	int i = 0;
+	for(i = 0; i < 5000; i++)
+	{
+		writeDebugStream("%f\n", SensorValue(S1));//getGyro(base));
+		sleep(15);
+	}
 }
 
 void pocTask1(short power)

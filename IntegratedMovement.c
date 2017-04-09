@@ -8,11 +8,12 @@
 // encoder-based movement), including gyro-turns, hall-effect sweeps, and so on.
 
 /*----------------------------FUNCTION  PROTOTYPES----------------------------*/
-bool beaconSweep(int power, int hallBase, int angle);
+bool beaconSweep(short power, int hallBase, int angle);
+void gyroTurn(short power, int gyroBase, int angle);
 
 /*----------------------------FUNCTION DEFINITIONS----------------------------*/
 //IN: Positive power ==>> Left
-bool beaconSweep(int power, int hallBase, int angle)
+bool beaconSweep(short power, int hallBase, int angle)
 {
 	bool nearB = false;
 	float radiusWheel = WHEEL_RADIUS;
@@ -38,4 +39,47 @@ bool beaconSweep(int power, int hallBase, int angle)
   	writeDebugStream("Found, motherfucker\n");
 	}
  	return nearB;
+}
+
+//IN: Power(Positive ==> Left), gyro calibration base value, angle(magnitude)
+//void gyroTurn(short power, int gyroBase, int angle)
+//{
+//	float radiusWheel = WHEEL_RADIUS;
+//	float radiusBot = TURN_RADIUS;
+//	float angleTurned = 0;
+//	float lastTime = 0;
+//	float currentTime = 0;
+
+//	motor[motorA] = -(power/2);
+//	motor[motorB] = (power/2);
+
+//	clearTimer(T1);
+//	lastTime = time1[T1];
+//	while(abs(angleTurned - angle) > 3) //3 is tolerance
+//	{
+//		currentTime = time1[T1]
+//		angleTurned += calcTrap( (currentTime - lastTime), getGyro(gyroBase) );
+//		writeDebugStream("dT = %f\tGyro = %f\tAngleTurned = %f\n", (currentTime - lastTime), getGyro(gyroBase), angleTurned);
+//		lastTime = currentTime;
+//	}
+//	halt();
+//}
+
+void gyroTurn(short power, int gyroBase, int angle)
+{
+	float radiusWheel = WHEEL_RADIUS;
+	float radiusBot = TURN_RADIUS;
+	float angleTurned = 0;
+
+	motor[motorA] = -(power/2);
+	motor[motorB] = (power/2);
+
+	while((abs(angle) - abs(angleTurned)) > 3) //3 is tolerance
+	{
+		sleep(2);
+		angleTurned = angleTurned + calcTrap(0.002, getGyro(gyroBase));
+		//angleTurned = angleTurned + ((0.5)*
+		writeDebugStream("dT = %f\tGyro = %f\tAngleTurned = %f\n", 2, getGyro(gyroBase), angleTurned);
+	}
+	halt();
 }

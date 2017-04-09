@@ -13,6 +13,8 @@ int getHallEffect(int base);
 bool nearBeacon(int base);
 bool atBeacon(int base);
 
+int calibrateGyro();
+int getGyro(int base);
 /*----------------------------FUNCTION DEFINITIONS----------------------------*/
 int calibrateHallEffect()
 {
@@ -34,4 +36,16 @@ bool atBeacon(int base)
 {
 	int thresh3 = HALL_EFFECT_THRESH_3;
 	return (getHallEffect(base) >= thresh3);
+}
+
+int calibrateGyro()
+{
+	return SensorValue(S1);
+}
+
+int getGyro(int base)
+{
+	//Note: for raw gyro readings, positive is right, negative is left
+	//      Thus they are being flipped to be consistent with the standard that positive is left
+	return -(SensorValue(S1) - base);
 }
