@@ -28,7 +28,7 @@ void dropAC()
 //Linear Gate methods
 void openGate(int power) {
 	nMotorEncoder[motorC] = 0;
-	nMotorEncoderTarget[motorC] = 320; //Needs testing
+	nMotorEncoderTarget[motorC] = 280;//320; //Needs testing
 	motor[motorC] = power;
 	while (nMotorRunState[motorC] != runStateIdle) {
 		//Idle loop. Program waits until target value is reached.
