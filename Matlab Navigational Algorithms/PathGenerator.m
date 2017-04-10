@@ -43,7 +43,7 @@ f13 = 'stepMat'; v13 = [[];[]]; %1st row is x movements; 2nd row is y movements
 f14 = 'vectorList'; v14 = [];
 pathTemplate = struct(f13,v13,f14,v14);
 
-% Binary Matrix Struct
+% Binary Matrix Struct -- I should really add this to the Path Struct
 f12 = 'binMat'; v12 = [];
 binaryMatrixTemplate = struct(f12,v12);
 
@@ -104,12 +104,13 @@ beaconLocations(minDistI).priority = prior; %This is going to take a lot of work
 
 %% PATH GENERATION (Version 1: all 90 degree turns)
 
-currentStart = startLocation; %These will eventually be in loops
+currentLoc = startLocation; %These will eventually be in loops
 currentDest = beaconLocations(minDistI);
 numBlocks = 3;
 
 unitPermutations = getBinaryMatrix(numBlocks, binaryMatrixTemplate);
 stepPermutations = binary2stepMatrix(unitPermutations, pathTemplate);
+pathPermutations = step2vectorMatrix(currentLoc, currentDest, stepPermutations, vectorTemplate);
 
 %Score every path
 %Find lowest score

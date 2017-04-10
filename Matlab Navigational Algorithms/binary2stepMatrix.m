@@ -1,3 +1,9 @@
+% IN:
+%    -unitPerms = list of Binary Matrix Structs
+%    -pathTemp = template for Path Struct
+% OUT:
+%    -paths = list of Path Structs
+
 function paths = binary2pathMatrix(unitPerms, pathTemp)
     numPerms = length(unitPerms); %Total number of unit permutation matrices (same as number of path matrices)
     numCells = length(unitPerms(1).binMat);
