@@ -23,7 +23,7 @@ function centers = locateBeacons(map, size, tolCont, bcnTemp)
         end
     end
     num40s = length(all40s);
-    fprintf('Num 40s: %d\n', num40s);
+    %fprintf('Num 40s: %d\n', num40s);
     
     %----FIND ALL CONTIGUOUS BLOCKS----------------------------------------
     contiguousGroups = [all40s(1)];

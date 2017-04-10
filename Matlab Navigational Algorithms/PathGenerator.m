@@ -109,7 +109,7 @@ currentDest = beaconLocations(minDistI);
 numBlocks = 3;
 
 unitPermutations = getBinaryMatrix(numBlocks, binaryMatrixTemplate);
-pathPermutations = binary2pathMatrix(unitPermutations, pathTemplate);
+%pathPermutations = binary2pathMatrix(unitPermutations, pathTemplate);
 
 %Score every path
 %Find lowest score
