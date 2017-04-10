@@ -18,7 +18,7 @@ MAP_FILENAME = 'satmap1.txt';
 
 %% STRUCT TEMPLATES
 
-% Robot Position Structs
+% Robot Position Struct
 f1 = 'x'; v1 = 0;
 f2 = 'y'; v2 = 0;
 f3 = 'theta'; v3 = 0;
@@ -29,7 +29,7 @@ f4 = 'priority'; v4 = 0;
 f11 = 'distance'; v11 = 0;
 beaconTemplate = struct(f1,v1,f2,v2,f4,v4,f11,v11);
 
-% Vector Stucts
+% Vector Struct
 f5 = 'x0'; v5 = 0;
 f6 = 'x1'; v6 = 0;
 f7 = 'y0'; v7 = 0;
@@ -37,6 +37,15 @@ f8 = 'y1'; v8 = 0;
 f9 = 'magnitude'; v9 = 0;
 f10 = 'angle'; v10 = 0;
 vectorTemplate = struct(f5,v5,f6,v6,f7,v7,f8,v8,f9,v9,f10,v10);
+
+% Path Struct
+f13 = 'pathMat'; v13 = [];
+f14 = 'vectorList'; v14 = [];
+pathTemplate = struct(f13,v13,f14,v14);
+
+% Binary Matrix Struct
+f12 = 'binMat'; v12 = [];
+binaryMatrixTemplate = struct(f12,v12);
 
 %% INPUTS
 
@@ -97,6 +106,14 @@ beaconLocations(minDistI).priority = prior; %This is going to take a lot of work
 
 currentStart = startLocation; %These will eventually be in loops
 currentDest = beaconLocations(minDistI);
+numBlocks = 3;
+
+unitPermutations = getBinaryMatrix(numBlocks, binaryMatrixTemplate);
+pathPermutations = binary2pathMatrix(unitPermutations, pathTemplate);
+
+%Score every path
+%Find lowest score
+%Convert to proper vectors and/or a series of movements and turns
 
 %% PLOTTING
 
