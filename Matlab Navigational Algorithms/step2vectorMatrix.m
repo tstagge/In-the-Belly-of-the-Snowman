@@ -11,6 +11,7 @@
 
 function paths = step2vectorMatrix(currLoc, currDest, n, stepPerms, ptTemp, vecTemp)
     paths = stepPerms;
+    numPaths = length(paths);
     
     deltaXtot = currDest.x - currLoc.x;
     deltaYtot = currDest.y - currLoc.y;
@@ -34,13 +35,13 @@ function paths = step2vectorMatrix(currLoc, currDest, n, stepPerms, ptTemp, vecT
         for iNy = 1:(n+1)
             if(iNx <= n)
                 nodes(iNx,iNy).x = currLoc.x + (deltaXn * (iNx-1));
-            else(iNx > n)
+            elseif(iNx > n)
                 nodes(iNx,iNy).x = currDest.x;
             end
             
             if(iNy <= n)
                 nodes(iNx,iNy).y = currLoc.y + (deltaYn * (iNy-1));
-            else(iNy > n)
+            elseif(iNy > n)
                 nodes(iNx,iNy).y = currDest.y;
             end
         end
@@ -49,4 +50,29 @@ function paths = step2vectorMatrix(currLoc, currDest, n, stepPerms, ptTemp, vecT
     % PLOT NODES
     plotNodes(nodes);
     
+    % CONVERT STEPMAT's TO VECTORLIST
+    for p = 2:2%1:numPaths
+        sizeStepMat = size(paths(p).stepMat); %2 by c matrix
+        numSteps = sizeStepMat(2); % c
+        currXloc = 1; %In terms of the indeces of the nodes matrix
+        currYloc = 1;
+        for s = 1:numSteps
+            currStepVec = struct(vecTemp);
+            currXstep = paths(p).stepMat(1,s);
+            currYstep = paths(p).stepMat(2,s);
+            %fprintf('currYstep = %d\n', currYstep);
+            
+            currStepVec.x0 = nodes(currXloc,currYloc).x;
+            currStepVec.x1 = nodes(currXloc + currXstep, currYloc + currYstep).x;
+            currStepVec.y0 = nodes(currXloc, currYloc).y;
+            currStepVec.y1 = nodes(currYloc + currYstep, currYloc + currYstep).y;
+            %fprintf('y0 = %d\ty1=%d\n', currStepVec.y0, currStepVec.y1);
+            
+            currXloc = currXloc + currXstep; %Update current location
+            currYloc = currYloc + currYstep;
+            
+            paths(p).vectorList = [paths(p).vectorList, currStepVec]; %Add step vector
+            plotVector(currStepVec,'k');
+        end
+    end
 end

@@ -106,7 +106,7 @@ beaconLocations(minDistI).priority = prior; %This is going to take a lot of work
 %% PATH GENERATION (Version 1: all 90 degree turns)
 
 currentLoc = startLocation; %These will eventually be in loops
-currentDest = beaconLocations(minDistI);
+currentDest = beaconLocations(1);
 numBlocks = NODE_GRID_BLOCK_NUM; %Currently 3
 
 %Note: unitPermutations, stepPermutations, and pathPermutations are all
@@ -129,7 +129,7 @@ axis equal;
 axis([0, mapRawSize(2), -mapRawSize(1), 0]);
 title(['Path Generation of: ', mapFileName]);
 
-drawBorder(mapRawSize);
+plotBorder(mapRawSize);
 plot(startLocation.x, -startLocation.y, 'b*');
 plot(beaconPlotX, beaconPlotY, 'r*'); %Average beacon locations
 hold off;
