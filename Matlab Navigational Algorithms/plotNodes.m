@@ -1,4 +1,10 @@
-%Appears to somehow be printing a (0,0) somehow
+% IN:
+%   -nd = list of nodes (Point Structs)
+% VOID:
+%   -Plots all of the points as black *'s
+% NOTES:
+%   -Appears to somehow be printing a (0,0) somehow, though that does not
+%    appear to be in the list of nodes
 
 function void = plotNodes(nd)
     sizeNodes = size(nd);

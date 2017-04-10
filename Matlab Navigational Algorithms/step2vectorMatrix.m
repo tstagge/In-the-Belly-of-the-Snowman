@@ -1,13 +1,13 @@
 % IN:
 %     -currLoc = Robot Position Struct
 %     -currDest = Beacon Location Struct
+%     -n = number of blocks in each of the x,y directions whose
+%          intersection will form the nodes of the paths
 %     -stepPerms = list of Path Structs w/ binMat and stepMat
 %     -ptTemp = template for a Point Struct
 %     -vecTemp = template for Vector Struct
 % OUT:
 %     -paths = list of Path Strcuts w/ binMat, stepMat, and vectorList
-% NOTES:
-%     -At the moment, somehow printing a logical?
 
 function paths = step2vectorMatrix(currLoc, currDest, n, stepPerms, ptTemp, vecTemp)
     paths = stepPerms;
@@ -17,7 +17,7 @@ function paths = step2vectorMatrix(currLoc, currDest, n, stepPerms, ptTemp, vecT
     deltaYtot = currDest.y - currLoc.y;
     deltaXn = floor(deltaXtot/n);
     deltaYn = floor(deltaYtot/n);
-    %deltaXf = n - (deltaXn * (n-1));
+    %deltaXf = n - (deltaXn * (n-1)); %Proved unnecessary
     %deltaYf = n - (deltaYn * (n-1));
     
     % MAKE EMPTY NODE ARRAY
@@ -51,7 +51,7 @@ function paths = step2vectorMatrix(currLoc, currDest, n, stepPerms, ptTemp, vecT
     plotNodes(nodes);
     
     % CONVERT STEPMAT's TO VECTORLIST
-    for p = 2:2%1:numPaths
+    for p = 1:numPaths
         sizeStepMat = size(paths(p).stepMat); %2 by c matrix
         numSteps = sizeStepMat(2); % c
         currXloc = 1; %In terms of the indeces of the nodes matrix

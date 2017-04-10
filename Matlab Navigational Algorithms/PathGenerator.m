@@ -3,13 +3,17 @@
 
 %% CLEAR COMMANDS et al.
 clc; clear;
-hold on;
+hold on; hold on;
 
 %% CONSTANTS
+NODE_GRID_BLOCK_NUM = 4;
 TOL_CONTIGUITY = 5;
-ROBOT_WIDTH = 15; %ish [cm]; wheel separation is 14.5cm
-ROBOT_LENGTH = 25; %ish [cm]
-NODE_GRID_BLOCK_NUM = 3;
+ROBOT_SIZE = [25, 15]; % [length,width] (cm); wheel separation is 14.5cm
+SCORE_MATRIX = [-1, 0;
+                0, 0;
+                1, 0;
+                2, 0;
+                40, 0];
 
 % Will-be-inputs
 START_LOC_X = 30;
@@ -40,13 +44,16 @@ f7 = 'y0'; v7 = 0;
 f8 = 'y1'; v8 = 0;
 f9 = 'magnitude'; v9 = 0;
 f10 = 'angle'; v10 = 0;
-vectorTemplate = struct(f5,v5,f6,v6,f7,v7,f8,v8,f9,v9,f10,v10);
+f16 = 'slope'; v16 = 0;
+vectorTemplate = struct(f5,v5,f6,v6,f7,v7,f8,v8,f9,v9,f10,v10,f16,v16);
 
 % Path Struct
 f12 = 'binMat'; v12 = []; %Was once its own struct
 f13 = 'stepMat'; v13 = [[];[]]; %1st row is x movements; 2nd row is y movements
 f14 = 'vectorList'; v14 = [];
-pathTemplate = struct(f12,v12,f13,v13,f14,v14);
+f17 = 'numTurns'; v17 = 0;
+f15 = 'score'; v15 = 0;
+pathTemplate = struct(f12,v12,f13,v13,f14,v14,f17,v17,f15,v15);
 
 %% INPUTS
 
@@ -106,7 +113,7 @@ beaconLocations(minDistI).priority = prior; %This is going to take a lot of work
 %% PATH GENERATION (Version 1: all 90 degree turns)
 
 currentLoc = startLocation; %These will eventually be in loops
-currentDest = beaconLocations(1);
+currentDest = beaconLocations(1); %(minDistI)
 numBlocks = NODE_GRID_BLOCK_NUM; %Currently 3
 
 %Note: unitPermutations, stepPermutations, and pathPermutations are all
@@ -115,8 +122,8 @@ numBlocks = NODE_GRID_BLOCK_NUM; %Currently 3
 unitPermutations = getBinaryMatrix(numBlocks, pathTemplate);
 stepPermutations = binary2stepMatrix(unitPermutations, pathTemplate);
 pathPermutations = step2vectorMatrix(currentLoc, currentDest, numBlocks, stepPermutations, pointTemplate, vectorTemplate);
+%scoredPathPermutations = scorePaths(mapProcessed, SCORE_MATRIX, pathPermutations);
 
-%Score every path
 %Find lowest score
 %Convert to proper vectors and/or a series of movements and turns
 
@@ -132,5 +139,5 @@ title(['Path Generation of: ', mapFileName]);
 plotBorder(mapRawSize);
 plot(startLocation.x, -startLocation.y, 'b*');
 plot(beaconPlotX, beaconPlotY, 'r*'); %Average beacon locations
-hold off;
+hold off; hold off;
 

@@ -1,3 +1,8 @@
+% IN:
+%   -size = size of map in terms of [numRows, numCols]
+% VOID:
+%   -Plots the lines that make up the border of the mapped region
+
 function void = drawBorder(size)
     x = [0,size(2)];
     y = [0,-size(1)];

@@ -1,5 +1,6 @@
 %IN: 
 %  -n = number of 'blocks' (number of nodes - 1) in a single direction
+%  -pathTemp = template for a Path Struct
 %OUT: 
 %  -validPerms: list of Path Structs where binMat = every permutation of 
 %               a 2 by 2n binary matrix

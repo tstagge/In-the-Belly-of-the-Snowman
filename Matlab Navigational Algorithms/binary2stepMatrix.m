@@ -22,6 +22,7 @@ function paths = binary2stepMatrix(unitPerms, pathTemp)
             i = i + 1;
         end
         %fprintf('NumSwitch in unitPerm %d: %d\n',p,numSwitch);
+        paths(p).numTurns = numSwitch;
         paths(p).stepMat = zeros(2,numSwitch+1);
         
         %Sum and assign values to pathMat
