@@ -39,13 +39,13 @@ f10 = 'angle'; v10 = 0;
 vectorTemplate = struct(f5,v5,f6,v6,f7,v7,f8,v8,f9,v9,f10,v10);
 
 % Path Struct
+f12 = 'binMat'; v12 = [];
 f13 = 'stepMat'; v13 = [[];[]]; %1st row is x movements; 2nd row is y movements
 f14 = 'vectorList'; v14 = [];
-pathTemplate = struct(f13,v13,f14,v14);
+pathTemplate = struct(f12,v12,f13,v13,f14,v14);
 
 % Binary Matrix Struct -- I should really add this to the Path Struct
-f12 = 'binMat'; v12 = [];
-binaryMatrixTemplate = struct(f12,v12);
+%binaryMatrixTemplate = struct(f12,v12);
 
 %% INPUTS
 
@@ -108,9 +108,9 @@ currentLoc = startLocation; %These will eventually be in loops
 currentDest = beaconLocations(minDistI);
 numBlocks = 3;
 
-unitPermutations = getBinaryMatrix(numBlocks, binaryMatrixTemplate);
+unitPermutations = getBinaryMatrix(numBlocks, pathTemplate);
 stepPermutations = binary2stepMatrix(unitPermutations, pathTemplate);
-pathPermutations = step2vectorMatrix(currentLoc, currentDest, stepPermutations, vectorTemplate);
+%pathPermutations = step2vectorMatrix(currentLoc, currentDest, stepPermutations, vectorTemplate);
 
 %Score every path
 %Find lowest score

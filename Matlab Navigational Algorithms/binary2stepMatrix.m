@@ -10,6 +10,7 @@ function paths = binary2pathMatrix(unitPerms, pathTemp)
     paths = [];
     for p = 1:numPerms
         paths = [paths, struct(pathTemp)];
+        paths(p).binMat = unitPerms(p).binMat;
         
         %Figure out needed size of pathMat array
         i = 2;
