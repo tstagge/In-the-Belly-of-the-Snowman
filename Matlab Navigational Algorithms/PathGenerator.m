@@ -39,7 +39,7 @@ f10 = 'angle'; v10 = 0;
 vectorTemplate = struct(f5,v5,f6,v6,f7,v7,f8,v8,f9,v9,f10,v10);
 
 % Path Struct
-f13 = 'pathMat'; v13 = [];
+f13 = 'stepMat'; v13 = [[];[]]; %1st row is x movements; 2nd row is y movements
 f14 = 'vectorList'; v14 = [];
 pathTemplate = struct(f13,v13,f14,v14);
 
@@ -109,7 +109,7 @@ currentDest = beaconLocations(minDistI);
 numBlocks = 3;
 
 unitPermutations = getBinaryMatrix(numBlocks, binaryMatrixTemplate);
-%pathPermutations = binary2pathMatrix(unitPermutations, pathTemplate);
+stepPermutations = binary2stepMatrix(unitPermutations, pathTemplate);
 
 %Score every path
 %Find lowest score
