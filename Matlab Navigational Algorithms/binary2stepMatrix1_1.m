@@ -4,13 +4,14 @@
 % OUT:
 %    -paths = list of Path Structs w/ binMat and stepMat
 
-function paths = binary2stepMatrix(unitPerms, pathTemp)
+function paths = binary2stepMatrix1_1(unitPerms, pathTemp)
+    paths = unitPerms;
     numPerms = length(unitPerms); %Total number of unit permutation matrices (same as number of path matrices)
     numCells = length(unitPerms(1).binMat);
     paths = [];
     for p = 1:numPerms
-        paths = [paths, struct(pathTemp)];
-        paths(p).binMat = unitPerms(p).binMat;
+        %paths = [paths, struct(pathTemp)];
+        %paths(p).binMat = unitPerms(p).binMat;
         
         %Figure out needed size of pathMat array
         i = 2;

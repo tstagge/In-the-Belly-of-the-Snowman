@@ -1,14 +1,15 @@
 % ENGR 142 Project 3
 % Team 57
 
-%% CLEAR COMMANDS
+%% CLEAR COMMANDS et al.
 clc; clear;
+hold on;
 
 %% CONSTANTS
 TOL_CONTIGUITY = 5;
 ROBOT_WIDTH = 15; %ish [cm]; wheel separation is 14.5cm
 ROBOT_LENGTH = 25; %ish [cm]
-NODE_GRID_BLOCK_SIZE = 5; %[cm]
+NODE_GRID_BLOCK_NUM = 3;
 
 % Will-be-inputs
 START_LOC_X = 30;
@@ -23,6 +24,9 @@ f1 = 'x'; v1 = 0;
 f2 = 'y'; v2 = 0;
 f3 = 'theta'; v3 = 0;
 positionTemplate = struct(f1,v1,f2,v2,f3,v3);
+
+% Simple Coordinate Point Struct
+pointTemplate = struct(f1,v1,f2,v2);
 
 % Beacon Location Struct
 f4 = 'priority'; v4 = 0;
@@ -39,13 +43,10 @@ f10 = 'angle'; v10 = 0;
 vectorTemplate = struct(f5,v5,f6,v6,f7,v7,f8,v8,f9,v9,f10,v10);
 
 % Path Struct
-f12 = 'binMat'; v12 = [];
+f12 = 'binMat'; v12 = []; %Was once its own struct
 f13 = 'stepMat'; v13 = [[];[]]; %1st row is x movements; 2nd row is y movements
 f14 = 'vectorList'; v14 = [];
 pathTemplate = struct(f12,v12,f13,v13,f14,v14);
-
-% Binary Matrix Struct -- I should really add this to the Path Struct
-%binaryMatrixTemplate = struct(f12,v12);
 
 %% INPUTS
 
@@ -106,11 +107,14 @@ beaconLocations(minDistI).priority = prior; %This is going to take a lot of work
 
 currentLoc = startLocation; %These will eventually be in loops
 currentDest = beaconLocations(minDistI);
-numBlocks = 3;
+numBlocks = NODE_GRID_BLOCK_NUM; %Currently 3
 
+%Note: unitPermutations, stepPermutations, and pathPermutations are all
+% currently lists of Path Structs, each with the content of the previous,
+% plus a bit more
 unitPermutations = getBinaryMatrix(numBlocks, pathTemplate);
 stepPermutations = binary2stepMatrix(unitPermutations, pathTemplate);
-%pathPermutations = step2vectorMatrix(currentLoc, currentDest, stepPermutations, vectorTemplate);
+pathPermutations = step2vectorMatrix(currentLoc, currentDest, numBlocks, stepPermutations, pointTemplate, vectorTemplate);
 
 %Score every path
 %Find lowest score
@@ -118,7 +122,7 @@ stepPermutations = binary2stepMatrix(unitPermutations, pathTemplate);
 
 %% PLOTTING
 
-hold on;
+%hold on at top of program
 grid on;
 grid minor;
 axis equal;
