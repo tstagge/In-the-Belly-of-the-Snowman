@@ -1,5 +1,8 @@
-% ENGR 142 Project 3
+% ENGR 142: Project 3
 % Team 57
+%   Jillian Hestle, Emily Schott, Tyler Stagge, Nicholas Vilbrandt
+
+% STATIC PATH GENERATING NAVIGATIONAL ALGORITHM [PathGenerator.m]
 
 %% CLEAR COMMANDS et al.
 clc; clear;
@@ -8,7 +11,7 @@ hold on; hold on;
 %% CONSTANTS
 NODE_GRID_BLOCK_NUM = 7;
 TOL_CONTIGUITY = 5;
-ROBOT_SIZE = [25, 15]; % [length,width] (cm); wheel separation is 14.5cm
+ROBOT_SIZE = [[7,18], 15]; % [lfront, lrear,width] (cm); wheel separation is 14.5cm
 SCORE_MATRIX = [-1, 1000000;
                 0, 1;
                 1, 10;
