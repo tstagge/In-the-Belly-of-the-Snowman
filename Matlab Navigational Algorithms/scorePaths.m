@@ -2,6 +2,9 @@
 %   - map = processed map matrix
 %   - scores = r by 2 of values expected in the map and their assosciated
 %     weights to be used when scoring
+% OUT:
+%   - sPaths = list of Path Structs w/ binMat, stepMat, vectorList, and
+%              score
 
 function sPaths = scorePaths(map, scores, paths)
     sPaths = paths;

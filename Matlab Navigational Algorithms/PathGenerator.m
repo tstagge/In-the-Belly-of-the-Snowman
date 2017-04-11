@@ -7,9 +7,10 @@
 %% CLEAR COMMANDS et al.
 clc; clear;
 hold on; hold on;
+tic;
 
 %% CONSTANTS
-NODE_GRID_BLOCK_NUM = 7;
+NODE_GRID_BLOCK_NUM = 3;
 TOL_CONTIGUITY = 5;
 ROBOT_SIZE = [[7,18], 15]; % [lfront, lrear,width] (cm); wheel separation is 14.5cm
 SCORE_MATRIX = [-1, 1000000;
@@ -126,7 +127,8 @@ numBlocks = NODE_GRID_BLOCK_NUM; %Currently 3
 unitPermutations = getBinaryMatrix(numBlocks, pathTemplate);
 stepPermutations = binary2stepMatrix(unitPermutations, pathTemplate);
 pathPermutations = step2vectorMatrix(currentLoc, currentDest, numBlocks, stepPermutations, pointTemplate, vectorTemplate);
-scoredPathPermutations = scorePaths(mapProcessed, SCORE_MATRIX, pathPermutations);
+%scoredPathPermutations = scorePaths(mapProcessed, SCORE_MATRIX, pathPermutations);
+scoredPathPermutations = scorePaths2(mapProcessed, SCORE_MATRIX, ROBOT_SIZE, pathPermutations);
 optPath = findOptPath(scoredPathPermutations);
 plotPath(optPath);
 
@@ -146,4 +148,10 @@ plotBorder(mapRawSize);
 plot(startLocation.x, -startLocation.y, 'b*');
 plot(beaconPlotX, beaconPlotY, 'r*'); %Average beacon locations
 hold off; hold off;
+
+%% REPORT
+fprintf('Blocks (n) = %d\n', numBlocks);
+fprintf('Paths calculated = %d\n', length(pathPermutations));
+fprintf('Lowest path score = %d\n', optPath.score);
+fprintf('Runtime (s) = %f\n', toc);
 
