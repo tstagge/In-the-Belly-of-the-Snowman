@@ -27,6 +27,7 @@ bool beaconSweep(int power, int hallBase, int angle)
 	while ((nMotorRunState[motorA] != runStateIdle)) {
 		//Idle loop. Program waits until target value is reached.
 		writeDebugStream("Waiting\n");
+		writeDebugStream("%d\n", getHallEffect(hallBase));
 		if(nearBeacon(hallBase) == true)
 			break;
   }

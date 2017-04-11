@@ -3,11 +3,11 @@
 
 int main(void) {
   int goal_x, goal_y;
-  int x_size = 10;
-  int y_size = 19;
+  int x_size = 9;
+  int y_size = 18;
   bool foundWave;
   int currentWave = 2; //Looking for goal first
-  int map[10][19] = {{0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0},
+  int map[9][18] = { {0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0},
                      {0,0,0,0,0,0,0,0,1,1,1,1,0,2,0,0,0,0},
                      {0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0},
                      {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},

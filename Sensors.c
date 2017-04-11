@@ -21,7 +21,7 @@ int calibrateHallEffect()
 
 int getHallEffect(int base)
 {
-	return -(SensorValue(S3) - base);
+	return abs(SensorValue(S3) - base);
 }
 
 bool nearBeacon(int base)
@@ -33,5 +33,5 @@ bool nearBeacon(int base)
 bool atBeacon(int base)
 {
 	int thresh3 = HALL_EFFECT_THRESH_3;
-	return (getHallEffect(base) >= thresh3);
+	return (getHallEffect(base) < thresh3);
 }

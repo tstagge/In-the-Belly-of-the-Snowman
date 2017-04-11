@@ -169,8 +169,6 @@ void moveForward(short power, float distance)
 
 	displayCenteredTextLine(3, "Searching for end angle");
 
-	writeDebugStreamLine("%f", nMotorEncoder[motorA]);
-
 	while (nMotorEncoder[motorB] > -angleDegrees ) {
 		//Idle loop. Program waits until target value is reached.
 		writeDebugStreamLine("%f", nMotorEncoder[motorA]);

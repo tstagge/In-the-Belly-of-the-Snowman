@@ -40,9 +40,9 @@ void task2(int height) {
 			sleep(250);
 		}
 
-		int error = messageParm[0];
-		int x = messageParm[1];
-		int y = messageParm[2];
+		error = messageParm[0];
+		x = messageParm[1];
+		y = messageParm[2];
 	}
 
 	int startX = x;
@@ -68,9 +68,9 @@ void task2(int height) {
 		sleep(250);
 	}
 
-	int error = messageParm[0];
-	int x = messageParm[1];
-	int y = messageParm[2];
+	error = messageParm[0];
+	x = messageParm[1];
+	y = messageParm[2];
 
 	while(error > 4) {
 		sleep(5000);
@@ -87,9 +87,9 @@ void task2(int height) {
 			sleep(250);
 		}
 
-		int error = messageParm[0];
-		int x = messageParm[1];
-		int y = messageParm[2];
+		error = messageParm[0];
+		x = messageParm[1];
+		y = messageParm[2];
 	}
 
 	moveForward((135 - (x * 10)), 100);
@@ -108,9 +108,9 @@ void task2(int height) {
 		sleep(250);
 	}
 
-	int error = messageParm[0];
-	int x = messageParm[1];
-	int y = messageParm[2];
+	error = messageParm[0];
+	x = messageParm[1];
+	y = messageParm[2];
 
 	while(error > 4) {
 		sleep(5000);
@@ -127,9 +127,9 @@ void task2(int height) {
 			sleep(250);
 		}
 
-		int error = messageParm[0];
-		int x = messageParm[1];
-		int y = messageParm[2];
+		error = messageParm[0];
+		x = messageParm[1];
+		y = messageParm[2];
 	}
 
 	if ((x*10) > 135) {
@@ -156,9 +156,9 @@ void task2(int height) {
 		sleep(250);
 	}
 
-	int error = messageParm[0];
-	int x = messageParm[1];
-	int y = messageParm[2];
+	error = messageParm[0];
+	x = messageParm[1];
+	y = messageParm[2];
 
 	while(error > 4) {
 		sleep(5000);
@@ -209,9 +209,9 @@ void task2(int height) {
 		sleep(250);
 	}
 
-	int error = messageParm[0];
-	int x = messageParm[1];
-	int y = messageParm[2];
+	error = messageParm[0];
+	x = messageParm[1];
+	y = messageParm[2];
 
 	while(error > 4) {
 		sleep(5000);
@@ -302,24 +302,27 @@ void task2(int height) {
 
 void POC2(int height) {
 	//Store our Robots Current Position
-	int robot_x, robot_y;
-	int x;
-	int y;
-	int startX;
-	int startY;
-	int error;
+	short robot_x, robot_y;
+	short x;
+	short y;
+	short startX;
+	short startY;
+	short error;
 
-	int map[10][19] = {
-		{20,19,18,17,16,15,14,13,1,1,1,1,4,3,4,5,6,7,8}
-		{19,18,17,16,15,14,13,12,1,1,1,1,3,2,3,4,5,6,7}
-		{18,17,16,15,14,13,12,11,1,1,1,1,4,3,4,5,6,7,8}
-		{17,16,15,14,13,12,11,10,9,8,7,6,5,4,5,6,7,8,9}
-		{18,17,16,15,14,13,12,11,10,9,8,7,6,5,6,7,8,9,10}
-		{19,18,17,16,15,14,13,12,11,10,9,8,7,6,7,8,9,10,11}
-		{20,19,18,17,16,15,14,13,12,11,10,9,8,7,8,9,10,11,12}
-		{21,20,19,18,17,16,15,14,13,12,11,10,9,8,9,10,11,12,13}
-		{22,21,20,19,18,17,16,15,14,13,12,11,10,9,10,11,12,13,14}
-		{23,22,21,20,19,18,17,16,15,14,13,12,11,10,11,12,13,14,15}};
+	short map[9][18] = {
+		{20,19,18,17,16,15,14,13,1,1,1,1,4,3,4,5,6,7},
+		{19,18,17,16,15,14,13,12,1,1,1,1,3,2,3,4,5,6},
+		{18,17,16,15,14,13,12,11,1,1,1,1,4,3,4,5,6,7},
+		{17,16,15,14,13,12,11,10,9,8,7,6,5,4,5,6,7,8},
+		{18,17,16,15,14,13,12,11,10,9,8,7,6,5,6,7,8,9},
+		{19,18,17,16,15,14,13,12,11,10,9,8,7,6,7,8,9,10},
+		{20,19,18,17,16,15,14,13,12,11,10,9,8,7,8,9,10,11},
+		{21,20,19,18,17,16,15,14,13,12,11,10,9,8,9,10,11,12},
+		{22,21,20,19,18,17,16,15,14,13,12,11,10,9,10,11,12,13},
+	};
+
+	short x_size = 18;
+	short y_size = 10;
 
 	//First - Find Goal and Target Locations
 	sendMessage(height);

@@ -24,9 +24,9 @@
 #define BASE_MOTOR_POWER 40
 #define DEP_MOTOR_POWER_OPEN 50 //Power used to open deposition system
 #define DEP_MOTOR_POWER_CLOSE 60 //Power used to close the deposition system
-#define HALL_EFFECT_THRESH_1 3 //We're going to need to compare to the actual beacon magnets
+#define HALL_EFFECT_THRESH_1 8 //We're going to need to compare to the actual beacon magnets
 #define HALL_EFFECT_THRESH_2 15
-#define HALL_EFFECT_THRESH_3 40
+#define HALL_EFFECT_THRESH_3 -5
 
 //Physical characteristics of robot
 #define WHEEL_RADIUS 4.1   //cm
@@ -55,6 +55,7 @@ typedef struct MapVector_struct{
 #include "Deposition.c"
 #include "Bluetooth.c"
 #include "SatelliteNavigation.c"
+//#include "Navigation.c"
 
 /*----------------------------FUNCTION  PROTOTYPES----------------------------*/
 //TESTS
@@ -87,13 +88,18 @@ task main()
 	//-----CALIBRATIONS/CONSTANTS-----/
 	int HALL_BASE = calibrateHallEffect();
 	short BASE_POW = BASE_MOTOR_POWER;
+	displayCenteredTextLine(3, "%d", HALL_BASE);
+	writeDebugStreamLine("HALL_BASE: %d", HALL_BASE);
 	//SatelliteMap satmap;
 	//processMap(&satmap, SAT_MAP_FILENAME); //Initializes w/ fileIO
 
 	//------TEST  CODE------/
 
 	//float distance = 50; //cm
+
 	//moveForwardTest(distance);
+
+	//runPointTurnTest(90);
 
 	//bluetoothTest(HEIGHT_OF_MARKER);
 
@@ -132,7 +138,7 @@ void runCOTTest()
 
 void runPointTurnTest(int angle)
 {
-	short power = 60;
+	short power = 40;
 	pointTurn(power, angle);
 }
 

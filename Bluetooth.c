@@ -34,16 +34,22 @@ void sendAMessage(int height) {
 
 	if (error == 1) {
 		writeDebugStreamLine("Error %d: No Error", error);
+		displayCenteredTextLine(3, "Error %d: No Error", error);
 	} else if (error == 2) {
 		writeDebugStreamLine("Error %d: Manual Override Engaged", error);
+		displayCenteredTextLine(3, "Error %d: Manual Override Engaged", error);
 	} else if (error == 4) {
 		writeDebugStreamLine("Error %d: Out of Bounds Detected", error);
+		displayCenteredTextLine(3, "Error %d: Out of Bounds Detected", error);
 	} else if (error == 8) {
 		writeDebugStreamLine("Error %d: No ALV Marker Seen", error);
+		displayCenteredTextLine(3, "Error %d: No ALV Marker Seen", error);
 	} else if (error == 16) {
 		writeDebugStreamLine("Error %d: LSTS System Error", error);
+		displayCenteredTextLine(3, "Error %d: LSTS System Error", error);
 	} else if (error == 32) {
 		writeDebugStreamLine("Error %d: Busy - Request Again Later", error);
+		displayCenteredTextLine(3, "Error %d: Busy - Request Again Later", error);
 	}
 
 	writeDebugStreamLine("Coordinates: %d, %d", x, y);
