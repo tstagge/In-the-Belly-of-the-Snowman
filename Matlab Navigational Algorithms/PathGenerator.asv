@@ -10,7 +10,7 @@ hold on; hold on;
 tic;
 
 %% CONSTANTS
-NODE_GRID_BLOCK_NUM = 5;
+NODE_GRID_BLOCK_NUM = 3;
 TOL_CONTIGUITY = 5;
 ROBOT_SIZE = [[7,18], 15]; % [lfront, lrear,width] (cm); wheel separation is 14.5cm
 SCORE_MATRIX = [-1, 1000000;
@@ -64,6 +64,7 @@ pathTemplate = struct(f12,v12,f13,v13,f14,v14,f17,v17,f15,v15);
 
 %mapFileName = input('Input name of provided satellite map file: ','s');
 mapFileName = MAP_FILENAME;
+fprintf('Input name of provided satellite map file: %s\n',mapFileName);
 
 startLocation = struct(positionTemplate);
 % startLocation.x = input('Starting location (x): ');
@@ -142,7 +143,6 @@ end
 currentLoc = startLocation; %These will eventually be in loops
 numBlocks = NODE_GRID_BLOCK_NUM; %Currently 3
 totalPathsCalculated = 0;
-optPathScores = [];
 
 for beacon = 1:numBeacons
     currentDest = beaconLocations(orderOfPriority(beacon));
@@ -156,12 +156,7 @@ for beacon = 1:numBeacons
     scoredPathPermutations = scorePaths2(mapProcessed, SCORE_MATRIX, ROBOT_SIZE, pathPermutations);
     optPath = findOptPath(scoredPathPermutations);
     plotPath(optPath);
-    
     currentLoc = beaconLocations(orderOfPriority(beacon));
-    
-    %Counters/Data Trackers
-    totalPathsCalculated = totalPathsCalculated + length(pathPermutations);
-    optPathScores = [optPathScores, optPath.score];
 end
 
 %% PLOTTING
@@ -180,8 +175,7 @@ hold off; hold off;
 
 %% REPORT
 fprintf('Blocks (n) = %d\n', numBlocks);
-fprintf('Total paths calculated = %d\n', totalPathsCalculated);
-fprintf('Paths calculated per movement = %d\n', length(pathPermutations));
-fprintf('Lowest path score = %d\n', optPathScores);
+fprintf('Paths calculated = %d\n', length(pathPermutations));
+fprintf('Lowest path score = %d\n', optPath.score);
 fprintf('Runtime (s) = %f\n', toc);
 

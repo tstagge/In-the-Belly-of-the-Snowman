@@ -24,5 +24,5 @@ function void = plotNodes(nd)
     end
     %fprintf('Final length xPlot = %d\n', length(xPlot));
     %fprintf('Final iPlot = %d\n', iPlot);
-    plot(xPlot, yPlot, 'k*');
+    plot(xPlot, yPlot, 'k.');
 end
