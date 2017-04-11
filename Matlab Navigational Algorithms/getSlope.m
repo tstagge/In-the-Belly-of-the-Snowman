@@ -5,5 +5,5 @@
 %   - m = slope of vector
 
 function m = getSlope(vec)
-    m = ( (vec.y1 - vec.y2) / (vec.x1 - vec.x0) );
+    m = ( (vec.y1 - vec.y0) / (vec.x1 - vec.x0) );
 end

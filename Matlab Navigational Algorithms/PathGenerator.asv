@@ -6,13 +6,13 @@ clc; clear;
 hold on; hold on;
 
 %% CONSTANTS
-NODE_GRID_BLOCK_NUM = 7;
+NODE_GRID_BLOCK_NUM = 4;
 TOL_CONTIGUITY = 5;
 ROBOT_SIZE = [25, 15]; % [length,width] (cm); wheel separation is 14.5cm
-SCORE_MATRIX = [-1, 1000000;
-                0, 1;
-                1, 10;
-                2, 100;
+SCORE_MATRIX = [-1, 0;
+                0, 0;
+                1, 0;
+                2, 0;
                 40, 0];
 
 % Will-be-inputs
@@ -52,7 +52,7 @@ f12 = 'binMat'; v12 = []; %Was once its own struct
 f13 = 'stepMat'; v13 = [[];[]]; %1st row is x movements; 2nd row is y movements
 f14 = 'vectorList'; v14 = [];
 f17 = 'numTurns'; v17 = 0;
-f18 = 'cellTypes'; v18 = [];
+f18 = 'cells
 f15 = 'score'; v15 = 0;
 pathTemplate = struct(f12,v12,f13,v13,f14,v14,f17,v17,f15,v15);
 
@@ -123,9 +123,7 @@ numBlocks = NODE_GRID_BLOCK_NUM; %Currently 3
 unitPermutations = getBinaryMatrix(numBlocks, pathTemplate);
 stepPermutations = binary2stepMatrix(unitPermutations, pathTemplate);
 pathPermutations = step2vectorMatrix(currentLoc, currentDest, numBlocks, stepPermutations, pointTemplate, vectorTemplate);
-scoredPathPermutations = scorePaths(mapProcessed, SCORE_MATRIX, pathPermutations);
-optPath = findOptPath(scoredPathPermutations);
-plotPath(optPath);
+%scoredPathPermutations = scorePaths(mapProcessed, SCORE_MATRIX, pathPermutations);
 
 %Find lowest score
 %Convert to proper vectors and/or a series of movements and turns

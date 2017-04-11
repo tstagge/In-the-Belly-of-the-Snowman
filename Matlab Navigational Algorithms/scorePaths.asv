@@ -21,13 +21,14 @@ function sPaths = scorePaths(map, scores, paths)
                 if(delY < 0)
                     stepIY = -1;
                 end
-                %fprintf('Vertical Vector\n');
+                fprintf('Vertical Vector\n');
                 for iY = 0:stepIY:delY
                     cell = map((sPaths(p).vectorList(v).y0 + iY), sPaths(p).vectorList(v).x0);
                     %fprintf('Cell = %d\n', cell');
                     for t = 1:numCellTypes
                         if(cell == sPaths(p).cellTypes(t,1))
                             sPaths(p).cellTypes(t,2) = sPaths(p).cellTypes(t,2) + 1;
+                            fprintf('Found similar type\n');
                         end
                     end
                 end
@@ -39,13 +40,14 @@ function sPaths = scorePaths(map, scores, paths)
                     if(delX < 0)
                         stepIX = -1;
                     end
-                    %fprintf('Horizontal Vector\n');
+                    fprintf('Horizontal Vector\n');
                     for iX = 0:stepIX:delX
                         cell = map(sPaths(p).vectorList(v).y0, (sPaths(p).vectorList(v).x0 + iX));
                         %fprintf('Cell = %d\n', cell');
                         for t = 1:numCellTypes
                             if(cell == sPaths(p).cellTypes(t,1))
                                 sPaths(p).cellTypes(t,2) = sPaths(p).cellTypes(t,2) + 1;
+                                fprintf('Found similar type\n');
                             end
                         end
                     end
@@ -55,6 +57,8 @@ function sPaths = scorePaths(map, scores, paths)
             end
         end
         %for p...
+         = 0;
+        temp = 0;
         for t = 1:numCellTypes
             sPaths(p).score = sPaths(p).score + (scores(t,2) * sPaths(p).cellTypes(t,2));
         end

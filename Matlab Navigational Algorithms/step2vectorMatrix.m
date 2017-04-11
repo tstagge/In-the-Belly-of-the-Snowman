@@ -72,7 +72,7 @@ function paths = step2vectorMatrix(currLoc, currDest, n, stepPerms, ptTemp, vecT
             currYloc = currYloc + currYstep;
             
             paths(p).vectorList = [paths(p).vectorList, currStepVec]; %Add step vector
-            plotVector(currStepVec,'k');
+            %plotVector(currStepVec,'k');
         end
     end
 end
