@@ -10,7 +10,7 @@ hold on;
 tic;
 
 %% CONSTANTS
-NODE_GRID_BLOCK_NUM = 4;
+NODE_GRID_BLOCK_NUM = 3;
 TOL_CONTIGUITY = 5;
 ROBOT_SIZE = [[7,18], 15]; % [lfront, lrear,width] (cm); wheel separation is 14.5cm
 SCORE_MATRIX = [-1, 1000000;
@@ -24,14 +24,14 @@ START_LOC_X = 30;%340;%30;%340;%30;%340;
 START_LOC_Y = 245;%30;%245;%30;%245;%30;
 START_LOC_THETA = 90; %degrees
 MAP_FILENAME = 'satmap2.txt';
-OUTPUT_FILENAME = 'satmap2_navigation2.txt';
+OUTPUT_FILENAME = 'satmap2_navigation3.txt';
 
 %% STRUCT TEMPLATES
 
 % Robot Position Struct
 f1 = 'x'; v1 = 0;
 f2 = 'y'; v2 = 0;
-f3 = 'theta'; v3 = 0;
+f3 = 'theta'; v3 = 0; %Don't think this is currently used anywhere
 positionTemplate = struct(f1,v1,f2,v2,f3,v3);
 
 % Simple Coordinate Point Struct
@@ -119,7 +119,7 @@ for b1 = 1:1:numBeacons %Identify closest to starting location
         minDist = beaconLocations(b1).distance;
         minDistI = b1;
     end
-    fprintf('MinDist = %d\n', minDist);
+    %fprintf('MinDist = %d\n', minDist);
 end
 beaconLocations(minDistI).priority = prior;
 orderOfPriority(prior) = minDistI;
@@ -174,7 +174,7 @@ for beacon = 1:numBeacons
 end
 
 %% MRD-CODE OUTPUT
-combinedOptPath = outputMRD(optPaths,outputFileName,vectorTemplate,intPathTemplate);
+combinedOptPath = outputMRD(optPaths,outputFileName,vectorTemplate,intPathTemplate,pointTemplate,mapRawSize);
 
 %% PLOTTING
 

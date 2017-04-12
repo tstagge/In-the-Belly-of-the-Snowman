@@ -1,4 +1,16 @@
-function intPath = outputMRD(oPaths,oFileName,vecTemp,intTemp)
+% IN:
+%   - oPaths = list of Path Structs representing each of the optimum paths
+%              in each "operation" generated
+%   - oFileName = name of file to which MRD-Code will be written
+%   - vecTemp = template for Vector Struct
+%   - intTemp = template for Integrated Path Struct
+%   - ptTemp = template for simple coordinate Point Struct; passed to
+%              getEndpointReal()
+%   - mapSize = size of map [numR, numCol]; passed to getEndpointReal()
+% OUT:
+%   - intPath = single Integrated Path Struct
+
+function intPath = outputMRD(oPaths,oFileName,vecTemp,intTemp,ptTemp,mapSize)
     numPaths = length(oPaths);
     intPath = struct(intTemp);
     NORTH = struct(vecTemp);
@@ -42,7 +54,9 @@ function intPath = outputMRD(oPaths,oFileName,vecTemp,intTemp)
            fprintf(oFile, 'D\n'); 
         else
             if(waitOnM == false)
-                fprintf(oFile, 'M%d\n', intPath.vectorList(iVec).magnitude);
+                fprintf(oFile, 'M%d ', intPath.vectorList(iVec).magnitude);
+                expLoc = getEndpointReal(intPath.vectorList(iVec), ptTemp, mapSize);
+                fprintf(oFile, '(%d %d)\n',expLoc.x,expLoc.y);
                 %fprintf('iVec = %d\n', iVec);
             else
                 waitOnM = false;
