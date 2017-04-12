@@ -6,11 +6,11 @@
 
 %% CLEAR COMMANDS et al.
 clc; clear;
-hold on; hold on;
+hold on;
 tic;
 
 %% CONSTANTS
-NODE_GRID_BLOCK_NUM = 5;
+NODE_GRID_BLOCK_NUM = 4;
 TOL_CONTIGUITY = 5;
 ROBOT_SIZE = [[7,18], 15]; % [lfront, lrear,width] (cm); wheel separation is 14.5cm
 SCORE_MATRIX = [-1, 1000000;
@@ -20,10 +20,11 @@ SCORE_MATRIX = [-1, 1000000;
                 40, 0];
 
 % Will-be-inputs
-START_LOC_X = 30;%340;
-START_LOC_Y = 245;%30;
+START_LOC_X = 30;%340;%30;%340;%30;%340;
+START_LOC_Y = 245;%30;%245;%30;%245;%30;
 START_LOC_THETA = 90; %degrees
-MAP_FILENAME = 'satmap1.txt';
+MAP_FILENAME = 'satmap2.txt';
+OUTPUT_FILENAME = 'satmap2_navigation2.txt';
 
 %% STRUCT TEMPLATES
 
@@ -58,12 +59,19 @@ f14 = 'vectorList'; v14 = [];
 f17 = 'numTurns'; v17 = 0;
 f18 = 'cellTypes'; v18 = [];
 f15 = 'score'; v15 = 0;
-pathTemplate = struct(f12,v12,f13,v13,f14,v14,f17,v17,f15,v15);
+f19 = 'valid'; v19 = true;
+f20 = 'turnAngles'; v20 = []; %Positive => Left, Negative => Right
+pathTemplate = struct(f12,v12,f13,v13,f14,v14,f17,v17,f15,v15,f19,v19,f20,v20);
+
+% Integrated Path Struct
+intPathTemplate = struct(f14,v14,f17,v17,f15,v15,f20,v20);
 
 %% INPUTS
 
 %mapFileName = input('Input name of provided satellite map file: ','s');
 mapFileName = MAP_FILENAME;
+%outputFileName = input('Input name of MRD-Code output file: ','s');
+outputFileName = OUTPUT_FILENAME;
 
 startLocation = struct(positionTemplate);
 % startLocation.x = input('Starting location (x): ');
@@ -103,14 +111,15 @@ end
 %  Note: it is believed they will be giving us a specific order, but for
 %  now we are going to do it based on distance
 orderOfPriority = zeros(1,numBeacons);
-minDist = 100000;
+minDist = inf;
 minDistI = 0;
 prior = 1;
-for b1 = 1:numBeacons %Identify closest to starting location
+for b1 = 1:1:numBeacons %Identify closest to starting location
     if(beaconLocations(b1).distance < minDist)
-        minDist = beaconLocations(b).distance;
+        minDist = beaconLocations(b1).distance;
         minDistI = b1;
     end
+    fprintf('MinDist = %d\n', minDist);
 end
 beaconLocations(minDistI).priority = prior;
 orderOfPriority(prior) = minDistI;
@@ -142,7 +151,7 @@ end
 currentLoc = startLocation; %These will eventually be in loops
 numBlocks = NODE_GRID_BLOCK_NUM; %Currently 3
 totalPathsCalculated = 0;
-optPathScores = [];
+optPaths = [];
 
 for beacon = 1:numBeacons
     currentDest = beaconLocations(orderOfPriority(beacon));
@@ -161,8 +170,11 @@ for beacon = 1:numBeacons
     
     %Counters/Data Trackers
     totalPathsCalculated = totalPathsCalculated + length(pathPermutations);
-    optPathScores = [optPathScores, optPath.score];
+    optPaths = [optPaths, optPath];
 end
+
+%% MRD-CODE OUTPUT
+combinedOptPath = outputMRD(optPaths,outputFileName,vectorTemplate,intPathTemplate);
 
 %% PLOTTING
 
@@ -176,12 +188,12 @@ title(['Path Generation of: ', mapFileName]);
 plotBorder(mapRawSize);
 plot(startLocation.x, -startLocation.y, 'bo');
 plot(beaconPlotX, beaconPlotY, 'ro'); %Average beacon locations
-hold off; hold off;
+hold off;
 
 %% REPORT
 fprintf('Blocks (n) = %d\n', numBlocks);
 fprintf('Total paths calculated = %d\n', totalPathsCalculated);
 fprintf('Paths calculated per movement = %d\n', length(pathPermutations));
-fprintf('Lowest path score = %d\n', optPathScores);
+fprintf('Lowest path score = %d\n', optPaths.score);
 fprintf('Runtime (s) = %f\n', toc);
 

@@ -1,10 +1,15 @@
 % V2 Changes:
 %   - Added robot buffer zone
+%   - Added 'valid' element to Path Struct, which is now set in this
+%     function to false if the path encounters any -1's in the map
 
 % IN:
 %   - map = processed map matrix
 %   - scores = r by 2 of values expected in the map and their assosciated
 %     weights to be used when scoring
+%   - robotSize = matrix with the robot's length in front of and behind the
+%     center of turning, as well as the robot's width
+%   - paths = list of Path Structs (output from step2vectorMatrix())
 % OUT:
 %   - sPaths = list of Path Structs w/ binMat, stepMat, vectorList, and
 %              score
@@ -90,6 +95,9 @@ function sPaths = scorePaths2(map, scores, robotSize, paths)
         %for p...
         for t = 1:numCellTypes
             sPaths(p).score = sPaths(p).score + (scores(t,2) * sPaths(p).cellTypes(t,2));
+            if((scores(t,1) == -1) & (sPaths(p).cellTypes(t,2) > 0))
+                sPaths(p).valid = false;
+            end
         end
         %plotPath(sPaths(p));
     end
