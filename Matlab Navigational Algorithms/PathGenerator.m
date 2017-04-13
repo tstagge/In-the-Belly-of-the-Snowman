@@ -10,7 +10,7 @@ hold on;
 tic;
 
 %% CONSTANTS
-NODE_GRID_BLOCK_NUM = 3;
+NODE_GRID_BLOCK_NUM = 4;
 TOL_CONTIGUITY = 5;
 ROBOT_SIZE = [[7,18], 15]; % [lfront, lrear,width] (cm); wheel separation is 14.5cm
 SCORE_MATRIX = [-1, 1000000;
@@ -23,8 +23,8 @@ SCORE_MATRIX = [-1, 1000000;
 START_LOC_X = 30;%340;%30;%340;%30;%340;
 START_LOC_Y = 245;%30;%245;%30;%245;%30;
 START_LOC_THETA = 90; %degrees
-MAP_FILENAME = 'satmap2.txt';
-OUTPUT_FILENAME = 'satmap2_navigation3.txt';
+MAP_FILENAME = 'satmap1.txt';
+OUTPUT_FILENAME = 'satmap1_navigation9.txt';
 
 %% STRUCT TEMPLATES
 
@@ -90,6 +90,7 @@ mapRaw = load(mapFileName);
 mapRawSize = size(mapRaw);
 
 %% PROCESS SATELLITE MAP
+plotMap(mapRaw, mapRawSize);
 mapProcessed = mapRaw; %Copy
 
 %BEACON LOCATIONS----------------------------------------------------------
@@ -163,7 +164,10 @@ for beacon = 1:numBeacons
     pathPermutations = step2vectorMatrix(currentLoc, currentDest, numBlocks, stepPermutations, pointTemplate, vectorTemplate);
     %scoredPathPermutations = scorePaths(mapProcessed, SCORE_MATRIX, pathPermutations);
     scoredPathPermutations = scorePaths2(mapProcessed, SCORE_MATRIX, ROBOT_SIZE, pathPermutations);
-    optPath = findOptPath(scoredPathPermutations);
+    optPath = findOptPath(scoredPathPermutations, pathTemplate);
+    if(optPath.valid == false)
+        fprintf('ERROR: No valid path found to beacon %d', beacon);
+    end
     plotPath(optPath);
     
     currentLoc = beaconLocations(orderOfPriority(beacon));
