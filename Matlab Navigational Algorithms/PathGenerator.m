@@ -10,7 +10,7 @@ hold on;
 tic;
 
 %% CONSTANTS
-NODE_GRID_BLOCK_NUM = 4;
+NODE_GRID_BLOCK_NUM = 6;
 TOL_CONTIGUITY = 5;
 ROBOT_SIZE = [[7,18], 15]; % [lfront, lrear,width] (cm); wheel separation is 14.5cm
 SCORE_MATRIX = [-1, 1000000;
@@ -20,11 +20,11 @@ SCORE_MATRIX = [-1, 1000000;
                 40, 0];
 
 % Will-be-inputs
-START_LOC_X = 30;%340;%30;%340;%30;%340;
+START_LOC_X = 85;%340;%30;%340;%30;%340;
 START_LOC_Y = 245;%30;%245;%30;%245;%30;
 START_LOC_THETA = 90; %degrees
-MAP_FILENAME = 'satmap1.txt';
-OUTPUT_FILENAME = 'satmap1_navigation9.txt';
+MAP_FILENAME = 'satmap5.txt';
+OUTPUT_FILENAME = 'satmap5_navigation1.txt';
 
 %% STRUCT TEMPLATES
 
