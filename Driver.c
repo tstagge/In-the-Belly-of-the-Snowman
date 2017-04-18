@@ -37,18 +37,10 @@
 #define HEIGHT_OF_MARKER 10 //cm; height of the LSTS marker, FIXME
 
 //Filenames
-#define SAT_MAP_FILENAME "satmap1.txt" //FIXME once we know how they are giving us the file!
+//#define SAT_MAP_FILENAME "satmap1.txt" //FIXME once we know how they are giving us the file!
+#define MRD_CODE_FILENAME "satmap1nav9.txt"
 
 //Struct Definitions
-typedef struct SatelliteMap_struct{
-	short map[275][365];
-}SatelliteMap;
-
-typedef struct MapVector_struct{
-	short startLoc[2];
-	short endLoc[2];
-	float magnitude;
-}MapVector;
 
 //File Imports
 #include "Utility.c"
@@ -57,16 +49,23 @@ typedef struct MapVector_struct{
 #include "IntegratedMovement.c"
 #include "Deposition.c"
 #include "Bluetooth.c"
-#include "SatelliteNavigation.c"
+#include "PathInterpreter.c"
+//#include "Navigation.c" //FIXME: Some serious errors when trying to import this
 
 /*----------------------------FUNCTION  PROTOTYPES----------------------------*/
+//DRIVERS
+void driver1();
+void driver2();
+void pocDriver();
+
 //TESTS
 void runCOTTest(); //Code for a center-of-turning test
 void runPointTurnTest(int angle); //, float radiusW, float radiusT);
 void moveForwardTest(float distance);
-void hallEffectTest(int base);
+void hallEffectBoolStream(int base);
 void bluetoothTest(int height);
 void readGyro(int base);
+void ioTest();
 //PROOF-OF-COMPETENCY TASKS
 void pocTask1(short power);
 void pocTask2();
@@ -80,11 +79,13 @@ void pocTask4Search2(short power, int hallBase); //Searches the 10cm x 30cm regi
 void pocTask5Path(short power); //Runs that weird path with the two turns
 
 /*-----------------------------------MAIN-------------------------------------*/
-
-//int fuckYou = 69;
-//SatelliteMap satmap;
-
 task main()
+{
+	driver2();
+}
+
+
+/*void driver1()
 {
 	clearDebugStream();
 
@@ -92,45 +93,31 @@ task main()
 	//halt();
 	sleep(50);
 	int HALL_BASE = calibrateHallEffect();
-	int GYRO_BASE = calibrateGyro()
+	int GYRO_BASE = calibrateGyro();
 	sleep(50);
 	//GYRO g;
 	short BASE_POW = BASE_MOTOR_POWER;
 
-	//SatelliteMap satmap;
-	//processMap(&satmap, SAT_MAP_FILENAME); //Initializes w/ fileIO
-
 	//------TEST  CODE------/
-
-	//float distance = 50; //cm
-	//moveForwardTest(distance);
 
 	//bluetoothTest(HEIGHT_OF_MARKER);
 
 	//closeGate(60);
 	//dropAC();
 	readGyro(GYRO_BASE);
-	//gyroTurn(BASE_POW, GYRO_BASE, 90);
-	//clearTimer(T1);
-	//int i = 0;
-	//for(i = 0; i<200; i++)
-	//{
-	//	writeDebugStream("%f\n", time1[T1]);
-	//	sleep(5);
-	//}
+}*/
 
-	//pocTask5Path(BASE_POW);
-	//bool fuckThis = beaconSweep(-BASE_POW, HALL_BASE, 90);
-	//writeDebugStream("%d", fuckThis);
-	//hallEffectTest(HALL_BASE);
-	//pocTask4Search2(BASE_POW, HALL_BASE);
-
-
-	//pocTask1(BASE_POW);
-	//pocTask3(BASE_POW);
-	//pocTask4(BASE_POW, HALL_BASE);
-	//pocTask5(BASE_POW);
-	//pocTask45Combo(BASE_POW, HALL_BASE);
+void driver2()
+{
+	clearDebugStream();
+	writeDebugStream("--NEW TEST------------------------------------------\n");
+	byte test[200];
+	readMRDstream(MRD_CODE_FILENAME, test);
+	short i = 0;
+	for(i = 0; i < 174; i++)
+	{
+		writeDebugStream("%c\n", test[i]);
+	}
 }
 
 /*----------------------------FUNCTION DEFINITIONS----------------------------*/
@@ -161,7 +148,7 @@ void moveForwardTest(float distance)
 	moveForward(power, distance);
 }
 
-void hallEffectTest(int base)
+void hallEffectBoolStream(int base)
 {
 	int i = 0;
 	for(i = 0; i < 2000; i++)
@@ -183,6 +170,55 @@ void readGyro(int base)
 		writeDebugStream("%f\n", SensorValue(S1));//getGyro(base));
 		sleep(15);
 	}
+}
+
+void ioTest()
+{
+	clearDebugStream();
+
+	TFileHandle navFile;
+	TFileIOResult isFileFailure;
+	short nFileSize = 0;
+	string iFileName = MRD_CODE_FILENAME;
+
+	OpenRead(navFile, isFileFailure, iFileName, nFileSize);
+	writeDebugStream("\nFile test\n");
+	writeDebugStream("Correct?: %d\n", isFileFailure);
+	writeDebugStream("Lines: %d\n", nFileSize);
+	short i = 0;
+	byte read = -1;
+	for(i = 0; i < nFileSize; i++)
+	{
+		ReadByte(navFile,isFileFailure,read);
+		writeDebugStream("%c\n", read);
+	}
+		writeDebugStream("Correct?: %d\n", isFileFailure);
+
+	Close(navFile, isFileFailure);
+}
+
+
+/*------------------------------POC BULLSHIT------------------------------*/
+void pocDriver()
+{
+	clearDebugStream();
+
+	//-----CALIBRATIONS/CONSTANTS-----/
+	sleep(50);
+	int HALL_BASE = calibrateHallEffect();
+	int GYRO_BASE = calibrateGyro();
+	sleep(50);
+	short BASE_POW = BASE_MOTOR_POWER;
+	readGyro(GYRO_BASE);
+
+	//pocTask5Path(BASE_POW);
+	//pocTask4Search2(BASE_POW, HALL_BASE);
+
+	//pocTask1(BASE_POW);
+	//pocTask3(BASE_POW);
+	//pocTask4(BASE_POW, HALL_BASE);
+	//pocTask5(BASE_POW);
+	//pocTask45Combo(BASE_POW, HALL_BASE);
 }
 
 void pocTask1(short power)
