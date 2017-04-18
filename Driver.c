@@ -82,6 +82,8 @@ void pocTask5Path(short power); //Runs that weird path with the two turns
 task main()
 {
 	driver2();
+	//clearDebugStream();
+	//writeDebugStream("*: %d\nspace: %d\n-: %d\nnewline: %d\n",'*',' ','-','\n');
 }
 
 
@@ -109,6 +111,7 @@ task main()
 
 void driver2()
 {
+	clearDebugStream();
 	clearDebugStream();
 	writeDebugStream("--NEW TEST------------------------------------------\n");
 	byte test[200];

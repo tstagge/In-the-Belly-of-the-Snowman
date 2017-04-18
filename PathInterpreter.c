@@ -21,7 +21,7 @@ void readMRDstream(char* mrdFileName, byte* fileStream)
 	OpenRead(navFile, isFileFailure, iFileName, nFileSize);
 	//writeDebugStream("\nFile test\n");
 	//writeDebugStream("Correct?: %d\n", isFileFailure);
-	//writeDebugStream("Lines: %d\n", nFileSize);
+	writeDebugStream("File size: %d\n", nFileSize);
 	short i = 0;
 	byte read = -1;
 	short numRealLines = 0;
@@ -44,28 +44,46 @@ void readMRDstream(char* mrdFileName, byte* fileStream)
 	short ic = 0;
 	byte mrdParameters[30];
 	short ip = 0;
-	i = 1;
+	i = 2;
 	//while(fileStream[i] != 42) //While not an asterisk
-	while(i < (nFileSize-1))
+	while(i < nFileSize)
 	{
 		if((fileStream[i] == 68)||(fileStream[i] == 77)||(fileStream[i] == 82))
 		{
 				mrdCommands[ic] = fileStream[i];
-				writeDebugStream("Added command\n");
+				//writeDebugStream("Added command\n");
 				ic++;
 				i++;
 				//char *tempStr = "";
 				short tempNum = 0;
+				short sign = 1;
 				short n = 0;
-				while(fileStream[i] != 32)
+				if(fileStream[i] == 45) //Negative Sign
+				{
+						i++;
+						sign = -1;
+				}
+				int j = i;
+
+				while((fileStream[j] != 32)&&(fileStream[j] != 10)) //Figuring out how many digits in number
+				{
+					j++;
+				}
+				n = (j - i) - 1;
+
+				//while((fileStream[i] != 32)&&(fileStream[i] != 10)) //While not space or newline
+				for(j = n + 1; j > 0; j--)
 				{
 					//strcat(tempStr, fileStream[i])
-					tempNum += (char)fileStream[i] * pow(10,n);
-					n++;
+					//tempNum += (char)fileStream[i] * pow(10,n);
+					//tempNum += fileStream[i] * pow(10,n);
+					tempNum += (fileStream[i] - 48) * pow(10,n);
+					n--;
 					i++;
 				}
-				mrdParameters[ip] = tempNum;
-				writeDebugStream("Added parameter\n");
+
+				mrdParameters[ip] = sign * tempNum;
+				//writeDebugStream("Added parameter\n");
 				ip++;
 		}
 		else
