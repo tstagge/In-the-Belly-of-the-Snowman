@@ -17,8 +17,6 @@ void readMRDstream(char* mrdFileName, byte* fileStream)
 	TFileIOResult isFileFailure;
 	short nFileSize = 0;
 	string iFileName = mrdFileName;
-	//char* temp[200];
-	//byte temp[200];
 
 	OpenRead(navFile, isFileFailure, iFileName, nFileSize);
 	//writeDebugStream("\nFile test\n");
@@ -26,15 +24,55 @@ void readMRDstream(char* mrdFileName, byte* fileStream)
 	//writeDebugStream("Lines: %d\n", nFileSize);
 	short i = 0;
 	byte read = -1;
+	short numRealLines = 0;
 	for(i = 0; i < nFileSize; i++)
 	{
 		ReadByte(navFile,isFileFailure,read);
 		//writeDebugStream("%c\n", read);
 		fileStream[i] = read;
+		if((read == 68)||(read == 77)||(read == 82))//'D', 'M', or 'R'
+		{
+			numRealLines++;
+		}
 	}
-		writeDebugStream("Correct?: %d\n", isFileFailure);
-
+	writeDebugStream("Correct?: %d\n", isFileFailure);
 	Close(navFile, isFileFailure);
-	//strcpy(fileStream, temp);
-	//fileStream = &temp[0];
+
+	writeDebugStream("Num real lines: %d\n", numRealLines);
+
+	byte mrdCommands[30];
+	short ic = 0;
+	byte mrdParameters[30];
+	short ip = 0;
+	i = 1;
+	//while(fileStream[i] != 42) //While not an asterisk
+	while(i < (nFileSize-1))
+	{
+		if((fileStream[i] == 68)||(fileStream[i] == 77)||(fileStream[i] == 82))
+		{
+				mrdCommands[ic] = fileStream[i];
+				writeDebugStream("Added command\n");
+				ic++;
+				i++;
+				//char *tempStr = "";
+				short tempNum = 0;
+				short n = 0;
+				while(fileStream[i] != 32)
+				{
+					//strcat(tempStr, fileStream[i])
+					tempNum += (char)fileStream[i] * pow(10,n);
+					n++;
+					i++;
+				}
+				mrdParameters[ip] = tempNum;
+				writeDebugStream("Added parameter\n");
+				ip++;
+		}
+		else
+			i++;
+	}
+	for(i = 0; i <= ic; i++)
+	{
+		writeDebugStream("%c %d\n", mrdCommands[i], mrdParameters[i]);
+	}
 }

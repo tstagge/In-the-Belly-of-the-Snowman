@@ -113,6 +113,7 @@ void driver2()
 	writeDebugStream("--NEW TEST------------------------------------------\n");
 	byte test[200];
 	readMRDstream(MRD_CODE_FILENAME, test);
+	writeDebugStream("RAW---");
 	short i = 0;
 	for(i = 0; i < 174; i++)
 	{

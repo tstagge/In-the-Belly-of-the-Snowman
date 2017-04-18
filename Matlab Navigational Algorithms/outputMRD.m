@@ -44,7 +44,7 @@ function intPath = outputMRD(oPaths,oFileName,vecTemp,intTemp,ptTemp,mapSize)
     totalNumTurns = length(intPath.turnAngles);
     oFile = fopen(oFileName,'w');
     
-    fprintf(oFile, '***\n');
+    fprintf(oFile, '*\n');
     fprintf(oFile, 'R%d\n', intPath.turnAngles(1));
     iAng = 2;
     waitOnM = false;
@@ -74,7 +74,7 @@ function intPath = outputMRD(oPaths,oFileName,vecTemp,intTemp,ptTemp,mapSize)
         end
         iVec = iVec + 1;
     end
-    fprintf(oFile, '***');
+    fprintf(oFile, '*');
     
     fclose(oFile);
 end
