@@ -9,8 +9,9 @@
 
 /*----------------------------FUNCTION  PROTOTYPES----------------------------*/
 void dropAC();
-void openGate(int power);
-void closeGate(int power);
+void openGate(short power);
+void closeGate(short power);
+void closeGate2(short power);
 
 /*----------------------------FUNCTION DEFINITIONS----------------------------*/
 
@@ -25,10 +26,10 @@ void dropAC()
 		closeGate(depPowerClose);
 }
 
-//Linear Gate methods
-void openGate(int power) {
+//-----Linear Gate methods-----
+void openGate(short power) {
 	nMotorEncoder[motorC] = 0;
-	nMotorEncoderTarget[motorC] = 280;//320; //Needs testing
+	nMotorEncoderTarget[motorC] = 250;//280;//320; //280 for what we had at PoC2
 	motor[motorC] = power;
 	while (nMotorRunState[motorC] != runStateIdle) {
 		//Idle loop. Program waits until target value is reached.
@@ -36,9 +37,21 @@ void openGate(int power) {
   fullStop();
 }
 
-void closeGate(int power) {
+void openGate2(short power)
+{
 	nMotorEncoder[motorC] = 0;
-	nMotorEncoderTarget[motorC] = -280; //Needs testing
+	nMotorEncoderTarget[motorC] = 250;//280;//320; //280 for what we had at PoC2
+	clearTimer(T1);
+	motor[motorC] = power;
+	while ((nMotorRunState[motorC] != runStateIdle)&&(time1[T1] < 3000)) {
+		//Idle loop. Program waits until target value is reached.
+  }
+  fullStop();
+}
+
+void closeGate(short power) {
+	nMotorEncoder[motorC] = 0;
+	nMotorEncoderTarget[motorC] = -170;//-280; //Needs testing
 	motor[motorC] = -power;
 	while (nMotorRunState[motorC] != runStateIdle) {
 		//Idle loop. Program waits until target value is reached.
@@ -46,7 +59,15 @@ void closeGate(int power) {
   fullStop();
 }
 
-//Rotational Gate Methods
+void closeGate2(short power)
+{
+	motor[motorC] = -power;
+	while(SensorValue(S2) == 0) { //(IDLE) while the Touch Sensor is inactive
+	}
+	fullStop();
+}
+
+//-----Rotational Gate Methods------
 
 //void openGate(int power)
 //{

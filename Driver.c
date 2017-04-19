@@ -24,8 +24,8 @@
 
 //Defined powers and threshholds
 #define BASE_MOTOR_POWER 40
-#define DEP_MOTOR_POWER_OPEN 50 //Power used to open deposition system
-#define DEP_MOTOR_POWER_CLOSE 60 //Power used to close the deposition system
+#define DEP_MOTOR_POWER_OPEN 8//10//50 //Power used to open deposition system
+#define DEP_MOTOR_POWER_CLOSE 35//60 //Power used to close the deposition system
 #define HALL_EFFECT_THRESH_1 3 //We're going to need to compare to the actual beacon magnets
 #define HALL_EFFECT_THRESH_2 15
 #define HALL_EFFECT_THRESH_3 40
@@ -35,6 +35,7 @@
 #define TURN_RADIUS 7.0    //cm; distance between wheels' contact points
 #define BOT_LENGTH 22    //cm; distance from center of turning to AC deposition
 #define HEIGHT_OF_MARKER 10 //cm; height of the LSTS marker, FIXME
+#define MOTOR_GEAR_RATIO 1
 
 //Filenames
 //#define SAT_MAP_FILENAME "satmap1.txt" //FIXME once we know how they are giving us the file!
@@ -81,9 +82,16 @@ void pocTask5Path(short power); //Runs that weird path with the two turns
 /*-----------------------------------MAIN-------------------------------------*/
 task main()
 {
-	driver2();
+	//driver2();
 	//clearDebugStream();
 	//writeDebugStream("*: %d\nspace: %d\n-: %d\nnewline: %d\n",'*',' ','-','\n');
+
+	//dropAC();
+	//openGate(DEP_MOTOR_POWER_OPEN);
+
+	openGate2(DEP_MOTOR_POWER_OPEN);
+	sleep(300);
+	closeGate2(DEP_MOTOR_POWER_CLOSE);
 }
 
 
