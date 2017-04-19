@@ -31,7 +31,7 @@
 //Physical characteristics of robot
 #define WHEEL_RADIUS 4.1   //cm
 #define TURN_RADIUS 7.0    //cm; distance between wheels' contact points
-#define BOT_LENGTH 22    //cm; distance from center of turning to AC deposition
+#define BOT_LENGTH 22.0    //cm; distance from center of turning to AC deposition
 #define HEIGHT_OF_MARKER 10 //cm; height of the LSTS marker, FIXME
 
 //Filenames
@@ -55,7 +55,7 @@ typedef struct MapVector_struct{
 #include "Deposition.c"
 #include "Bluetooth.c"
 #include "SatelliteNavigation.c"
-//#include "Navigation.c"
+#include "Navigation.c"
 
 /*----------------------------FUNCTION  PROTOTYPES----------------------------*/
 //TESTS
@@ -66,12 +66,12 @@ void hallEffectTest(int base);
 void bluetoothTest(int height);
 //PROOF-OF-COMPETENCY TASKS
 void pocTask1(short power);
-void pocTask2();
+void pocTask2(int height);
 void pocTask3(short power);
 void pocTask4(short power, int hallBase);
 void pocTask5(short power);
 void pocTask45Combo(short power, int hallBase);
-void pocTask6();
+void pocTask6(int height);
 //PROOF-OF-COMPETENCY SUB-ROUTINES
 void pocTask4Search2(short power, int hallBase); //Searches the 10cm x 30cm region
 void pocTask5Path(short power); //Runs that weird path with the two turns
@@ -95,7 +95,7 @@ task main()
 
 	//------TEST  CODE------/
 
-	//float distance = 50; //cm
+	//float distance = 100; //cm
 
 	//moveForwardTest(distance);
 
@@ -103,8 +103,9 @@ task main()
 
 	//bluetoothTest(HEIGHT_OF_MARKER);
 
+	//openGate(60);
 	//closeGate(60);
-	dropAC();
+	//dropAC();
 
 	//pocTask5Path(BASE_POW);
 	//bool fuckThis = beaconSweep(-BASE_POW, HALL_BASE, 90);
@@ -113,11 +114,13 @@ task main()
 	//pocTask4Search2(BASE_POW, HALL_BASE);
 
 
-	//pocTask1(BASE_POW);
+	//pocTask1(60);
+	pocTask2(HEIGHT_OF_MARKER);
 	//pocTask3(BASE_POW);
 	//pocTask4(BASE_POW, HALL_BASE);
 	//pocTask5(BASE_POW);
 	//pocTask45Combo(BASE_POW, HALL_BASE);
+	//pocTask6(HEIGHT_OF_MARKER);
 }
 
 /*----------------------------FUNCTION DEFINITIONS----------------------------*/
@@ -144,7 +147,7 @@ void runPointTurnTest(int angle)
 
 void moveForwardTest(float distance)
 {
-	short power = 100;
+	short power = 70;
 	moveForward(power, distance);
 }
 
@@ -164,14 +167,14 @@ void bluetoothTest(int height) {
 
 void pocTask1(short power)
 {
-	pointTurn(power, 30); //Left
+	pointTurn(40, 30); //Left
 	sleep(0.5);
 	moveForward(power, 1000); //NICK!: I don't know the actual distance here
 }
 
-void pocTask2()
+void pocTask2(int height)
 {
-
+	task2(height);
 }
 
 void pocTask3(short power)
@@ -181,7 +184,7 @@ void pocTask3(short power)
 
 void pocTask4(short power, int hallBase)
 {
-	moveForward(power, 40.0);
+	moveForward(power, 50.0);
 	pocTask4Search2(power, hallBase);
 	//moveForward(power, 35);
 	sleep(0.25);
@@ -201,7 +204,8 @@ void pocTask5(short power)
 	pocTask5Path(power);
 	moveForward(power, (30.0 + BOT_LENGTH));
 	//moveForward(power, BOT_LENGTH);
-	sleep(0.25);
+	fullStop();
+	sleep(25);
 	dropAC();
 }
 
@@ -230,7 +234,7 @@ void pocTask4Search2(short power, int hallBase)
 	bool n = false;
 	//bool at = false;
 
-	while( (!n) && (distTraveled < 31))
+	while( (!n) && (distTraveled < 51))
 	{
 		if(beaconSweep(-power, hallBase, 20)) {
 			n = true;
@@ -259,11 +263,11 @@ void pocTask5Path(short power)
 {
 	moveForward(power, 45.0);
 	sleep(250);
-	pointTurn(-power, 90);
+	pointTurn(20, -90);
 	sleep(250);
 	moveForward(power, 15.0); //Changed from 20 to 15
 	sleep(250);
-	arcTurn(power, 15.0, 90);
+	arcTurn(20, 15.0, -90);
 	sleep(250);
 	//moveForward(power, (30.0 + ));
 	//moveForward(power, 30.0);

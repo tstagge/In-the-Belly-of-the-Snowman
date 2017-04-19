@@ -28,17 +28,24 @@ void dropAC()
 //Linear Gate methods
 void openGate(int power) {
 	nMotorEncoder[motorC] = 0;
-	nMotorEncoderTarget[motorC] = 320; //Needs testing
+	nMotorEncoderTarget[motorC] = 300; //Needs testing
 	motor[motorC] = power;
+	int maxRuns = 0;
 	while (nMotorRunState[motorC] != runStateIdle) {
 		//Idle loop. Program waits until target value is reached.
+		if (maxRuns > 10000000) {
+			break;
+		}
+		else {
+			maxRuns++;
+		}
   }
   fullStop();
 }
 
 void closeGate(int power) {
 	nMotorEncoder[motorC] = 0;
-	nMotorEncoderTarget[motorC] = -280; //Needs testing
+	nMotorEncoderTarget[motorC] = -220; //Needs testing
 	motor[motorC] = -power;
 	while (nMotorRunState[motorC] != runStateIdle) {
 		//Idle loop. Program waits until target value is reached.
