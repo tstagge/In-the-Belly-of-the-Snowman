@@ -14,8 +14,8 @@ float getArcLength(float angleDeg, float wheelRadiusCM);
 float calcTrap(float b,float h);
 
 //OTHER
-void motorRampUp(short powerTarget); //Wasn't quite the intent of this file, but alright with me
-void motorTurnRampUp(short powerTarget);
+void motorRampUp(byte powerTarget); //Wasn't quite the intent of this file, but alright with me
+void motorTurnRampUp(byte powerTarget);
 
 /*----------------------------FUNCTION DEFINITIONS----------------------------*/
 float deg2Rad(float deg)
@@ -38,7 +38,7 @@ float calcTrap(float b,float h)
 	return ( 0.5 * b * h);
 }
 
-void motorRampUp(short powerTarget) {
+void motorRampUp(byte powerTarget) {
 	short power;
 	for(power = -30; power >= -powerTarget; power--) { //Starts the power at 30 and ramps up to inputted power value
     motor[motorA] = power;
@@ -48,7 +48,7 @@ void motorRampUp(short powerTarget) {
   }
 }
 
-void motorTurnRampUp(short powerTarget) {
+void motorTurnRampUp(byte powerTarget) {
 	short power;
 	for(power = -30; power >= -powerTarget; power--) { //Starts the power at 30 and ramps up to inputted power value
     motor[motorA] = power;
