@@ -63,21 +63,21 @@ void pocDriver();
 void runCOTTest(); //Code for a center-of-turning test
 void runPointTurnTest(int angle); //, float radiusW, float radiusT);
 void moveForwardTest(float distance);
-void hallEffectBoolStream(int base);
+void hallEffectBoolStream(short base);
 void bluetoothTest(int height);
 void readGyro(int base);
 void ioTest();
 //PROOF-OF-COMPETENCY TASKS
-void pocTask1(short power);
+void pocTask1(byte power);
 void pocTask2();
-void pocTask3(short power);
-void pocTask4(short power, int hallBase);
-void pocTask5(short power);
-void pocTask45Combo(short power, int hallBase);
+void pocTask3(byte power);
+void pocTask4(byte power, short hallBase);
+void pocTask5(byte power);
+void pocTask45Combo(byte power, short hallBase);
 void pocTask6();
 //PROOF-OF-COMPETENCY SUB-ROUTINES
-void pocTask4Search2(short power, int hallBase); //Searches the 10cm x 30cm region
-void pocTask5Path(short power); //Runs that weird path with the two turns
+void pocTask4Search2(byte power, short hallBase); //Searches the 10cm x 30cm region
+void pocTask5Path(byte power); //Runs that weird path with the two turns
 
 /*-----------------------------------MAIN-------------------------------------*/
 task main()
@@ -150,13 +150,13 @@ void runCOTTest()
 
 void runPointTurnTest(int angle)
 {
-	short power = 60;
+	byte power = 60;
 	pointTurn(power, angle);
 }
 
 void moveForwardTest(float distance)
 {
-	short power = 100;
+	byte power = 100;
 	moveForward(power, distance);
 }
 
@@ -233,7 +233,7 @@ void pocDriver()
 	//pocTask45Combo(BASE_POW, HALL_BASE);
 }
 
-void pocTask1(short power)
+void pocTask1(byte power)
 {
 	pointTurn(power, 30); //Left
 	sleep(0.5);
@@ -245,12 +245,12 @@ void pocTask2()
 
 }
 
-void pocTask3(short power)
+void pocTask3(byte power)
 {
 	moveForward(power, 1000.0); //NICK!: I don't know the actual distance here
 }
 
-void pocTask4(short power, int hallBase)
+void pocTask4(byte power, short hallBase)
 {
 	moveForward(power, 40.0);
 	pocTask4Search2(power, hallBase);
@@ -267,7 +267,7 @@ void pocTask4(short power, int hallBase)
 	playTone(800, 15); //Sound does not play, brick only plays three sounds with 4 calls
 }
 
-void pocTask5(short power)
+void pocTask5(byte power)
 {
 	pocTask5Path(power);
 	moveForward(power, (30.0 + BOT_LENGTH));
@@ -276,7 +276,7 @@ void pocTask5(short power)
 	dropAC();
 }
 
-void pocTask45Combo(short power, int hallBase)
+void pocTask45Combo(byte power, short hallBase)
 {
 	pocTask5Path(power);
 	moveForward(power, 12.0);
@@ -295,7 +295,7 @@ void pocTask45Combo(short power, int hallBase)
 	playTone(800, 15); //Sound does not play, brick only plays three sounds with 4 calls
 }
 
-void pocTask4Search2(short power, int hallBase)
+void pocTask4Search2(byte power, short hallBase)
 {
 	int distTraveled = 0;
 	bool n = false;
@@ -326,7 +326,7 @@ void pocTask4Search2(short power, int hallBase)
 	}
 }
 
-void pocTask5Path(short power)
+void pocTask5Path(byte power)
 {
 	moveForward(power, 45.0);
 	sleep(250);

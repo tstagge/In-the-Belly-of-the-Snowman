@@ -9,9 +9,10 @@
 
 /*----------------------------FUNCTION  PROTOTYPES----------------------------*/
 void dropAC();
-void openGate(short power);
-void closeGate(short power);
-void closeGate2(short power);
+void openGate(byte power);
+void openGate2(byte power);
+void closeGate(byte power);
+void closeGate2(byte power);
 
 /*----------------------------FUNCTION DEFINITIONS----------------------------*/
 
@@ -20,14 +21,14 @@ void dropAC()
 {
 		int depPowerOpen = DEP_MOTOR_POWER_OPEN; //global variable defined in Driver.c
 		int depPowerClose = DEP_MOTOR_POWER_CLOSE;
-		openGate(depPowerOpen);
+		openGate2(depPowerOpen);
 		sleep(300);
 		//moveForward(5, 50);
-		closeGate(depPowerClose);
+		closeGate2(depPowerClose);
 }
 
 //-----Linear Gate methods-----
-void openGate(short power) {
+void openGate(byte power) {
 	nMotorEncoder[motorC] = 0;
 	nMotorEncoderTarget[motorC] = 250;//280;//320; //280 for what we had at PoC2
 	motor[motorC] = power;
@@ -37,7 +38,7 @@ void openGate(short power) {
   fullStop();
 }
 
-void openGate2(short power)
+void openGate2(byte power) //For linear gate; added time check
 {
 	nMotorEncoder[motorC] = 0;
 	nMotorEncoderTarget[motorC] = 250;//280;//320; //280 for what we had at PoC2
@@ -49,7 +50,7 @@ void openGate2(short power)
   fullStop();
 }
 
-void closeGate(short power) {
+void closeGate(byte power) {
 	nMotorEncoder[motorC] = 0;
 	nMotorEncoderTarget[motorC] = -170;//-280; //Needs testing
 	motor[motorC] = -power;
@@ -59,7 +60,7 @@ void closeGate(short power) {
   fullStop();
 }
 
-void closeGate2(short power)
+void closeGate2(byte power) //For linear gate with Touch sensor enabled
 {
 	motor[motorC] = -power;
 	while(SensorValue(S2) == 0) { //(IDLE) while the Touch Sensor is inactive
