@@ -6,11 +6,16 @@ void executeOperation(byte op, byte power, short startTurnToNorth, short* expLoc
 			if((startTurnToNorth + -90) != 0)
 			{
 				pointTurn(power, startTurnToNorth + -90);
+				writeDebugStream("Point Turn\n");
 			}
 			moveForward(power, 12);
+			writeDebugStream("Move Forward\n");
  			pointTurn(power, 90);
+ 			writeDebugStream("Point Turn\n");
 			moveForward(power, 139);
+			writeDebugStream("Move Forward\n");
  			dropAC();
+ 			writeDebugStream("DropAC\n");
 			expLoc[0] = 97; expLoc[1] = 169;
 			break;
 		case 2:
@@ -36,6 +41,6 @@ void executeOperation(byte op, byte power, short startTurnToNorth, short* expLoc
  			expLoc[0] = 85; expLoc[1] = 30;
 			break;
 		default:
-			printf('Error. Not a valid operation: %d', op);
+			writeDebugStream("Error. Not a valid operation: %d", op);
 	}
 }

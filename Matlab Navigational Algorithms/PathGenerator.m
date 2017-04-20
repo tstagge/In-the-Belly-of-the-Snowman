@@ -24,7 +24,7 @@ START_LOC_X = 85;%340;%30;%340;%30;%340;
 START_LOC_Y = 245;%30;%245;%30;%245;%30;
 START_LOC_THETA = 90; %degrees
 MAP_FILENAME = 'satmap5.txt';
-OUTPUT_FILENAME = 'satmap5_mrdC3.c';
+OUTPUT_FILENAME = 'satmap5_mrdC4.c';
 
 %% STRUCT TEMPLATES
 

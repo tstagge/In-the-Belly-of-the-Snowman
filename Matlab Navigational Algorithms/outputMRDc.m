@@ -1,7 +1,7 @@
 % IN:
 %   - oPaths = list of Path Structs representing each of the optimum paths
 %              in each "operation" generated
-%   - oFileName = name of file to which MRD-Code will be written
+%   - oFileName = name of file to which MRDc-Code will be written
 %   - vecTemp = template for Vector Struct
 %   - intTemp = template for Integrated Path Struct
 %   - ptTemp = template for simple coordinate Point Struct; passed to
@@ -61,9 +61,11 @@ function intPath = outputMRDc(oPaths,oFileName,vecTemp,intTemp,ptTemp,mapSize)
         if(intPath.vectorList(iVec).magnitude == 0) %D
            if(currCase < numPaths)
                fprintf(oFile, '\t\t\tdropAC();\n');
-               expLoc = getEndpointReal(intPath.vectorList(iVec-1), ptTemp, mapSize);
-               fprintf(oFile, '\t\t\texpLoc = {%d, %d};\n',expLoc.x,expLoc.y);
            end
+           
+           expLoc = getEndpointReal(intPath.vectorList(iVec-1), ptTemp, mapSize);
+           fprintf(oFile, '\t\t\texpLoc[0] = %d; expLoc[1] = %d;\n',expLoc.x,expLoc.y);
+           
            fprintf(oFile, '\t\t\tbreak;\n');
            if(currCase < numPaths)
                currCase = currCase + 1;
@@ -95,7 +97,7 @@ function intPath = outputMRDc(oPaths,oFileName,vecTemp,intTemp,ptTemp,mapSize)
     end
     %fprintf(oFile, '*');
     fprintf(oFile, '\t\tdefault:\n');
-    fprintf(oFile, '\t\t\tprintf(''Error. Not a valid operation: %%d'', op);\n');
+    fprintf(oFile, '\t\t\twriteDebugStream("Error. Not a valid operation: %%d", op);\n');
     fprintf(oFile, '\t}\n');
     fprintf(oFile, '}\n');
     

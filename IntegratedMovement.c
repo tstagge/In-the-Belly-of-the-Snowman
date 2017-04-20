@@ -68,8 +68,8 @@ bool beaconSweep(byte power, int hallBase, int angle)
 
 void gyroTurn(byte power, int gyroBase, int angle)
 {
-	float radiusWheel = WHEEL_RADIUS;
-	float radiusBot = TURN_RADIUS;
+	//float radiusWheel = WHEEL_RADIUS;
+	//float radiusBot = TURN_RADIUS;
 	float angleTurned = 0;
 
 	motor[motorA] = -(power/2);

@@ -38,7 +38,8 @@
 #define MOTOR_GEAR_RATIO 1
 
 //Filenames
-#define MRD_CODE_FILENAME "satmap1nav9.txt"
+#define MRD_CODE_FILENAME "satmap1nav9.txt" //MRD-code; obsolete
+#define MRDC_FILENAME "satmap5_mrdC3.c"     //MRDC-code
 
 //Struct Definitions
 
@@ -50,14 +51,15 @@
 #include "Deposition.c"
 #include "Bluetooth.c"
 //#include "SatelliteNavigation.c"
-#include "Navigation.c"
-#include "PathInterpreter.c"
-//#include "Navigation.c" //FIXME: Some serious errors when trying to import this
+#include "Navigation.c"              //Wavefront, PoC, right?
+//#include "PathInterpreter.c"       //Obsolete
+#include "satmap5_mrdC3.c"
 
 /*----------------------------FUNCTION  PROTOTYPES----------------------------*/
 //DRIVERS
 void driver1();
-void driverPath(byte power);
+void driverPath(byte power); //Tested PathInterpretation functions
+void driverMRDC(byte power);
 void pocDriver();
 
 //TESTS
@@ -81,7 +83,7 @@ void pocTask4Search2(byte power, short hallBase); //Searches the 10cm x 30cm reg
 void pocTask5Path(byte power); //Runs that weird path with the two turns
 
 /*-----------------------------------MAIN-------------------------------------*/
-task main()
+task main() //Keep clean of old, obsolete code
 {
 	//-----CALIBRATIONS/CONSTANTS-----/
 	halt();
@@ -91,9 +93,8 @@ task main()
 	sleep(50);
 	byte BASE_POW = BASE_MOTOR_POWER;
 
-	driverPath(BASE_POW);
-	//writeDebugStream("0: %d\n",'0');
-	//dropAC();
+	//driverPath(BASE_POW);
+	driverMRDC(BASE_POW);
 }
 
 /*void driver1()
@@ -160,7 +161,7 @@ task main()
 =======
 }*/
 
-void driverPath(byte power)
+/*void driverPath(byte power)
 {
 	clearDebugStream();
 	clearDebugStream();
@@ -172,6 +173,13 @@ void driverPath(byte power)
 	short mrdParameters[35];
 	byte numCommands = readMRDstream2(MRD_CODE_FILENAME, mrdCommands, mrdParameters);
 	executeAllCommands(numCommands, power, mrdCommands, mrdParameters);
+}*/
+
+void driverMRDC(byte power) {
+	short expectedLocation[2] = {0, 0};
+	byte operation = 1;
+	executeOperation(operation, power, 0, expectedLocation);
+	writeDebugStream("Expected Location after Op %d:\tx: %d\ty: %d", operation, expectedLocation[0], expectedLocation[1]);
 }
 
 /*----------------------------FUNCTION DEFINITIONS----------------------------*/

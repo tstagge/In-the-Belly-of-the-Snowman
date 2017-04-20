@@ -45,16 +45,16 @@ void task2(int height) {
 	//	y = messageParm[2]-5;
 	//}
 
-	int x = 5
-	int y = 3
+	int x = 5;
+	int y = 3;
 
 	int startX = x;
 	int startY = y;
 
 	if( y >= 6 ) {
 		pointTurn(100, -90);
-		moveForward((80-(y*10), 100);
-		pointTurn(100, 90)
+		moveForward(80-(y*10), 100);
+		pointTurn(100, 90);
 	}
 
 	moveForward((135 - (x * 10)), 100);

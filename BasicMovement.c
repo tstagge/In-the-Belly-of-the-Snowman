@@ -169,7 +169,7 @@ void moveForward(byte power, float distance)
 
 	motorRampUp(power);
 
-	int kill = 0;
+	//int kill = 0; //Not currently used
 
 	while (nMotorEncoder[motorB] > -(angleDegrees -100) ) {
 		//Idle loop. Program waits until target value is reached.

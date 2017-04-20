@@ -36,6 +36,6 @@ void executeOperation(byte op, byte power, short startTurnToNorth, short* expLoc
  			expLoc[0] = 85; expLoc[1] = 30;
 			break;
 		default:
-			printf('Error. Not a valid operation: %d', op);
+			writeDebugStream("Error. Not a valid operation: %d", op);
 	}
 }

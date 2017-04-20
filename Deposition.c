@@ -21,6 +21,7 @@ void dropAC()
 {
 		int depPowerOpen = DEP_MOTOR_POWER_OPEN; //global variable defined in Driver.c
 		int depPowerClose = DEP_MOTOR_POWER_CLOSE;
+		fullStop();
 		openGate2(depPowerOpen);
 		sleep(300);
 		//moveForward(5, 50);
@@ -30,15 +31,7 @@ void dropAC()
 //-----Linear Gate methods-----
 void openGate(byte power) {
 	nMotorEncoder[motorC] = 0;
-<<<<<<< HEAD
-<<<<<<< HEAD
-	nMotorEncoderTarget[motorC] = 300; //Needs testing
-=======
-	nMotorEncoderTarget[motorC] = 280;//320; //Needs testing
->>>>>>> origin/master
-=======
 	nMotorEncoderTarget[motorC] = 250;//280;//320; //280 for what we had at PoC2
->>>>>>> origin/master
 	motor[motorC] = power;
 	int maxRuns = 0;
 	while (nMotorRunState[motorC] != runStateIdle) {
@@ -67,11 +60,7 @@ void openGate2(byte power) //For linear gate; added time check
 
 void closeGate(byte power) {
 	nMotorEncoder[motorC] = 0;
-<<<<<<< HEAD
-	nMotorEncoderTarget[motorC] = -220; //Needs testing
-=======
 	nMotorEncoderTarget[motorC] = -170;//-280; //Needs testing
->>>>>>> origin/master
 	motor[motorC] = -power;
 	while (nMotorRunState[motorC] != runStateIdle) {
 		//Idle loop. Program waits until target value is reached.
