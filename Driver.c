@@ -24,12 +24,18 @@
 
 //Defined powers and threshholds
 #define BASE_MOTOR_POWER 40
+<<<<<<< HEAD
 #define DEP_MOTOR_POWER_OPEN 50 //Power used to open deposition system
 #define DEP_MOTOR_POWER_CLOSE 60 //Power used to close the deposition system
 #define HALL_EFFECT_THRESH_1 8 //We're going to need to compare to the actual beacon magnets
 //#define DEP_MOTOR_POWER_OPEN 8 //10//50 //Power used to open deposition system
 //#define DEP_MOTOR_POWER_CLOSE 35 //60 //Power used to close the deposition system
 //#define HALL_EFFECT_THRESH_1 3 //We're going to need to compare to the actual beacon magnets
+=======
+#define DEP_MOTOR_POWER_OPEN 8//10//50 //Power used to open deposition system
+#define DEP_MOTOR_POWER_CLOSE 35//60 //Power used to close the deposition system
+#define HALL_EFFECT_THRESH_1 8 //Calibrated to actual beacon magnet
+>>>>>>> origin/master
 #define HALL_EFFECT_THRESH_2 15
 #define HALL_EFFECT_THRESH_3 -5
 
@@ -73,6 +79,7 @@ void readGyro(int base);
 void ioTest();
 void runSpeedTest();
 //PROOF-OF-COMPETENCY TASKS
+<<<<<<< HEAD
 void pocTask1(short power);
 void pocTask2(int height);
 void pocTask3(short power);
@@ -80,13 +87,19 @@ void pocTask4(short power, int hallBase);
 void pocTask5(short power);
 void pocTask45Combo(short power, int hallBase);
 void pocTask6(int height);
+=======
+>>>>>>> origin/master
 void pocTask1(byte power);
 void pocTask2();
 void pocTask3(byte power);
 void pocTask4(byte power, short hallBase);
 void pocTask5(byte power);
 void pocTask45Combo(byte power, short hallBase);
+<<<<<<< HEAD
 void pocTask6();
+=======
+void pocTask6(int height);
+>>>>>>> origin/master
 //PROOF-OF-COMPETENCY SUB-ROUTINES
 void pocTask4Search2(byte power, short hallBase); //Searches the 10cm x 30cm region
 void pocTask5Path(byte power); //Runs that weird path with the two turns
@@ -194,13 +207,14 @@ void driverPath(byte power)
 	clearDebugStream();
 	clearDebugStream();
 	writeDebugStream("--NEW TEST------------------------------------------\n");
-<<<<<<< HEAD
+
 	//byte test[200];
 	//readMRDstream(MRD_CODE_FILENAME, test);
 	short mrdCommands[35];
 	short mrdParameters[35];
 	byte numCommands = readMRDstream2(MRD_CODE_FILENAME, mrdCommands, mrdParameters);
 	executeAllCommands(numCommands, power, mrdCommands, mrdParameters);
+<<<<<<< HEAD
 =======
 	byte test[200];
 	readMRDstream(MRD_CODE_FILENAME, test);
@@ -214,6 +228,8 @@ void driverPath(byte power)
 =======
 >>>>>>> origin/master
 >>>>>>> origin/master
+>>>>>>> origin/master
+=======
 >>>>>>> origin/master
 }
 
@@ -260,15 +276,23 @@ void runSpeedTest() {
 
 void runPointTurnTest(int angle)
 {
+<<<<<<< HEAD
 	short power = 40;
 	//byte power = 60;
+=======
+	byte power = 60;
+>>>>>>> origin/master
 	pointTurn(power, angle);
 }
 
 void moveForwardTest(float distance)
 {
+<<<<<<< HEAD
 	short power = 70;
 	//byte power = 100;
+=======
+	byte power = 100;
+>>>>>>> origin/master
 	moveForward(power, distance);
 }
 

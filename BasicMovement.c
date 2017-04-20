@@ -16,7 +16,6 @@ void fullStop(); //Stops all motors
 void drive(byte power, int timeMS);
 void driveIndef(byte power);
 void pointTurn(byte power, int angle);
-void gyroTurn(byte power, int angle);
 void pointTurnTime(byte power, int timeMS); //Positive is LEFT
 void pointTurnIndef(byte power);
 void pivotTurn(byte power, int timeMS); //Positive is LEFT

@@ -48,7 +48,7 @@ void motorRampUp(byte powerTarget) {
 	}
 }
 
-void motorRampDown(short PowerOrig) {
+void motorRampDown(byte PowerOrig) {
 	short power;
 	for(power = PowerOrig; power < 0; power++) {
 		motor[motorA] = power;
