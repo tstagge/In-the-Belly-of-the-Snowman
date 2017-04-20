@@ -34,9 +34,17 @@ bool nearBeacon(short base)
 
 bool atBeacon(short base)
 {
+<<<<<<< HEAD
 	int thresh3 = HALL_EFFECT_THRESH_3;
 	return (getHallEffect(base) < thresh3);
 	//short thresh3 = HALL_EFFECT_THRESH_3;
+=======
+
+	int thresh3 = HALL_EFFECT_THRESH_3;
+	//short thresh3 = HALL_EFFECT_THRESH_3;
+
+	//return (getHallEffect(base) < thresh3);
+>>>>>>> origin/master
 	return (getHallEffect(base) >= thresh3);
 }
 
