@@ -170,15 +170,16 @@ void moveForward(byte power, float distance)
 
 	motorRampUp(power);
 
-	int kill = 0;
+	float pastEncoder = nMotorEncoder[motorA];
 
 	while (nMotorEncoder[motorB] > -(angleDegrees -100) ) {
-		//Idle loop. Program waits until target value is reached.
-		//if (kill > 100000) {
-		//	kill = 0;
-		//	break;
-		//}
-		//kill++;
+		float currEncoder = nMotorEncoder[motorA];
+		if ((currEncoder - pastEncoder)< 0) {
+			break;
+		}
+		else {
+			pastEncoder = currEncoder;
+		}
   }
   motorRampDown(power);
 }

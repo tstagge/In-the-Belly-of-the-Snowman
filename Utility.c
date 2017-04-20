@@ -44,19 +44,19 @@ void motorRampUp(short powerTarget) {
 		motor[motorA] = power;
 		motor[motorB] = power;
 		displayCenteredTextLine(3, "%d", power);
-		wait1Msec(10); //Waits 20 milliseconds before increasing the power.
+		wait1Msec(20); //Waits 20 milliseconds before increasing the power.
 	}
 }
 
 void motorRampDown(short PowerOrig) {
 	short power;
-	for(power = PowerOrig; power < 0; power++) { //Starts the power at 30 and ramps up to inputted power value
+	for(power = PowerOrig; power < 0; power++) {
 		motor[motorA] = power;
 		motor[motorB] = power;
 		displayCenteredTextLine(3, "%d", power);
 		writeDebugStreamLine("%d", power);
 		writeDebugStreamLine("Slowing down");
-		wait1Msec(50); //Waits 10 milliseconds before increasing the power.
+		wait1Msec(10); //Waits 10 milliseconds before increasing the power.
 	}
 }
 
