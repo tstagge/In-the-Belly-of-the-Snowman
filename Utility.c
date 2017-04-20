@@ -48,7 +48,7 @@ void motorRampUp(byte powerTarget) {
 	}
 }
 
-void motorRampDown(short PowerOrig) {
+void motorRampDown(byte PowerOrig) {
 	short power;
 	for(power = PowerOrig; power < 0; power++) { //Starts the power at 30 and ramps up to inputted power value
 		motor[motorA] = power;
@@ -56,7 +56,7 @@ void motorRampDown(short PowerOrig) {
 		displayCenteredTextLine(3, "%d", power);
 		writeDebugStreamLine("%d", power);
 		writeDebugStreamLine("Slowing down");
-		wait1Msec(50); //Waits 10 milliseconds before increasing the power.
+		wait1Msec(10); //Waits 10 milliseconds before increasing the power.
 	}
 }
 
