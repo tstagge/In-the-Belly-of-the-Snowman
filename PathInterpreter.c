@@ -11,6 +11,8 @@
 void readMRDstream(char* mrdFileName, byte* fileStream); //Obsolete
 byte readMRDstream2(char* mrdFileName, short* mrdComm, short* mrdParam);
 void executeAllCommands(byte numComm, short* mrdComm, short* mrdParam);
+byte parseDrops(byte numComm, short* mrdComm, short* mrdParam);
+void executeOperation(byte numComm, byte power, short* mrdComm, short* mrdParam, byte op);
 
 /*----------------------------FUNCTION DEFINITIONS----------------------------*/
 void readMRDstream(char* mrdFileName, byte* fileStream)
@@ -136,11 +138,11 @@ byte readMRDstream2(char* mrdFileName, short* mrdComm, short* mrdParam)
 	Close(navFile, isFileFailure);
 	writeDebugStream("Num real lines: %d\n", numRealLines);
 
-	ubyte ic = 0;
-	ubyte ip = 0;
+	byte ic = 0;
+	byte ip = 0;
 	float tempNum = 0;
 	byte sign = 1;
-	ubyte n = 0;
+	byte n = 0;
 	i = 2;
 	//while(fileStream[i] != 42) //While not an asterisk
 	while(i < nFileSize)
@@ -148,7 +150,7 @@ byte readMRDstream2(char* mrdFileName, short* mrdComm, short* mrdParam)
 		if((fileStream[i] == 68)||(fileStream[i] == 77)||(fileStream[i] == 82))
 		{
 				mrdComm[ic] = fileStream[i];
-				//writeDebugStream("%c",fileStream[i]);
+				writeDebugStream("%c",fileStream[i]);
 				ic++;
 				i++;
 				tempNum = 0;
@@ -170,22 +172,23 @@ byte readMRDstream2(char* mrdFileName, short* mrdComm, short* mrdParam)
 				for(i = i; i < j; i++)
 				{
 					tempNum += (float)(fileStream[i] - 48.0) * pow(10,n);
-					//writeDebugStream("tempNum = %d\tn = %d", tempNum, n);
+					//writeDebugStream("\ndigit = %d     tempNum = %f     n = %d\n", fileStream[i]-48, tempNum, n);
 					n--;
 				}
 
-				mrdParam[ip] = round(sign * tempNum);
-				//writeDebugStream("%d\n", sign * tempNum);
+				//mrdParam[ip] = round(sign * tempNum);
+				mrdParam[ip] = ceil(sign * tempNum);
+				writeDebugStream("%d\n", sign * tempNum);
 				ip++;
 		}
 		else
 			i++;
 	}
 
-	for(i = 0; i <= ic; i++)
+	/*for(i = 0; i < ic; i++)
 	{
 		writeDebugStream("%c %d\n", mrdComm[i], mrdParam[i]);
-	}
+	}*/
 	writeDebugStream("Num commands: %d\n", ic);
 	return ic;
 }
@@ -202,11 +205,34 @@ void executeAllCommands(byte numComm, byte power, short* mrdComm, short* mrdPara
 		}
 		else if(mrdComm[i] == 82) //R
 		{
-			pointRotate(power,mrdParam[i]);
+			if(mrdParam[i] != 0)
+			{
+				pointTurn(power,(int)mrdParam[i]);
+			}
 		}
 		else if(mrdComm[i] == 68) //D
 		{
 			dropAC();
 		}
 	}
+}
+
+//Directly returns number of drops; returns via pass-by-reference a list of the indices of the drops
+byte parseDrops(byte numComm, short* mrdComm, short* mrdParam)
+{
+	byte numDrops = 0;
+	byte i = 0;
+	for(i = 0; i < numComm; i++)
+	{
+		if(mrdComm[i] == 68)
+		{
+			numDrops++;
+		}
+	}
+	return 0;
+}
+
+void executeOperation(byte numComm, byte power, short* mrdComm, short* mrdParam, byte op)
+{
+
 }

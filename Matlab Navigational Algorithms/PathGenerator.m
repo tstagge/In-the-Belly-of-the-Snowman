@@ -10,7 +10,7 @@ hold on;
 tic;
 
 %% CONSTANTS
-NODE_GRID_BLOCK_NUM = 6;
+NODE_GRID_BLOCK_NUM = 3;
 TOL_CONTIGUITY = 5;
 ROBOT_SIZE = [[7,18], 15]; % [lfront, lrear,width] (cm); wheel separation is 14.5cm
 SCORE_MATRIX = [-1, 1000000;

@@ -38,7 +38,6 @@
 #define MOTOR_GEAR_RATIO 1
 
 //Filenames
-//#define SAT_MAP_FILENAME "satmap1.txt" //FIXME once we know how they are giving us the file!
 #define MRD_CODE_FILENAME "satmap1nav9.txt"
 
 //Struct Definitions
@@ -56,7 +55,7 @@
 /*----------------------------FUNCTION  PROTOTYPES----------------------------*/
 //DRIVERS
 void driver1();
-void driver2();
+void driverPath(byte power);
 void pocDriver();
 
 //TESTS
@@ -82,14 +81,18 @@ void pocTask5Path(byte power); //Runs that weird path with the two turns
 /*-----------------------------------MAIN-------------------------------------*/
 task main()
 {
-	clearDebugStream();
-	driver2();
+	//-----CALIBRATIONS/CONSTANTS-----/
+	halt();
+	sleep(50);
+	int HALL_BASE = calibrateHallEffect();
+	int GYRO_BASE = calibrateGyro();
+	sleep(50);
+	byte BASE_POW = BASE_MOTOR_POWER;
 
+	driverPath(BASE_POW);
 	//writeDebugStream("0: %d\n",'0');
-
 	//dropAC();
 }
-
 
 /*void driver1()
 {
@@ -105,27 +108,23 @@ task main()
 	short BASE_POW = BASE_MOTOR_POWER;
 
 	//------TEST  CODE------/
-
 	//bluetoothTest(HEIGHT_OF_MARKER);
-
 	//closeGate(60);
 	//dropAC();
 	readGyro(GYRO_BASE);
 }*/
 
-void driver2()
+void driverPath(byte power)
 {
 	clearDebugStream();
 	clearDebugStream();
 	writeDebugStream("--NEW TEST------------------------------------------\n");
-	byte test[200];
-	readMRDstream(MRD_CODE_FILENAME, test);
-	writeDebugStream("RAW---\n");
-	short i = 0;
-	/*for(i = 0; i < 174; i++)
-	{
-		writeDebugStream("%c\n", test[i]);
-	}*/
+	//byte test[200];
+	//readMRDstream(MRD_CODE_FILENAME, test);
+	short mrdCommands[35];
+	short mrdParameters[35];
+	byte numCommands = readMRDstream2(MRD_CODE_FILENAME, mrdCommands, mrdParameters);
+	executeAllCommands(numCommands, power, mrdCommands, mrdParameters);
 }
 
 /*----------------------------FUNCTION DEFINITIONS----------------------------*/
