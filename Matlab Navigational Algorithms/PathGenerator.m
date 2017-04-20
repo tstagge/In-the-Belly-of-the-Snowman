@@ -23,8 +23,8 @@ SCORE_MATRIX = [-1, 1000000;
 START_LOC_X = 85;%340;%30;%340;%30;%340;
 START_LOC_Y = 245;%30;%245;%30;%245;%30;
 START_LOC_THETA = 90; %degrees
-MAP_FILENAME = 'satmap2.txt';
-OUTPUT_FILENAME = 'satmap2_mrdC1.c';
+MAP_FILENAME = 'satmap1.txt';
+OUTPUT_FILENAME = 'satmap1_mrdC3.c';
 
 %% STRUCT TEMPLATES
 
@@ -68,18 +68,19 @@ intPathTemplate = struct(f14,v14,f17,v17,f15,v15,f20,v20);
 
 %% INPUTS
 
-%mapFileName = input('Input name of provided satellite map file: ','s');
 mapFileName = MAP_FILENAME;
-%outputFileName = input('Input name of MRD-Code output file: ','s');
 outputFileName = OUTPUT_FILENAME;
 
 startLocation = struct(positionTemplate);
-% startLocation.x = input('Starting location (x): ');
-% startLocation.y = input('Starting location (y): ');
-% startLocation.theta = input('Starting location (theta): ');
 startLocation.x = START_LOC_X;
 startLocation.y = START_LOC_Y;
 startLocation.theta = START_LOC_THETA;
+
+%mapFileName = input('Input name of provided satellite map file: ','s');
+%outputFileName = input('Input name of MRD-Code output file: ','s');
+% startLocation.x = input('Starting location (x): ');
+% startLocation.y = input('Starting location (y): ');
+% startLocation.theta = input('Starting location (theta): ');
 
 
 %% IMPORT SATELLITE MAP
@@ -154,8 +155,12 @@ numBlocks = NODE_GRID_BLOCK_NUM; %Currently 3
 totalPathsCalculated = 0;
 optPaths = [];
 
-for beacon = 1:numBeacons
-    currentDest = beaconLocations(orderOfPriority(beacon));
+for beacon = 1:(numBeacons + 1)
+    if(beacon <= numBeacons)
+        currentDest = beaconLocations(orderOfPriority(beacon));
+    else
+        currentDest = startLocation;
+    end
     %Note: unitPermutations, stepPermutations, and pathPermutations are all
     % currently lists of Path Structs, each with the content of the previous,
     % plus a bit more
@@ -170,7 +175,11 @@ for beacon = 1:numBeacons
     end
     plotPath(optPath);
     
-    currentLoc = beaconLocations(orderOfPriority(beacon));
+    if(beacon <= numBeacons)
+        currentLoc = beaconLocations(orderOfPriority(beacon));
+    else
+        currentLoc = startLocation; %As of right now, this shouldn't actually be used, but it will be assigned
+    end
     
     %Counters/Data Trackers
     totalPathsCalculated = totalPathsCalculated + length(pathPermutations);
