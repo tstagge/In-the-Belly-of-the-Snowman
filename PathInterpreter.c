@@ -40,10 +40,13 @@ void readMRDstream(char* mrdFileName, byte* fileStream)
 
 	writeDebugStream("Num real lines: %d\n", numRealLines);
 
-	byte mrdCommands[30];
-	short ic = 0;
-	byte mrdParameters[30];
-	short ip = 0;
+	short mrdCommands[30];
+	ubyte ic = 0;
+	short mrdParameters[30];
+	ubyte ip = 0;
+	float tempNum = 0;
+	byte sign = 1;
+	ubyte n = 0;
 	i = 2;
 	//while(fileStream[i] != 42) //While not an asterisk
 	while(i < nFileSize)
@@ -51,13 +54,13 @@ void readMRDstream(char* mrdFileName, byte* fileStream)
 		if((fileStream[i] == 68)||(fileStream[i] == 77)||(fileStream[i] == 82))
 		{
 				mrdCommands[ic] = fileStream[i];
-				//writeDebugStream("Added command\n");
+				//writeDebugStream("%c",fileStream[i]);
 				ic++;
 				i++;
 				//char *tempStr = "";
-				short tempNum = 0;
-				short sign = 1;
-				short n = 0;
+				tempNum = 0;
+				sign = 1;
+				n = 0;
 				if(fileStream[i] == 45) //Negative Sign
 				{
 						i++;
@@ -72,7 +75,7 @@ void readMRDstream(char* mrdFileName, byte* fileStream)
 				n = (j - i) - 1;
 
 				//while((fileStream[i] != 32)&&(fileStream[i] != 10)) //While not space or newline
-				for(j = n + 1; j > 0; j--)
+				/*for(j = n + 1; j > 0; j--)
 				{
 					//strcat(tempStr, fileStream[i])
 					//tempNum += (char)fileStream[i] * pow(10,n);
@@ -80,15 +83,25 @@ void readMRDstream(char* mrdFileName, byte* fileStream)
 					tempNum += (fileStream[i] - 48) * pow(10,n);
 					n--;
 					i++;
+				}*/
+
+				for(i = i; i < j; i++)
+				{
+					tempNum += (float)(fileStream[i] - 48.0) * pow(10,n);
+					//writeDebugStream("tempNum = %d\tn = %d", tempNum, n);
+					n--;
 				}
 
-				mrdParameters[ip] = sign * tempNum;
-				//writeDebugStream("Added parameter\n");
+				mrdParameters[ip] = round(sign * tempNum);
+				//writeDebugStream("%d\n", sign * tempNum);
 				ip++;
 		}
 		else
 			i++;
 	}
+
+
+	writeDebugStream("---Post---");
 	for(i = 0; i <= ic; i++)
 	{
 		writeDebugStream("%c %d\n", mrdCommands[i], mrdParameters[i]);

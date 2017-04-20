@@ -82,16 +82,12 @@ void pocTask5Path(byte power); //Runs that weird path with the two turns
 /*-----------------------------------MAIN-------------------------------------*/
 task main()
 {
-	//driver2();
-	//clearDebugStream();
-	//writeDebugStream("*: %d\nspace: %d\n-: %d\nnewline: %d\n",'*',' ','-','\n');
+	clearDebugStream();
+	driver2();
+
+	//writeDebugStream("0: %d\n",'0');
 
 	//dropAC();
-	//openGate(DEP_MOTOR_POWER_OPEN);
-
-	openGate2(DEP_MOTOR_POWER_OPEN);
-	sleep(300);
-	closeGate2(DEP_MOTOR_POWER_CLOSE);
 }
 
 
@@ -124,12 +120,12 @@ void driver2()
 	writeDebugStream("--NEW TEST------------------------------------------\n");
 	byte test[200];
 	readMRDstream(MRD_CODE_FILENAME, test);
-	writeDebugStream("RAW---");
+	writeDebugStream("RAW---\n");
 	short i = 0;
-	for(i = 0; i < 174; i++)
+	/*for(i = 0; i < 174; i++)
 	{
 		writeDebugStream("%c\n", test[i]);
-	}
+	}*/
 }
 
 /*----------------------------FUNCTION DEFINITIONS----------------------------*/
