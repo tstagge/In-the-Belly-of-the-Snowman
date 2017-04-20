@@ -41,7 +41,6 @@
 #define MOTOR_GEAR_RATIO 1
 
 //Filenames
-//#define SAT_MAP_FILENAME "satmap1.txt" //FIXME once we know how they are giving us the file!
 #define MRD_CODE_FILENAME "satmap1nav9.txt"
 
 //Struct Definitions
@@ -61,7 +60,7 @@
 /*----------------------------FUNCTION  PROTOTYPES----------------------------*/
 //DRIVERS
 void driver1();
-void driver2();
+void driverPath(byte power);
 void pocDriver();
 
 //TESTS
@@ -95,6 +94,7 @@ void pocTask5Path(byte power); //Runs that weird path with the two turns
 /*-----------------------------------MAIN-------------------------------------*/
 task main()
 {
+<<<<<<< HEAD
 	clearDebugStream();
 	writeDebugStreamLine("Battery level (mV): %d", nImmediateBatteryLevel);
 	//driver2();
@@ -115,6 +115,22 @@ task main()
 
 
 void driver1()
+=======
+	//-----CALIBRATIONS/CONSTANTS-----/
+	halt();
+	sleep(50);
+	int HALL_BASE = calibrateHallEffect();
+	int GYRO_BASE = calibrateGyro();
+	sleep(50);
+	byte BASE_POW = BASE_MOTOR_POWER;
+
+	driverPath(BASE_POW);
+	//writeDebugStream("0: %d\n",'0');
+	//dropAC();
+}
+
+/*void driver1()
+>>>>>>> origin/master
 {
 	//-----CALIBRATIONS/CONSTANTS-----/
 	//halt();
@@ -128,6 +144,9 @@ void driver1()
 	writeDebugStreamLine("HALL_BASE: %d", HALL_BASE);
 
 	//------TEST  CODE------/
+<<<<<<< HEAD
+	//bluetoothTest(HEIGHT_OF_MARKER);
+=======
 
 	//float distance = 100; //cm
 
@@ -140,6 +159,7 @@ void driver1()
 	//bluetoothTest(HEIGHT_OF_MARKER);
 
 	//openGate(60);
+>>>>>>> origin/master
 	//closeGate(60);
 	//dropAC();
 	//readGyro(GYRO_BASE);
@@ -169,11 +189,19 @@ void driver1()
 	//pocTask6(HEIGHT_OF_MARKER);
 }//*/
 
-void driver2()
+void driverPath(byte power)
 {
 	clearDebugStream();
 	clearDebugStream();
 	writeDebugStream("--NEW TEST------------------------------------------\n");
+<<<<<<< HEAD
+	//byte test[200];
+	//readMRDstream(MRD_CODE_FILENAME, test);
+	short mrdCommands[35];
+	short mrdParameters[35];
+	byte numCommands = readMRDstream2(MRD_CODE_FILENAME, mrdCommands, mrdParameters);
+	executeAllCommands(numCommands, power, mrdCommands, mrdParameters);
+=======
 	byte test[200];
 	readMRDstream(MRD_CODE_FILENAME, test);
 	writeDebugStream("RAW---");
@@ -182,6 +210,11 @@ void driver2()
 	{
 		writeDebugStream("%c\n", test[i]);
 	}
+<<<<<<< HEAD
+=======
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
 }
 
 /*----------------------------FUNCTION DEFINITIONS----------------------------*/
