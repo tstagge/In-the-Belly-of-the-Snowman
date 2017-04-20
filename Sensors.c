@@ -18,7 +18,15 @@ short getGyro(short base);
 /*----------------------------FUNCTION DEFINITIONS----------------------------*/
 short calibrateHallEffect()
 {
-	return SensorValue(S3);
+	short hallNum = 0;
+	short i = 0;
+	for (i < 50)
+	{
+		hallNum = hallNum + SensorValue(S3);
+		i++
+	}
+	hallNum = hallNum / 50;
+	return hallNum;
 }
 
 short getHallEffect(short base)
