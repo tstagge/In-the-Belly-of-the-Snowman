@@ -59,7 +59,11 @@ function intPath = outputMRDc(oPaths,oFileName,vecTemp,intTemp,ptTemp,mapSize)
     currCase = 1;
     while(iVec <= totalNumVec)
         if(intPath.vectorList(iVec).magnitude == 0) %D
-           fprintf(oFile, '\t\t\tdropAC();\n');
+           if(currCase < numPaths)
+               fprintf(oFile, '\t\t\tdropAC();\n');
+               expLoc = getEndpointReal(intPath.vectorList(iVec-1), ptTemp, mapSize);
+               fprintf(oFile, '\t\t\texpLoc = {%d, %d};\n',expLoc.x,expLoc.y);
+           end
            fprintf(oFile, '\t\t\tbreak;\n');
            if(currCase < numPaths)
                currCase = currCase + 1;
@@ -68,7 +72,7 @@ function intPath = outputMRDc(oPaths,oFileName,vecTemp,intTemp,ptTemp,mapSize)
         else
             if(waitOnM == false)
                 fprintf(oFile, '\t\t\tmoveForward(power, %d);\n ', intPath.vectorList(iVec).magnitude);
-                expLoc = getEndpointReal(intPath.vectorList(iVec), ptTemp, mapSize);
+                %expLoc = getEndpointReal(intPath.vectorList(iVec), ptTemp, mapSize);
                 %fprintf(oFile, '\t\t\texpLoc = {%d, %d};\n',expLoc.x,expLoc.y);
             else
                 waitOnM = false;
