@@ -28,7 +28,11 @@ void dropAC()
 //Linear Gate methods
 void openGate(int power) {
 	nMotorEncoder[motorC] = 0;
+<<<<<<< HEAD
 	nMotorEncoderTarget[motorC] = 300; //Needs testing
+=======
+	nMotorEncoderTarget[motorC] = 280;//320; //Needs testing
+>>>>>>> origin/master
 	motor[motorC] = power;
 	int maxRuns = 0;
 	while (nMotorRunState[motorC] != runStateIdle) {
