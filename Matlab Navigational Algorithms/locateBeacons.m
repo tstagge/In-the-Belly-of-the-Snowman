@@ -3,7 +3,7 @@
 %     size = the 2x1 matrix of the height and width of the map matrix
 %     tolCont = desired tolerance (in terms of pixels) for two cells to be
 %               considered contiguous
-%     ptTemp = empty struct template for a point struct
+%     bcnTemp = empty struct template for a Beacon Location Struct
 % OUT:
 %     centers = the rounded! average coordinates for each contiguous group
 %               of cells (in a list of point structs)
@@ -23,7 +23,7 @@ function centers = locateBeacons(map, size, tolCont, bcnTemp)
         end
     end
     num40s = length(all40s);
-    fprintf('Num 40s: %d\n', num40s);
+    %fprintf('Num 40s: %d\n', num40s);
     
     %----FIND ALL CONTIGUOUS BLOCKS----------------------------------------
     contiguousGroups = [all40s(1)];

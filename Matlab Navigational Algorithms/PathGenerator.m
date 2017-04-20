@@ -1,48 +1,77 @@
-% ENGR 142 Project 3
+% ENGR 142: Project 3
 % Team 57
+%   Jillian Hestle, Emily Schott, Tyler Stagge, Nicholas Vilbrandt
 
-%% CLEAR COMMANDS
+% STATIC PATH GENERATING NAVIGATIONAL ALGORITHM [PathGenerator.m]
+
+%% CLEAR COMMANDS et al.
 clc; clear;
+hold on;
+tic;
 
 %% CONSTANTS
+NODE_GRID_BLOCK_NUM = 6;
 TOL_CONTIGUITY = 5;
-ROBOT_WIDTH = 15; %ish [cm]; wheel separation is 14.5cm
-ROBOT_LENGTH = 25; %ish [cm]
-NODE_GRID_BLOCK_SIZE = 5; %[cm]
+ROBOT_SIZE = [[7,18], 15]; % [lfront, lrear,width] (cm); wheel separation is 14.5cm
+SCORE_MATRIX = [-1, 1000000;
+                0, 1;
+                1, 10;
+                2, 100;
+                40, 0];
 
 % Will-be-inputs
-START_LOC_X = 30;
-START_LOC_Y = 245;
+START_LOC_X = 85;%340;%30;%340;%30;%340;
+START_LOC_Y = 245;%30;%245;%30;%245;%30;
 START_LOC_THETA = 90; %degrees
-MAP_FILENAME = 'satmap1.txt';
+MAP_FILENAME = 'satmap5.txt';
+OUTPUT_FILENAME = 'satmap5_navigation1.txt';
 
 %% STRUCT TEMPLATES
 
-% Robot Position Structs
+% Robot Position Struct
 f1 = 'x'; v1 = 0;
 f2 = 'y'; v2 = 0;
-f3 = 'theta'; v3 = 0;
+f3 = 'theta'; v3 = 0; %Don't think this is currently used anywhere
 positionTemplate = struct(f1,v1,f2,v2,f3,v3);
 
+% Simple Coordinate Point Struct
+pointTemplate = struct(f1,v1,f2,v2);
+
 % Beacon Location Struct
-f4 = 'priority'; v4 = 0;
+f4 = 'priority'; v4 = -1;
 f11 = 'distance'; v11 = 0;
 beaconTemplate = struct(f1,v1,f2,v2,f4,v4,f11,v11);
 
-% Vector Stucts
+% Vector Struct
 f5 = 'x0'; v5 = 0;
 f6 = 'x1'; v6 = 0;
 f7 = 'y0'; v7 = 0;
 f8 = 'y1'; v8 = 0;
 f9 = 'magnitude'; v9 = 0;
 f10 = 'angle'; v10 = 0;
-vectorTemplate = struct(f5,v5,f6,v6,f7,v7,f8,v8,f9,v9,f10,v10);
+f16 = 'slope'; v16 = 0;
+vectorTemplate = struct(f5,v5,f6,v6,f7,v7,f8,v8,f9,v9,f10,v10,f16,v16);
+
+% Path Struct
+f12 = 'binMat'; v12 = []; %Was once its own struct
+f13 = 'stepMat'; v13 = [[];[]]; %1st row is x movements; 2nd row is y movements
+f14 = 'vectorList'; v14 = [];
+f17 = 'numTurns'; v17 = 0;
+f18 = 'cellTypes'; v18 = [];
+f15 = 'score'; v15 = 0;
+f19 = 'valid'; v19 = true;
+f20 = 'turnAngles'; v20 = []; %Positive => Left, Negative => Right
+pathTemplate = struct(f12,v12,f13,v13,f14,v14,f17,v17,f15,v15,f19,v19,f20,v20);
+
+% Integrated Path Struct
+intPathTemplate = struct(f14,v14,f17,v17,f15,v15,f20,v20);
 
 %% INPUTS
 
 %mapFileName = input('Input name of provided satellite map file: ','s');
 mapFileName = MAP_FILENAME;
-fprintf('Input name of provided satellite map file: %s\n',mapFileName);
+%outputFileName = input('Input name of MRD-Code output file: ','s');
+outputFileName = OUTPUT_FILENAME;
 
 startLocation = struct(positionTemplate);
 % startLocation.x = input('Starting location (x): ');
@@ -61,6 +90,7 @@ mapRaw = load(mapFileName);
 mapRawSize = size(mapRaw);
 
 %% PROCESS SATELLITE MAP
+plotMap(mapRaw, mapRawSize);
 mapProcessed = mapRaw; %Copy
 
 %BEACON LOCATIONS----------------------------------------------------------
@@ -81,34 +111,93 @@ end
 %BEACON PRIORITY-----------------------------------------------------------
 %  Note: it is believed they will be giving us a specific order, but for
 %  now we are going to do it based on distance
-minDist = 100000;
+orderOfPriority = zeros(1,numBeacons);
+minDist = inf;
 minDistI = 0;
 prior = 1;
-for b1 = 1:numBeacons
+for b1 = 1:1:numBeacons %Identify closest to starting location
     if(beaconLocations(b1).distance < minDist)
-        minDist = beaconLocations(b).distance;
+        minDist = beaconLocations(b1).distance;
         minDistI = b1;
     end
+    %fprintf('MinDist = %d\n', minDist);
 end
-beaconLocations(minDistI).priority = prior; %This is going to take a lot of work
-%prior = prior + 1;
+beaconLocations(minDistI).priority = prior;
+orderOfPriority(prior) = minDistI;
+prior = prior + 1;
+
+%Identify subsequent beacons
+latestPriorI = minDistI;
+nextPriorI = -1;
+while(prior <= numBeacons)
+    minDistFromLast = 100000;
+    for b1 = 1:numBeacons
+        distFromLast = getDistance(beaconLocations(latestPriorI), beaconLocations(b1));
+        if(beaconLocations(b1).priority == -1) %Unassigned priority
+            if(distFromLast < minDistFromLast)
+                minDistFromLast = distFromLast;
+                nextPriorI = b1;
+            end
+        end
+    end
+    beaconLocations(nextPriorI).priority = prior;
+    orderOfPriority(prior) = nextPriorI;
+    %fprintf('Setting priority to %d\n', prior);
+    prior = prior + 1;
+    latestPriorI = nextPriorI;
+end
 
 %% PATH GENERATION (Version 1: all 90 degree turns)
 
-currentStart = startLocation; %These will eventually be in loops
-currentDest = beaconLocations(minDistI);
+currentLoc = startLocation; %These will eventually be in loops
+numBlocks = NODE_GRID_BLOCK_NUM; %Currently 3
+totalPathsCalculated = 0;
+optPaths = [];
+
+for beacon = 1:numBeacons
+    currentDest = beaconLocations(orderOfPriority(beacon));
+    %Note: unitPermutations, stepPermutations, and pathPermutations are all
+    % currently lists of Path Structs, each with the content of the previous,
+    % plus a bit more
+    unitPermutations = getBinaryMatrix(numBlocks, pathTemplate);
+    stepPermutations = binary2stepMatrix(unitPermutations, pathTemplate);
+    pathPermutations = step2vectorMatrix(currentLoc, currentDest, numBlocks, stepPermutations, pointTemplate, vectorTemplate);
+    %scoredPathPermutations = scorePaths(mapProcessed, SCORE_MATRIX, pathPermutations);
+    scoredPathPermutations = scorePaths2(mapProcessed, SCORE_MATRIX, ROBOT_SIZE, pathPermutations);
+    optPath = findOptPath(scoredPathPermutations, pathTemplate);
+    if(optPath.valid == false)
+        fprintf('ERROR: No valid path found to beacon %d', beacon);
+    end
+    plotPath(optPath);
+    
+    currentLoc = beaconLocations(orderOfPriority(beacon));
+    
+    %Counters/Data Trackers
+    totalPathsCalculated = totalPathsCalculated + length(pathPermutations);
+    optPaths = [optPaths, optPath];
+end
+
+%% MRD-CODE OUTPUT
+combinedOptPath = outputMRD(optPaths,outputFileName,vectorTemplate,intPathTemplate,pointTemplate,mapRawSize);
 
 %% PLOTTING
 
-hold on;
+%hold on at top of program
 grid on;
 grid minor;
 axis equal;
 axis([0, mapRawSize(2), -mapRawSize(1), 0]);
 title(['Path Generation of: ', mapFileName]);
 
-drawBorder(mapRawSize);
-plot(startLocation.x, -startLocation.y, 'b*');
-plot(beaconPlotX, beaconPlotY, 'r*'); %Average beacon locations
+plotBorder(mapRawSize);
+plot(startLocation.x, -startLocation.y, 'bo');
+plot(beaconPlotX, beaconPlotY, 'ro'); %Average beacon locations
 hold off;
+
+%% REPORT
+fprintf('Blocks (n) = %d\n', numBlocks);
+fprintf('Total paths calculated = %d\n', totalPathsCalculated);
+fprintf('Paths calculated per movement = %d\n', length(pathPermutations));
+fprintf('Lowest path score = %d\n', optPaths.score);
+fprintf('Runtime (s) = %f\n', toc);
 

@@ -24,7 +24,7 @@ void sendAMessage(int height) {
 
 	sleep(1000);
 
-	while (bQueuedMsgAvailable()==FALSE) {
+	while (bQueuedMsgAvailable() == false) {
 		sleep(250);
 	}
 

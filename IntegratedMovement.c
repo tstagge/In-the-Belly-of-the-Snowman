@@ -8,12 +8,12 @@
 // encoder-based movement), including gyro-turns, hall-effect sweeps, and so on.
 
 /*----------------------------FUNCTION  PROTOTYPES----------------------------*/
-bool beaconSweep(short power, int hallBase, int angle);
-void gyroTurn(short power, int gyroBase, int angle);
+bool beaconSweep(byte power, int hallBase, int angle);
+void gyroTurn(byte power, int gyroBase, int angle);
 
 /*----------------------------FUNCTION DEFINITIONS----------------------------*/
 //IN: Positive power ==>> Left
-bool beaconSweep(short power, int hallBase, int angle)
+bool beaconSweep(byte power, int hallBase, int angle)
 {
 	bool nearB = false;
 	float radiusWheel = WHEEL_RADIUS;
@@ -43,7 +43,7 @@ bool beaconSweep(short power, int hallBase, int angle)
 }
 
 //IN: Power(Positive ==> Left), gyro calibration base value, angle(magnitude)
-//void gyroTurn(short power, int gyroBase, int angle)
+//void gyroTurn(byte power, int gyroBase, int angle)
 //{
 //	float radiusWheel = WHEEL_RADIUS;
 //	float radiusBot = TURN_RADIUS;
@@ -66,7 +66,7 @@ bool beaconSweep(short power, int hallBase, int angle)
 //	halt();
 //}
 
-void gyroTurn(short power, int gyroBase, int angle)
+void gyroTurn(byte power, int gyroBase, int angle)
 {
 	float radiusWheel = WHEEL_RADIUS;
 	float radiusBot = TURN_RADIUS;
