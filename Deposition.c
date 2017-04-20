@@ -9,8 +9,10 @@
 
 /*----------------------------FUNCTION  PROTOTYPES----------------------------*/
 void dropAC();
-void openGate(int power);
-void closeGate(int power);
+void openGate(byte power);
+void openGate2(byte power);
+void closeGate(byte power);
+void closeGate2(byte power);
 
 /*----------------------------FUNCTION DEFINITIONS----------------------------*/
 
@@ -19,19 +21,23 @@ void dropAC()
 {
 		int depPowerOpen = DEP_MOTOR_POWER_OPEN; //global variable defined in Driver.c
 		int depPowerClose = DEP_MOTOR_POWER_CLOSE;
-		openGate(depPowerOpen);
+		openGate2(depPowerOpen);
 		sleep(300);
 		//moveForward(5, 50);
-		closeGate(depPowerClose);
+		closeGate2(depPowerClose);
 }
 
-//Linear Gate methods
-void openGate(int power) {
+//-----Linear Gate methods-----
+void openGate(byte power) {
 	nMotorEncoder[motorC] = 0;
+<<<<<<< HEAD
 <<<<<<< HEAD
 	nMotorEncoderTarget[motorC] = 300; //Needs testing
 =======
 	nMotorEncoderTarget[motorC] = 280;//320; //Needs testing
+>>>>>>> origin/master
+=======
+	nMotorEncoderTarget[motorC] = 250;//280;//320; //280 for what we had at PoC2
 >>>>>>> origin/master
 	motor[motorC] = power;
 	int maxRuns = 0;
@@ -47,9 +53,25 @@ void openGate(int power) {
   fullStop();
 }
 
-void closeGate(int power) {
+void openGate2(byte power) //For linear gate; added time check
+{
 	nMotorEncoder[motorC] = 0;
+	nMotorEncoderTarget[motorC] = 250;//280;//320; //280 for what we had at PoC2
+	clearTimer(T1);
+	motor[motorC] = power;
+	while ((nMotorRunState[motorC] != runStateIdle)&&(time1[T1] < 3000)) {
+		//Idle loop. Program waits until target value is reached.
+  }
+  fullStop();
+}
+
+void closeGate(byte power) {
+	nMotorEncoder[motorC] = 0;
+<<<<<<< HEAD
 	nMotorEncoderTarget[motorC] = -220; //Needs testing
+=======
+	nMotorEncoderTarget[motorC] = -170;//-280; //Needs testing
+>>>>>>> origin/master
 	motor[motorC] = -power;
 	while (nMotorRunState[motorC] != runStateIdle) {
 		//Idle loop. Program waits until target value is reached.
@@ -57,7 +79,15 @@ void closeGate(int power) {
   fullStop();
 }
 
-//Rotational Gate Methods
+void closeGate2(byte power) //For linear gate with Touch sensor enabled
+{
+	motor[motorC] = -power;
+	while(SensorValue(S2) == 0) { //(IDLE) while the Touch Sensor is inactive
+	}
+	fullStop();
+}
+
+//-----Rotational Gate Methods------
 
 //void openGate(int power)
 //{
