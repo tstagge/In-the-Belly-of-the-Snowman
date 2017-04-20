@@ -23,8 +23,8 @@ SCORE_MATRIX = [-1, 1000000;
 START_LOC_X = 85;%340;%30;%340;%30;%340;
 START_LOC_Y = 245;%30;%245;%30;%245;%30;
 START_LOC_THETA = 90; %degrees
-MAP_FILENAME = 'satmap5.txt';
-OUTPUT_FILENAME = 'satmap5_navigation1.txt';
+MAP_FILENAME = 'satmap2.txt';
+OUTPUT_FILENAME = 'satmap2_mrdC1.c';
 
 %% STRUCT TEMPLATES
 
@@ -178,7 +178,8 @@ for beacon = 1:numBeacons
 end
 
 %% MRD-CODE OUTPUT
-combinedOptPath = outputMRD(optPaths,outputFileName,vectorTemplate,intPathTemplate,pointTemplate,mapRawSize);
+%combinedOptPath = outputMRD(optPaths,outputFileName,vectorTemplate,intPathTemplate,pointTemplate,mapRawSize);
+combinedOptPath = outputMRDc(optPaths,outputFileName,vectorTemplate,intPathTemplate,pointTemplate,mapRawSize);
 
 %% PLOTTING
 
