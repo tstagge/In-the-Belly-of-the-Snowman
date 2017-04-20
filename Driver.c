@@ -24,15 +24,12 @@
 
 //Defined powers and threshholds
 #define BASE_MOTOR_POWER 40
-<<<<<<< HEAD
 #define DEP_MOTOR_POWER_OPEN 50 //Power used to open deposition system
 #define DEP_MOTOR_POWER_CLOSE 60 //Power used to close the deposition system
 #define HALL_EFFECT_THRESH_1 8 //We're going to need to compare to the actual beacon magnets
-=======
-#define DEP_MOTOR_POWER_OPEN 8//10//50 //Power used to open deposition system
-#define DEP_MOTOR_POWER_CLOSE 35//60 //Power used to close the deposition system
-#define HALL_EFFECT_THRESH_1 3 //We're going to need to compare to the actual beacon magnets
->>>>>>> origin/master
+//#define DEP_MOTOR_POWER_OPEN 8 //10//50 //Power used to open deposition system
+//#define DEP_MOTOR_POWER_CLOSE 35 //60 //Power used to close the deposition system
+//#define HALL_EFFECT_THRESH_1 3 //We're going to need to compare to the actual beacon magnets
 #define HALL_EFFECT_THRESH_2 15
 #define HALL_EFFECT_THRESH_3 -5
 
@@ -56,13 +53,10 @@
 #include "IntegratedMovement.c"
 #include "Deposition.c"
 #include "Bluetooth.c"
-<<<<<<< HEAD
-#include "SatelliteNavigation.c"
+//#include "SatelliteNavigation.c"
 #include "Navigation.c"
-=======
 #include "PathInterpreter.c"
 //#include "Navigation.c" //FIXME: Some serious errors when trying to import this
->>>>>>> origin/master
 
 /*----------------------------FUNCTION  PROTOTYPES----------------------------*/
 //DRIVERS
@@ -78,8 +72,8 @@ void hallEffectBoolStream(short base);
 void bluetoothTest(int height);
 void readGyro(int base);
 void ioTest();
+void runSpeedTest();
 //PROOF-OF-COMPETENCY TASKS
-<<<<<<< HEAD
 void pocTask1(short power);
 void pocTask2(int height);
 void pocTask3(short power);
@@ -87,7 +81,6 @@ void pocTask4(short power, int hallBase);
 void pocTask5(short power);
 void pocTask45Combo(short power, int hallBase);
 void pocTask6(int height);
-=======
 void pocTask1(byte power);
 void pocTask2();
 void pocTask3(byte power);
@@ -95,7 +88,6 @@ void pocTask4(byte power, short hallBase);
 void pocTask5(byte power);
 void pocTask45Combo(byte power, short hallBase);
 void pocTask6();
->>>>>>> origin/master
 //PROOF-OF-COMPETENCY SUB-ROUTINES
 void pocTask4Search2(byte power, short hallBase); //Searches the 10cm x 30cm region
 void pocTask5Path(byte power); //Runs that weird path with the two turns
@@ -103,23 +95,27 @@ void pocTask5Path(byte power); //Runs that weird path with the two turns
 /*-----------------------------------MAIN-------------------------------------*/
 task main()
 {
+	clearDebugStream();
+	writeDebugStreamLine("Battery level (mV): %d", nImmediateBatteryLevel);
 	//driver2();
 	//clearDebugStream();
 	//writeDebugStream("*: %d\nspace: %d\n-: %d\nnewline: %d\n",'*',' ','-','\n');
 
+	//runSpeedTest();
+
+	driver1();
+
 	//dropAC();
 	//openGate(DEP_MOTOR_POWER_OPEN);
 
-	openGate2(DEP_MOTOR_POWER_OPEN);
-	sleep(300);
-	closeGate2(DEP_MOTOR_POWER_CLOSE);
+//	openGate2(DEP_MOTOR_POWER_OPEN);
+//	sleep(300);
+//	closeGate2(DEP_MOTOR_POWER_CLOSE);
 }
 
 
-/*void driver1()
+void driver1()
 {
-	clearDebugStream();
-
 	//-----CALIBRATIONS/CONSTANTS-----/
 	//halt();
 	sleep(50);
@@ -133,22 +129,20 @@ task main()
 
 	//------TEST  CODE------/
 
-<<<<<<< HEAD
 	//float distance = 100; //cm
 
 	//moveForwardTest(distance);
 
 	//runPointTurnTest(90);
 
-=======
->>>>>>> origin/master
+	gyroTurn(50, GYRO_BASE, 90)
+
 	//bluetoothTest(HEIGHT_OF_MARKER);
 
 	//openGate(60);
 	//closeGate(60);
 	//dropAC();
-	readGyro(GYRO_BASE);
-<<<<<<< HEAD
+	//readGyro(GYRO_BASE);
 	//gyroTurn(BASE_POW, GYRO_BASE, 90);
 	//clearTimer(T1);
 	//int i = 0;
@@ -157,7 +151,7 @@ task main()
 	//	writeDebugStream("%f\n", time1[T1]);
 	//	sleep(5);
 	//}
->>>>>>> origin/master
+
 
 	//pocTask5Path(BASE_POW);
 	//bool fuckThis = beaconSweep(-BASE_POW, HALL_BASE, 90);
@@ -167,14 +161,13 @@ task main()
 
 
 	//pocTask1(60);
-	pocTask2(HEIGHT_OF_MARKER);
+	//pocTask2(HEIGHT_OF_MARKER);
 	//pocTask3(BASE_POW);
 	//pocTask4(BASE_POW, HALL_BASE);
 	//pocTask5(BASE_POW);
 	//pocTask45Combo(BASE_POW, HALL_BASE);
 	//pocTask6(HEIGHT_OF_MARKER);
-=======
-}*/
+}//*/
 
 void driver2()
 {
@@ -189,7 +182,6 @@ void driver2()
 	{
 		writeDebugStream("%c\n", test[i]);
 	}
->>>>>>> origin/master
 }
 
 /*----------------------------FUNCTION DEFINITIONS----------------------------*/
@@ -208,23 +200,42 @@ void runCOTTest()
 	}
 }
 
+
+//Tests the speed of the robot at 100 power level
+void runSpeedTest() {
+	byte power = 100;
+	float startEncoderA = nMotorEncoder[motorA];
+	float startEncoderB = nMotorEncoder[motorB];
+
+	drive(power, 1000);
+
+	float endEncoderA = nMotorEncoder[motorA];
+	float endEncoderB = nMotorEncoder[motorB];
+
+	float diffA = abs(endEncoderA - startEncoderA);
+	float diffB = abs(endEncoderB - startEncoderB);
+
+	float turnsA = diffA / 360;
+	float turnsB = diffB / 360;
+
+	float distTravelA = turnsA * (2 * WHEEL_RADIUS * PI);
+	float distTravelB = turnsB * (2 * WHEEL_RADIUS * PI);
+
+	writeDebugStreamLine("At %d % power, wheel A traveled %f cm.", power, distTravelA);
+	writeDebugStreamLine("At %d % power, wheel B traveled %f cm.", power, distTravelB);
+}
+
 void runPointTurnTest(int angle)
 {
-<<<<<<< HEAD
 	short power = 40;
-=======
-	byte power = 60;
->>>>>>> origin/master
+	//byte power = 60;
 	pointTurn(power, angle);
 }
 
 void moveForwardTest(float distance)
 {
-<<<<<<< HEAD
 	short power = 70;
-=======
-	byte power = 100;
->>>>>>> origin/master
+	//byte power = 100;
 	moveForward(power, distance);
 }
 

@@ -34,18 +34,21 @@ bool nearBeacon(short base)
 
 bool atBeacon(short base)
 {
-<<<<<<< HEAD
 	int thresh3 = HALL_EFFECT_THRESH_3;
 	return (getHallEffect(base) < thresh3);
-=======
-	short thresh3 = HALL_EFFECT_THRESH_3;
+	//short thresh3 = HALL_EFFECT_THRESH_3;
 	return (getHallEffect(base) >= thresh3);
->>>>>>> origin/master
 }
 
 short calibrateGyro()
 {
-	return SensorValue(S1);
+	int count = 0;
+	float sensorValSum = 0;
+	for(count = 0; count < 500; count++) {
+		sensorValSum = sensorValSum + SensorValue(S1);
+	}
+	float sensorValAvg = sensorValSum / 500;
+	return sensorValAvg;
 }
 
 short getGyro(short base)

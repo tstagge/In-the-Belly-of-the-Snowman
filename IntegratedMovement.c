@@ -80,7 +80,7 @@ void gyroTurn(byte power, int gyroBase, int angle)
 		sleep(2);
 		angleTurned = angleTurned + calcTrap(0.002, getGyro(gyroBase));
 		//angleTurned = angleTurned + ((0.5)*
-		writeDebugStream("dT = %f\tGyro = %f\tAngleTurned = %f\n", 2, getGyro(gyroBase), angleTurned);
+		writeDebugStreamLine("dT = %f\tGyro = %f\tAngleTurned = %f", 2, getGyro(gyroBase), angleTurned);
 	}
 	halt();
 }
