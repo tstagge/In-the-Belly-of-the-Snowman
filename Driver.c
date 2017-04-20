@@ -24,16 +24,22 @@
 
 //Defined powers and threshholds
 #define BASE_MOTOR_POWER 40
+<<<<<<< HEAD
+#define DEP_MOTOR_POWER_OPEN 50 //Power used to open deposition system
+#define DEP_MOTOR_POWER_CLOSE 60 //Power used to close the deposition system
+#define HALL_EFFECT_THRESH_1 8 //We're going to need to compare to the actual beacon magnets
+=======
 #define DEP_MOTOR_POWER_OPEN 8//10//50 //Power used to open deposition system
 #define DEP_MOTOR_POWER_CLOSE 35//60 //Power used to close the deposition system
 #define HALL_EFFECT_THRESH_1 3 //We're going to need to compare to the actual beacon magnets
+>>>>>>> origin/master
 #define HALL_EFFECT_THRESH_2 15
-#define HALL_EFFECT_THRESH_3 40
+#define HALL_EFFECT_THRESH_3 -5
 
 //Physical characteristics of robot
 #define WHEEL_RADIUS 4.1   //cm
 #define TURN_RADIUS 7.0    //cm; distance between wheels' contact points
-#define BOT_LENGTH 22    //cm; distance from center of turning to AC deposition
+#define BOT_LENGTH 22.0    //cm; distance from center of turning to AC deposition
 #define HEIGHT_OF_MARKER 10 //cm; height of the LSTS marker, FIXME
 #define MOTOR_GEAR_RATIO 1
 
@@ -49,8 +55,13 @@
 #include "IntegratedMovement.c"
 #include "Deposition.c"
 #include "Bluetooth.c"
+<<<<<<< HEAD
+#include "SatelliteNavigation.c"
+#include "Navigation.c"
+=======
 #include "PathInterpreter.c"
 //#include "Navigation.c" //FIXME: Some serious errors when trying to import this
+>>>>>>> origin/master
 
 /*----------------------------FUNCTION  PROTOTYPES----------------------------*/
 //DRIVERS
@@ -67,6 +78,15 @@ void bluetoothTest(int height);
 void readGyro(int base);
 void ioTest();
 //PROOF-OF-COMPETENCY TASKS
+<<<<<<< HEAD
+void pocTask1(short power);
+void pocTask2(int height);
+void pocTask3(short power);
+void pocTask4(short power, int hallBase);
+void pocTask5(short power);
+void pocTask45Combo(short power, int hallBase);
+void pocTask6(int height);
+=======
 void pocTask1(byte power);
 void pocTask2();
 void pocTask3(byte power);
@@ -74,6 +94,7 @@ void pocTask4(byte power, short hallBase);
 void pocTask5(byte power);
 void pocTask45Combo(byte power, short hallBase);
 void pocTask6();
+>>>>>>> origin/master
 //PROOF-OF-COMPETENCY SUB-ROUTINES
 void pocTask4Search2(byte power, short hallBase); //Searches the 10cm x 30cm region
 void pocTask5Path(byte power); //Runs that weird path with the two turns
@@ -106,12 +127,56 @@ task main()
 	sleep(50);
 	//GYRO g;
 	short BASE_POW = BASE_MOTOR_POWER;
+	displayCenteredTextLine(3, "%d", HALL_BASE);
+	writeDebugStreamLine("HALL_BASE: %d", HALL_BASE);
 
 	//------TEST  CODE------/
+<<<<<<< HEAD
 	//bluetoothTest(HEIGHT_OF_MARKER);
+=======
+
+<<<<<<< HEAD
+	//float distance = 100; //cm
+
+	//moveForwardTest(distance);
+
+	//runPointTurnTest(90);
+
+=======
+>>>>>>> origin/master
+	//bluetoothTest(HEIGHT_OF_MARKER);
+
+	//openGate(60);
+>>>>>>> origin/master
 	//closeGate(60);
 	//dropAC();
 	readGyro(GYRO_BASE);
+<<<<<<< HEAD
+	//gyroTurn(BASE_POW, GYRO_BASE, 90);
+	//clearTimer(T1);
+	//int i = 0;
+	//for(i = 0; i<200; i++)
+	//{
+	//	writeDebugStream("%f\n", time1[T1]);
+	//	sleep(5);
+	//}
+>>>>>>> origin/master
+
+	//pocTask5Path(BASE_POW);
+	//bool fuckThis = beaconSweep(-BASE_POW, HALL_BASE, 90);
+	//writeDebugStream("%d", fuckThis);
+	//hallEffectTest(HALL_BASE);
+	//pocTask4Search2(BASE_POW, HALL_BASE);
+
+
+	//pocTask1(60);
+	pocTask2(HEIGHT_OF_MARKER);
+	//pocTask3(BASE_POW);
+	//pocTask4(BASE_POW, HALL_BASE);
+	//pocTask5(BASE_POW);
+	//pocTask45Combo(BASE_POW, HALL_BASE);
+	//pocTask6(HEIGHT_OF_MARKER);
+=======
 }*/
 
 void driverPath(byte power)
@@ -119,12 +184,24 @@ void driverPath(byte power)
 	clearDebugStream();
 	clearDebugStream();
 	writeDebugStream("--NEW TEST------------------------------------------\n");
+<<<<<<< HEAD
 	//byte test[200];
 	//readMRDstream(MRD_CODE_FILENAME, test);
 	short mrdCommands[35];
 	short mrdParameters[35];
 	byte numCommands = readMRDstream2(MRD_CODE_FILENAME, mrdCommands, mrdParameters);
 	executeAllCommands(numCommands, power, mrdCommands, mrdParameters);
+=======
+	byte test[200];
+	readMRDstream(MRD_CODE_FILENAME, test);
+	writeDebugStream("RAW---");
+	short i = 0;
+	for(i = 0; i < 174; i++)
+	{
+		writeDebugStream("%c\n", test[i]);
+	}
+>>>>>>> origin/master
+>>>>>>> origin/master
 }
 
 /*----------------------------FUNCTION DEFINITIONS----------------------------*/
@@ -145,13 +222,21 @@ void runCOTTest()
 
 void runPointTurnTest(int angle)
 {
+<<<<<<< HEAD
+	short power = 40;
+=======
 	byte power = 60;
+>>>>>>> origin/master
 	pointTurn(power, angle);
 }
 
 void moveForwardTest(float distance)
 {
+<<<<<<< HEAD
+	short power = 70;
+=======
 	byte power = 100;
+>>>>>>> origin/master
 	moveForward(power, distance);
 }
 
@@ -230,14 +315,14 @@ void pocDriver()
 
 void pocTask1(byte power)
 {
-	pointTurn(power, 30); //Left
+	pointTurn(40, 30); //Left
 	sleep(0.5);
 	moveForward(power, 1000); //NICK!: I don't know the actual distance here
 }
 
-void pocTask2()
+void pocTask2(int height)
 {
-
+	task2(height);
 }
 
 void pocTask3(byte power)
@@ -247,7 +332,7 @@ void pocTask3(byte power)
 
 void pocTask4(byte power, short hallBase)
 {
-	moveForward(power, 40.0);
+	moveForward(power, 50.0);
 	pocTask4Search2(power, hallBase);
 	//moveForward(power, 35);
 	sleep(0.25);
@@ -267,7 +352,8 @@ void pocTask5(byte power)
 	pocTask5Path(power);
 	moveForward(power, (30.0 + BOT_LENGTH));
 	//moveForward(power, BOT_LENGTH);
-	sleep(0.25);
+	fullStop();
+	sleep(25);
 	dropAC();
 }
 
@@ -296,7 +382,7 @@ void pocTask4Search2(byte power, short hallBase)
 	bool n = false;
 	//bool at = false;
 
-	while( (!n) && (distTraveled < 31))
+	while( (!n) && (distTraveled < 51))
 	{
 		if(beaconSweep(-power, hallBase, 20)) {
 			n = true;
@@ -325,11 +411,11 @@ void pocTask5Path(byte power)
 {
 	moveForward(power, 45.0);
 	sleep(250);
-	pointTurn(-power, 90);
+	pointTurn(20, -90);
 	sleep(250);
 	moveForward(power, 15.0); //Changed from 20 to 15
 	sleep(250);
-	arcTurn(power, 15.0, 90);
+	arcTurn(20, 15.0, -90);
 	sleep(250);
 	//moveForward(power, (30.0 + ));
 	//moveForward(power, 30.0);

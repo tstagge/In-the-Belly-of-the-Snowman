@@ -23,7 +23,7 @@ short calibrateHallEffect()
 
 short getHallEffect(short base)
 {
-	return -(SensorValue(S3) - base);
+	return abs(SensorValue(S3) - base);
 }
 
 bool nearBeacon(short base)
@@ -34,8 +34,13 @@ bool nearBeacon(short base)
 
 bool atBeacon(short base)
 {
+<<<<<<< HEAD
+	int thresh3 = HALL_EFFECT_THRESH_3;
+	return (getHallEffect(base) < thresh3);
+=======
 	short thresh3 = HALL_EFFECT_THRESH_3;
 	return (getHallEffect(base) >= thresh3);
+>>>>>>> origin/master
 }
 
 short calibrateGyro()

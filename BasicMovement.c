@@ -170,13 +170,15 @@ void moveForward(byte power, float distance)
 
 	motorRampUp(power);
 
-	displayCenteredTextLine(3, "Searching for end angle");
+	int kill = 0;
 
-	writeDebugStreamLine("%f", nMotorEncoder[motorA]);
-
-	while (nMotorEncoder[motorB] > -angleDegrees ) {
+	while (nMotorEncoder[motorB] > -(angleDegrees -100) ) {
 		//Idle loop. Program waits until target value is reached.
-		writeDebugStreamLine("%f", nMotorEncoder[motorA]);
+		//if (kill > 100000) {
+		//	kill = 0;
+		//	break;
+		//}
+		//kill++;
   }
-  halt();
+  motorRampDown(power);
 }
