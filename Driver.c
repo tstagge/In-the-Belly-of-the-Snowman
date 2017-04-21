@@ -25,7 +25,7 @@
 //Defined powers and threshholds
 #define BASE_MOTOR_POWER 40
 #define DEP_MOTOR_POWER_OPEN 50 //Power used to open deposition system
-#define DEP_MOTOR_POWER_CLOSE 60 //Power used to close the deposition system
+#define DEP_MOTOR_POWER_CLOSE 20 //Power used to close the deposition system
 #define HALL_EFFECT_THRESH_1 8 //We're going to need to compare to the actual beacon magnets
 //#define DEP_MOTOR_POWER_OPEN 8 //10//50 //Power used to open deposition system
 //#define DEP_MOTOR_POWER_CLOSE 35 //60 //Power used to close the deposition system
@@ -106,9 +106,9 @@ task main()
 
 	//runSpeedTest();
 
-	//driver1();
+	driver1();
 
-	bluetoothTest(220);
+	//bluetoothTest(220);
 
 	//dropAC();
 	//openGate(DEP_MOTOR_POWER_OPEN);
@@ -125,11 +125,11 @@ void driver1() {
 	sleep(50);
 	int HALL_BASE = calibrateHallEffect();
 	writeDebugStreamLine("Hall Effect:%d", HALL_BASE);
-	//int GYRO_BASE = calibrateGyro();
+	int GYRO_BASE = calibrateGyro();
 	//sleep(50);
-	//byte BASE_POW = BASE_MOTOR_POWER;
+  //byte BASE_POW = BASE_MOTOR_POWER;
 	//writeDebugStreamLine("Gyro Base: %d", GYRO_BASE);
-	//gyroTurn(40, GYRO_BASE, 20);
+	gyroTurn(15, GYRO_BASE, 180);
 
 
 	//driverPath(BASE_POW);

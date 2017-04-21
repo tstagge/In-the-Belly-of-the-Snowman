@@ -72,15 +72,19 @@ void gyroTurn(byte power, int gyroBase, int angle)
 	float radiusBot = TURN_RADIUS;
 	float angleTurned = 0;
 
-	motor[motorA] = -(power/2);
-	motor[motorB] = (power/2);
+	pointTurnIndef(power);
+	int gyroLast = 0;
+	int gyroCurr = 0;
 
-	while((abs(angle) - abs(angleTurned)) > 3) //3 is tolerance
+	while((abs(angle) - abs(angleTurned)) > 10) //3 is tolerance
 	{
+		gyroCurr = getGyro(gyroBase);
 		sleep(20);
-		angleTurned = angleTurned + (.5 * 0.02 * getGyro(gyroBase));
+		angleTurned = angleTurned + (0.02/2 * (gyroLast + getGyro(gyroBase)));
 		//angleTurned = angleTurned + ((0.5)*
 		writeDebugStreamLine("dT = %f ms\tGyro = %f\tAngleTurned = %f", 5, getGyro(gyroBase), angleTurned);
+		gyroLast = gyroCurr;
 	}
+
 	halt();
 }

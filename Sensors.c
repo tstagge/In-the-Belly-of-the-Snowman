@@ -20,11 +20,10 @@ short calibrateHallEffect()
 {
 	short hallNum = 0;
 	short i = 0;
-	for (i < 50)
-	{
+	while (i < 50) {
 		hallNum = hallNum + SensorValue(S3);
 		sleep(1);
-		i++
+		i++;
 	}
 	hallNum = hallNum / 50;
 	return hallNum;
