@@ -6,9 +6,9 @@
 %   - pt = Point Struct of endpoint in terms of the actual demonstration
 %          area's origin
 
-function pt = getEndpointReal(v, ptTemp, mapSize1)
+function pt = getEndpointReal(v, o, ptTemp, mapSize1)
     vEnd = struct(ptTemp);
     vEnd.x = v.x1;
     vEnd.y = v.y1;
-    pt = getCoordReal(vEnd, ptTemp,mapSize1);
+    pt = getCoordReal(vEnd, o, ptTemp,mapSize1);
 end

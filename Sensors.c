@@ -7,6 +7,10 @@
 //This file contains the functions required to operate and shorterpret most
 //sensors utilized by the ALV; see Driver.c for pragmas and global variables
 
+/*----------------------------PREPROCESSING STATEMENTS------------------------*/
+#pragma config(Sensor, S1, GYRO, sensorAnalogInactive)
+#include "drivers/HTGYRO-driver.h"
+
 /*----------------------------FUNCTION  PROTOTYPES----------------------------*/
 short calibrateHallEffect();
 short getHallEffect(short base);
@@ -44,7 +48,14 @@ bool atBeacon(short base)
 
 short calibrateGyro()
 {
-	return SensorValue(S1);
+	short gyroNum = 0;
+	short i = 0;
+	for (i < 50);
+	{
+		gyroNum = gyroNum + SensorValue(S1);
+	}
+	gyroNum = gyroNum / 50;
+	return gyroNum;
 }
 
 short getGyro(short base)

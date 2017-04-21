@@ -10,7 +10,7 @@
 % OUT:
 %   - intPath = single Integrated Path Struct
 
-function intPath = outputMRDc(oPaths,oFileName,vecTemp,intTemp,ptTemp,mapSize)
+function intPath = outputMRDc(oPaths,origin,oFileName,vecTemp,intTemp,ptTemp,mapSize)
     numPaths = length(oPaths); %Equivalent to the number of 'operations'
     intPath = struct(intTemp);
     NORTH = struct(vecTemp);
@@ -63,7 +63,7 @@ function intPath = outputMRDc(oPaths,oFileName,vecTemp,intTemp,ptTemp,mapSize)
                fprintf(oFile, '\t\t\tdropAC();\n');
            end
            
-           expLoc = getEndpointReal(intPath.vectorList(iVec-1), ptTemp, mapSize);
+           expLoc = getEndpointReal(intPath.vectorList(iVec-1), origin, ptTemp, mapSize);
            fprintf(oFile, '\t\t\texpLoc[0] = %d; expLoc[1] = %d;\n',expLoc.x,expLoc.y);
            
            fprintf(oFile, '\t\t\tbreak;\n');
@@ -74,7 +74,7 @@ function intPath = outputMRDc(oPaths,oFileName,vecTemp,intTemp,ptTemp,mapSize)
         else
             if(waitOnM == false)
                 fprintf(oFile, '\t\t\tmoveForward(power, %d);\n ', intPath.vectorList(iVec).magnitude);
-                %expLoc = getEndpointReal(intPath.vectorList(iVec), ptTemp, mapSize);
+                %expLoc = getEndpointReal(intPath.vectorList(iVec), origin, ptTemp, mapSize);
                 %fprintf(oFile, '\t\t\texpLoc = {%d, %d};\n',expLoc.x,expLoc.y);
             else
                 waitOnM = false;

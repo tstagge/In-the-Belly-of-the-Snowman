@@ -23,6 +23,9 @@ SCORE_MATRIX = [-1, 1000000;
 START_LOC_X = 85;%340;%30;%340;%30;%340;
 START_LOC_Y = 245;%30;%245;%30;%245;%30;
 START_LOC_THETA = 90; %degrees
+ORIGIN_X = 0;
+ORIGIN_Y = 0;
+NAVIGATION_MODE = 0; % 0=Test, 1="Real"
 MAP_FILENAME = 'satmap5.txt';
 OUTPUT_FILENAME = 'satmap5_mrdC4.c';
 
@@ -76,6 +79,12 @@ startLocation.x = START_LOC_X;
 startLocation.y = START_LOC_Y;
 startLocation.theta = START_LOC_THETA;
 
+mapOrigin = struct(pointTemplate);
+mapOrigin.x = ORIGIN_X;
+mapOrigin.y = ORIGIN_Y;
+
+navMode = NAVIGATION_MODE;
+
 %mapFileName = input('Input name of provided satellite map file: ','s');
 %outputFileName = input('Input name of MRD-Code output file: ','s');
 % startLocation.x = input('Starting location (x): ');
@@ -94,58 +103,62 @@ mapRawSize = size(mapRaw);
 plotMap(mapRaw, mapRawSize);
 mapProcessed = mapRaw; %Copy
 
-%BEACON LOCATIONS----------------------------------------------------------
-%  Note: might want to split up locateBeacons such that all40s is returned
-%  to the script and all40s can be changed to 0s, leaving only the 41 (if
-%  that is so desired later in the program development)
-beaconLocations = locateBeacons(mapRaw, mapRawSize, TOL_CONTIGUITY, beaconTemplate); %List of pseudo-unknown size
-numBeacons = length(beaconLocations);
-beaconPlotX = [];
-beaconPlotY = [];
-for b = 1:numBeacons
-    mapProcessed(beaconLocations(b).y,beaconLocations(b).x) = 41;
-    beaconLocations(b).distance = getDistance(beaconLocations(b), startLocation);
-    beaconPlotX = [beaconPlotX, beaconLocations(b).x];
-    beaconPlotY = [beaconPlotY, -beaconLocations(b).y];
-end
-
-%BEACON PRIORITY-----------------------------------------------------------
-%  Note: it is believed they will be giving us a specific order, but for
-%  now we are going to do it based on distance
-orderOfPriority = zeros(1,numBeacons);
-minDist = inf;
-minDistI = 0;
-prior = 1;
-for b1 = 1:1:numBeacons %Identify closest to starting location
-    if(beaconLocations(b1).distance < minDist)
-        minDist = beaconLocations(b1).distance;
-        minDistI = b1;
+if(navMode == 0) %Testing mode -- our maps
+    %BEACON LOCATIONS----------------------------------------------------------
+    %  Note: might want to split up locateBeacons such that all40s is returned
+    %  to the script and all40s can be changed to 0s, leaving only the 41 (if
+    %  that is so desired later in the program development)
+    beaconLocations = locateBeacons(mapRaw, mapRawSize, TOL_CONTIGUITY, beaconTemplate); %List of pseudo-unknown size
+    numBeacons = length(beaconLocations);
+    beaconPlotX = [];
+    beaconPlotY = [];
+    for b = 1:numBeacons
+        mapProcessed(beaconLocations(b).y,beaconLocations(b).x) = 41;
+        beaconLocations(b).distance = getDistance(beaconLocations(b), startLocation);
+        beaconPlotX = [beaconPlotX, beaconLocations(b).x];
+        beaconPlotY = [beaconPlotY, -beaconLocations(b).y];
     end
-    %fprintf('MinDist = %d\n', minDist);
-end
-beaconLocations(minDistI).priority = prior;
-orderOfPriority(prior) = minDistI;
-prior = prior + 1;
 
-%Identify subsequent beacons
-latestPriorI = minDistI;
-nextPriorI = -1;
-while(prior <= numBeacons)
-    minDistFromLast = 100000;
-    for b1 = 1:numBeacons
-        distFromLast = getDistance(beaconLocations(latestPriorI), beaconLocations(b1));
-        if(beaconLocations(b1).priority == -1) %Unassigned priority
-            if(distFromLast < minDistFromLast)
-                minDistFromLast = distFromLast;
-                nextPriorI = b1;
+    %BEACON PRIORITY-----------------------------------------------------------
+    %  Note: it is believed they will be giving us a specific order, but for
+    %  now we are going to do it based on distance
+    orderOfPriority = zeros(1,numBeacons);
+    minDist = inf;
+    minDistI = 0;
+    prior = 1;
+    for b1 = 1:1:numBeacons %Identify closest to starting location
+        if(beaconLocations(b1).distance < minDist)
+            minDist = beaconLocations(b1).distance;
+            minDistI = b1;
+        end
+        %fprintf('MinDist = %d\n', minDist);
+    end
+    beaconLocations(minDistI).priority = prior;
+    orderOfPriority(prior) = minDistI;
+    prior = prior + 1;
+
+    %Identify subsequent beacons
+    latestPriorI = minDistI;
+    nextPriorI = -1;
+    while(prior <= numBeacons)
+        minDistFromLast = 100000;
+        for b1 = 1:numBeacons
+            distFromLast = getDistance(beaconLocations(latestPriorI), beaconLocations(b1));
+            if(beaconLocations(b1).priority == -1) %Unassigned priority
+                if(distFromLast < minDistFromLast)
+                    minDistFromLast = distFromLast;
+                    nextPriorI = b1;
+                end
             end
         end
+        beaconLocations(nextPriorI).priority = prior;
+        orderOfPriority(prior) = nextPriorI;
+        %fprintf('Setting priority to %d\n', prior);
+        prior = prior + 1;
+        latestPriorI = nextPriorI;
     end
-    beaconLocations(nextPriorI).priority = prior;
-    orderOfPriority(prior) = nextPriorI;
-    %fprintf('Setting priority to %d\n', prior);
-    prior = prior + 1;
-    latestPriorI = nextPriorI;
+else %"Real" Mode -- their maps
+    
 end
 
 %% PATH GENERATION (Version 1: all 90 degree turns)
@@ -188,7 +201,7 @@ end
 
 %% MRD-CODE OUTPUT
 %combinedOptPath = outputMRD(optPaths,outputFileName,vectorTemplate,intPathTemplate,pointTemplate,mapRawSize);
-combinedOptPath = outputMRDc(optPaths,outputFileName,vectorTemplate,intPathTemplate,pointTemplate,mapRawSize);
+combinedOptPath = outputMRDc(optPaths,mapOrigin,outputFileName,vectorTemplate,intPathTemplate,pointTemplate,mapRawSize);
 
 %% PLOTTING
 

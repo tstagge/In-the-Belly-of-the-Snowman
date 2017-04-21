@@ -23,7 +23,7 @@ void dropAC()
 		int depPowerClose = DEP_MOTOR_POWER_CLOSE;
 		fullStop();
 		openGate2(depPowerOpen);
-		sleep(300);
+		sleep(500);
 		//moveForward(5, 50);
 		closeGate2(depPowerClose);
 }
