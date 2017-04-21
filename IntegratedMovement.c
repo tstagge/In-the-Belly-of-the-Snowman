@@ -77,10 +77,10 @@ void gyroTurn(byte power, int gyroBase, int angle)
 
 	while((abs(angle) - abs(angleTurned)) > 3) //3 is tolerance
 	{
-		sleep(2);
-		angleTurned = angleTurned + calcTrap(0.002, getGyro(gyroBase));
+		sleep(20);
+		angleTurned = angleTurned + (.5 * 0.02 * getGyro(gyroBase));
 		//angleTurned = angleTurned + ((0.5)*
-		writeDebugStreamLine("dT = %f\tGyro = %f\tAngleTurned = %f", 2, getGyro(gyroBase), angleTurned);
+		writeDebugStreamLine("dT = %f ms\tGyro = %f\tAngleTurned = %f", 5, getGyro(gyroBase), angleTurned);
 	}
 	halt();
 }

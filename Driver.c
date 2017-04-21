@@ -24,18 +24,15 @@
 
 //Defined powers and threshholds
 #define BASE_MOTOR_POWER 40
-<<<<<<< HEAD
 #define DEP_MOTOR_POWER_OPEN 50 //Power used to open deposition system
 #define DEP_MOTOR_POWER_CLOSE 60 //Power used to close the deposition system
 #define HALL_EFFECT_THRESH_1 8 //We're going to need to compare to the actual beacon magnets
 //#define DEP_MOTOR_POWER_OPEN 8 //10//50 //Power used to open deposition system
 //#define DEP_MOTOR_POWER_CLOSE 35 //60 //Power used to close the deposition system
 //#define HALL_EFFECT_THRESH_1 3 //We're going to need to compare to the actual beacon magnets
-=======
-#define DEP_MOTOR_POWER_OPEN 8//10//50 //Power used to open deposition system
-#define DEP_MOTOR_POWER_CLOSE 35//60 //Power used to close the deposition system
-#define HALL_EFFECT_THRESH_1 8 //Calibrated to actual beacon magnet
->>>>>>> origin/master
+//#define DEP_MOTOR_POWER_OPEN 8//10//50 //Power used to open deposition system
+//#define DEP_MOTOR_POWER_CLOSE 35//60 //Power used to close the deposition system
+//#define HALL_EFFECT_THRESH_1 8 //Calibrated to actual beacon magnet
 #define HALL_EFFECT_THRESH_2 15
 #define HALL_EFFECT_THRESH_3 -5
 
@@ -79,7 +76,6 @@ void readGyro(int base);
 void ioTest();
 void runSpeedTest();
 //PROOF-OF-COMPETENCY TASKS
-<<<<<<< HEAD
 void pocTask1(short power);
 void pocTask2(int height);
 void pocTask3(short power);
@@ -87,19 +83,14 @@ void pocTask4(short power, int hallBase);
 void pocTask5(short power);
 void pocTask45Combo(short power, int hallBase);
 void pocTask6(int height);
-=======
->>>>>>> origin/master
 void pocTask1(byte power);
 void pocTask2();
 void pocTask3(byte power);
 void pocTask4(byte power, short hallBase);
 void pocTask5(byte power);
 void pocTask45Combo(byte power, short hallBase);
-<<<<<<< HEAD
 void pocTask6();
-=======
 void pocTask6(int height);
->>>>>>> origin/master
 //PROOF-OF-COMPETENCY SUB-ROUTINES
 void pocTask4Search2(byte power, short hallBase); //Searches the 10cm x 30cm region
 void pocTask5Path(byte power); //Runs that weird path with the two turns
@@ -107,7 +98,6 @@ void pocTask5Path(byte power); //Runs that weird path with the two turns
 /*-----------------------------------MAIN-------------------------------------*/
 task main()
 {
-<<<<<<< HEAD
 	clearDebugStream();
 	writeDebugStreamLine("Battery level (mV): %d", nImmediateBatteryLevel);
 	//driver2();
@@ -116,7 +106,9 @@ task main()
 
 	//runSpeedTest();
 
-	driver1();
+	//driver1();
+
+	bluetoothTest(220);
 
 	//dropAC();
 	//openGate(DEP_MOTOR_POWER_OPEN);
@@ -127,17 +119,20 @@ task main()
 }
 
 
-void driver1()
-=======
+void driver1() {
 	//-----CALIBRATIONS/CONSTANTS-----/
 	halt();
 	sleep(50);
 	int HALL_BASE = calibrateHallEffect();
-	int GYRO_BASE = calibrateGyro();
-	sleep(50);
-	byte BASE_POW = BASE_MOTOR_POWER;
+	writeDebugStreamLine("Hall Effect:%d", HALL_BASE);
+	//int GYRO_BASE = calibrateGyro();
+	//sleep(50);
+	//byte BASE_POW = BASE_MOTOR_POWER;
+	//writeDebugStreamLine("Gyro Base: %d", GYRO_BASE);
+	//gyroTurn(40, GYRO_BASE, 20);
 
-	driverPath(BASE_POW);
+
+	//driverPath(BASE_POW);
 	//writeDebugStream("0: %d\n",'0');
 	//dropAC();
 }
@@ -214,8 +209,6 @@ void driverPath(byte power)
 	short mrdParameters[35];
 	byte numCommands = readMRDstream2(MRD_CODE_FILENAME, mrdCommands, mrdParameters);
 	executeAllCommands(numCommands, power, mrdCommands, mrdParameters);
-<<<<<<< HEAD
-=======
 	byte test[200];
 	readMRDstream(MRD_CODE_FILENAME, test);
 	writeDebugStream("RAW---");
@@ -224,13 +217,6 @@ void driverPath(byte power)
 	{
 		writeDebugStream("%c\n", test[i]);
 	}
-<<<<<<< HEAD
-=======
->>>>>>> origin/master
->>>>>>> origin/master
->>>>>>> origin/master
-=======
->>>>>>> origin/master
 }
 
 /*----------------------------FUNCTION DEFINITIONS----------------------------*/
@@ -276,23 +262,13 @@ void runSpeedTest() {
 
 void runPointTurnTest(int angle)
 {
-<<<<<<< HEAD
-	short power = 40;
-	//byte power = 60;
-=======
 	byte power = 60;
->>>>>>> origin/master
 	pointTurn(power, angle);
 }
 
 void moveForwardTest(float distance)
 {
-<<<<<<< HEAD
-	short power = 70;
-	//byte power = 100;
-=======
 	byte power = 100;
->>>>>>> origin/master
 	moveForward(power, distance);
 }
 
