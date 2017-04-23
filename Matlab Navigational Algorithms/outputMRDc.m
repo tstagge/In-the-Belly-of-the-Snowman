@@ -44,7 +44,7 @@ function intPath = outputMRDc(oPaths,origin,oFileName,vecTemp,intTemp,ptTemp,map
     totalNumTurns = length(intPath.turnAngles);
     oFile = fopen(oFileName,'w');
     
-    fprintf(oFile, 'void executeOperation(byte op, byte power, short startTurnToNorth, short* expLoc)\n{\n');
+    fprintf(oFile, 'void executeOperation(byte op, byte power, int base, short startTurnToNorth, short* expLoc)\n{\n');
     fprintf(oFile, '\tswitch(op)\n\t{\n');
     fprintf(oFile, '\t\tcase 1:\n');
     fprintf(oFile, '\t\t\tif((startTurnToNorth + %d) != 0)\n', intPath.turnAngles(1));
@@ -84,7 +84,7 @@ function intPath = outputMRDc(oPaths,origin,oFileName,vecTemp,intTemp,ptTemp,map
                 if(not(intPath.vectorList(iVec+1).magnitude == 0))
                     %fprintf('iAng = %d\n', iAng);
                     if(not(intPath.turnAngles(iAng) == 0))
-                        fprintf(oFile, '\t\t\tpointTurn(power, %d);\n', intPath.turnAngles(iAng));
+                        fprintf(oFile, '\t\t\tgyroTurn(power, base, %d);\n', intPath.turnAngles(iAng));
                     end
                     %fprintf(oFile, 'R%d\n', intPath.turnAngles(iAng));
                     iAng = iAng + 1;

@@ -11,7 +11,8 @@ tic;
 
 %% CONSTANTS
 NODE_GRID_BLOCK_NUM = 3;
-TOL_CONTIGUITY = 5;
+TOL_CONTIGUITY = 5;   %Contiguity tolerance for finding beacons in mode 0 (test)
+TOL_CONTIGUITY_ORIGIN = 2; %Contiguity tolerance for finding origin in mode 1 (real)
 ROBOT_SIZE = [[7,18], 15]; % [lfront, lrear,width] (cm); wheel separation is 14.5cm
 SCORE_MATRIX = [-1, 1000000;
                 0, 1;
@@ -157,8 +158,18 @@ if(navMode == 0) %Testing mode -- our maps
         prior = prior + 1;
         latestPriorI = nextPriorI;
     end
-else %"Real" Mode -- their maps
-    
+else %if(navMode == 1) %"Real" Mode -- their maps
+    beaconLocations = locateBeaconsReal(mapRaw, mapRawSize, beaconTemplate); %List of pseudo-unknown size
+    numBeacons = length(beaconLocations);
+    beaconPlotX = [];
+    beaconPlotY = [];
+    orderOfPriority = zeros(1,numBeacons);
+    for b = 1:numBeacons
+        beaconPlotX = [beaconPlotX, beaconLocations(b).x];
+        beaconPlotY = [beaconPlotY, -beaconLocations(b).y];
+        orderOfPriority(beaconLocations(b).priority) = b;
+    end
+    mapOrigin = locateMapOriginReal(mapRaw, mapRawSize, TOL_CONTIGUITY_ORIGIN, pointTemplate);
 end
 
 %% PATH GENERATION (Version 1: all 90 degree turns)
