@@ -1,15 +1,13 @@
 % IN:
 %     map = the raw map matrix
 %     size = the 2x1 matrix of the height and width of the map matrix
-%     tolCont = desired tolerance (in terms of pixels) for two cells to be
-%               considered contiguous
 %     bcnTemp = empty struct template for a Beacon Location Struct
 % OUT:
-%     centers = the rounded! average coordinates for each contiguous group
-%               of cells (in a list of point structs)
+%     bcns = list of Beacon Location structs w/ the coordinates and
+%               priorities of each of the beacons (A, B, C)
 
-function centers = locateBeaconsReal(map, size, tolCont, bcnTemp)
-    centers = [];
+function bcns = locateBeaconsReal(map, size, bcnTemp)
+    bcns = [];
     for i = 1:1:size(1)
         for j = 1:1:size(2)
             %If an A, B, or C
@@ -20,6 +18,7 @@ function centers = locateBeaconsReal(map, size, tolCont, bcnTemp)
                 tempBcn.y = i;
                 %tempBcn.priority = uint8(map(i,j)) - 64;
                 tempBcn.priority = map(i,j) - 64;
+                bcns = [bcns, tempBcn];
             end
         end
     end

@@ -10,7 +10,7 @@ hold on;
 tic;
 
 %% CONSTANTS
-NODE_GRID_BLOCK_NUM = 6;
+NODE_GRID_BLOCK_NUM = 3;
 TOL_CONTIGUITY = 5;   %Contiguity tolerance for finding beacons in mode 0 (test)
 TOL_CONTIGUITY_ORIGIN = 2; %Contiguity tolerance for finding origin in mode 1 (real)
 ROBOT_SIZE = [[7,18], 15]; % [lfront, lrear,width] (cm); wheel separation is 14.5cm
@@ -28,7 +28,7 @@ ORIGIN_X = 0;
 ORIGIN_Y = 0;
 NAVIGATION_MODE = 1; % 0=Test, 1="Real"
 MAP_FILENAME = 'DemoSatMap_Mod.txt'; %'satmap5.txt';
-OUTPUT_FILENAME = 'DemoSatMap_mrdC3.c'; %'satmap5_mrdC4.c';
+OUTPUT_FILENAME = 'DemoSatMap_mrdC1.c'; %'satmap5_mrdC4.c';
 
 %% STRUCT TEMPLATES
 
@@ -175,8 +175,8 @@ end
 
 %% PATH GENERATION (Version 1: all 90 degree turns)
 
-currentLoc = startLocation;
-numBlocks = NODE_GRID_BLOCK_NUM;
+currentLoc = startLocation; 
+numBlocks = NODE_GRID_BLOCK_NUM; %Currently 3
 totalPathsCalculated = 0;
 optPaths = [];
 

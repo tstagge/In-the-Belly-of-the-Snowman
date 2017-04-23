@@ -13,6 +13,6 @@ function p = getCoordReal(pt1, o, ptTemp, mapSize2)
     p.x = pt1.x;
     p.y = mapSize2(1) - pt1.y;
     
-    p.y = p.y + o.y;
-    p.x = p.x + o.x;
+    p.y = p.y - o.y;
+    p.x = p.x - o.x;
 end
